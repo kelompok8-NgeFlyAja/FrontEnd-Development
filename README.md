@@ -1,41 +1,8 @@
-## Instruksi Instalasi
-1. **Clone Repository**
-   Salin atau clone repository berikut dengan perintah dibawah:
+# React + Vite
 
-   ```bash
-   git clone https://github.com/kelompok8-NgeFlyAja/FrontEnd-Development
-   ```
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-2. **Pindah ke Direktori**
-   Bukalah direktori projek yang baru saja anda clone:
+Currently, two official plugins are available:
 
-   ```bash
-   cd FrontEnd-Development
-   ```
-
-3. **Setup Environment Variables**
-   Buatlah file bernama `.env` di root projek dengan mengikuti contoh yang tersedia `.env.example`. Isilah variabel yang kosong, dengan contoh sebagai berikut:
-
-   ```
-   VITE_BACKEND_URI=[URL-backend-Anda]
-   ```
-
-4. **Install Dependencies**
-   Lakukan instalasi untuk dependensi yang diperlukan oleh aplikasi dengan menggunakan **npm** atau **yarn**:
-
-   ```bash
-   npm install
-   # atau jika menggunakan yarn
-   yarn install
-   ```
-
-## Instruksi Menjalankan Aplikasi
-
-5. **Menjalankan Aplikasi**
-   Jalankan aplikasi menggunakan Vite:
-
-   ```bash
-   npm run dev
-   # atau jika menggunakan yarn
-   yarn dev
-   ```
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh

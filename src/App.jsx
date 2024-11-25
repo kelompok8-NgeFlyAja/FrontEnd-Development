@@ -1,23 +1,17 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Beranda from "./components/Beranda";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Homepage from "./pages/Homepage";
 
-function App() {
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/Beranda" element={<Beranda />} />
-        <Route
-          path="*"
-          element={
-            <div className="grid place-items-center">For 404 Not Found</div>
-          }
-        />
-      </Routes>
-    </>
-  );
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Homepage />,
+  },
+  // {
+  //   path: "/login",
+  //   element: <Login />,
+  // },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
 }
-
-export default App;

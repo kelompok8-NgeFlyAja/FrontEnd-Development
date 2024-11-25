@@ -1,42 +1,28 @@
 import React from "react";
-import navbarLogo from "../../public/Navbar_Logo.png";
-import InputSearch from "./InputSearch";
-import navbarBtnLogo from "../../public/Navbar_Button_Icon.svg";
-import NavbarItems from "./NavbarItems";
-import ListSvg from "./svg/ListSvg";
-import BellSvg from "./svg/BellSvg";
-import UserSvg from "./svg/UserSvg";
-import { Link } from "react-router-dom";
-const Navbar = ({ isNotification, isAccount, isHistory, isLogin }) => {
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+
+export default function Navbar() {
   return (
-    <nav className="flex justify-between py-4 px-2 xl:px-28 md:items-center">
-      <div className="flex flex-1 flex-col md:flex-row md:ps-10 gap-3 md:gap-10 ">
-        <Link to="/">
-          <img src={navbarLogo} alt="navbar logo" width={98} height={53} />
-        </Link>
-        <InputSearch placeholder="Cari disini....." />
+    <nav className="bg-white shadow-md flex justify-between py-4 px-2 xl:px-28 md:items-center">
+      <div className="flex flex-1 flex-col md:flex-row md:ps-10 gap-3 md:gap-10">
+        <img src="/logo.svg" alt="Tiketku Logo" height={53} />
+        <div className="w-full max-w-md relative">
+          <Input
+            type="search"
+            placeholder="Cari di sini ..."
+            className="pl-4 pr-10 rounded-[16px] bg-[#EEEEEE] h-12 md:h-[48px] text-left flex items-center"
+          />
+          <img
+            className="w-6 h-6 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
+            src="/icons/search.svg"
+          />
+        </div>
       </div>
-      <div>
-        {isLogin ? (
-          <NavbarItems>
-            <Link to="/history">
-              <ListSvg isActive={isHistory} />
-            </Link>
-            <Link to="/notification">
-              <BellSvg isActive={isNotification} />
-            </Link>
-            <Link to="/account">
-              <UserSvg isActive={isAccount} />
-            </Link>
-          </NavbarItems>
-        ) : (
-          <button className="bg-[#7126B5] py-3 px-4 rounded-xl text-white flex gap-2 items-center hover:opacity-80 transition-all">
-            <img src={navbarBtnLogo} alt="button icon" width={20} height={20} />
-            Masuk
-          </button>
-        )}
-      </div>
+
+      <Button>
+        <img src="/icons/login.svg" alt="button icon" /> Masuk
+      </Button>
     </nav>
   );
-};
-export default Navbar;
+}
