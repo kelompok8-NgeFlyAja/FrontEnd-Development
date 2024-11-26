@@ -21,14 +21,9 @@ function DateFilter() {
   return (
     <div className="content max-w-full w-full mx-auto relative pt-6 flex gap-4 justify-center">
       {dummyDates.map((item, index) => (
-        <button
-          key={index}
-          onClick={() => handleDateClick(item.date)}
-          variant={selectedDate === item.date ? "default" : "outline"}
-          className={`flex flex-col items-center px-4 py-2 border rounded-lg ${selectedDate === item.date ? "bg-[#A06ECE] text-white" : "bg-white text-black"}`}
-        >
-          <span className="font-medium">{item.day}</span>
-          <span className="text-sm">{item.date}</span>
+        <button key={index} onClick={() => handleDateClick(item.date)} className={`flex flex-col items-center px-4 py-2 rounded-lg ${selectedDate === item.date ? "bg-[#A06ECE] text-white" : "bg-white text-black"}`}>
+          <span className={`font-medium ${selectedDate === item.date ? "text-white" : "text-black"}`}>{item.day}</span>
+          <span className={`text-sm ${selectedDate === item.date ? "text-white" : "text-[#8A8A8A]"}`}>{item.date}</span>
         </button>
       ))}
     </div>
