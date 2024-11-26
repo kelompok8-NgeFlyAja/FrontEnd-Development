@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Homepage from "./pages/Homepage";
+import Search from "./pages/Search";
 
 const router = createBrowserRouter([
   {
@@ -10,6 +11,10 @@ const router = createBrowserRouter([
   //   path: "/login",
   //   element: <Login />,
   // },
+  {
+    path: "/search",
+    element: <Search />,
+  },
 ]);
 
 export default function App() {
