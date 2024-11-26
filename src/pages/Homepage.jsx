@@ -1,6 +1,6 @@
 import Banner from "@/components/Banner";
-import FeaturedDestionation from "@/components/FeaturedDestionation";
-import SearchFeatured from "@/components/FeauterdSearch";
+import FeauteredFlightCard from "@/components/FeauteredFlightCard";
+import SearchFeatured from "@/components/FeautredSearch";
 import FlightSearch from "@/components/FligthSearch";
 import Navbar from "@/components/Navbar";
 import React from "react";
@@ -12,6 +12,7 @@ export default function Homepage() {
       <Banner />
       <FlightSearch />
       <SearchFeatured />
+      <FeauteredFlightCard />
     </div>
   );
 }
