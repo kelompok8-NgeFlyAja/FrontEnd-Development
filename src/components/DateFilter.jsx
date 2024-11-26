@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "react-day-picker";
 
 function DateFilter() {
   const dummyDates = [
@@ -20,12 +19,17 @@ function DateFilter() {
   };
 
   return (
-    <div className="content max-w-[1098px] w-full mx-auto  relative pt-6 bg-none rounded-lg flex gap-4 flex-wrap justify-start">
+    <div className="content max-w-full w-full mx-auto relative pt-6 flex gap-4 justify-center">
       {dummyDates.map((item, index) => (
-        <Button key={index} onClick={() => handleDateClick(item.date)} className={`flex flex-col items-center px-4 py-2 border rounded-lg ${selectedDate === item.date ? "bg-purple-500 text-white" : "bg-white text-black"}`}>
+        <button
+          key={index}
+          onClick={() => handleDateClick(item.date)}
+          variant={selectedDate === item.date ? "default" : "outline"}
+          className={`flex flex-col items-center px-4 py-2 border rounded-lg ${selectedDate === item.date ? "bg-[#A06ECE] text-white" : "bg-white text-black"}`}
+        >
           <span className="font-medium">{item.day}</span>
           <span className="text-sm">{item.date}</span>
-        </Button>
+        </button>
       ))}
     </div>
   );
