@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Search from "./pages/Search";
+import Checkout from "./components/Checkout";
 
 const router = createBrowserRouter([
   {
