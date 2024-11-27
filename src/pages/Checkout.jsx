@@ -10,7 +10,10 @@ import Breadcrumbs from "../components/Breadcrumbs";
 const Checkout = () => {
   const [datas, setDatas] = useState([]);
   const [isCustomerFamilyName, setIsCustomerFamilyName] = useState(false);
-  const [isPassengerFamilyName, setIsPassengerFamilyName] = useState([]);
+  const [isPassengerFamilyName, setIsPassengerFamilyName] = useState([
+    false,
+    false,
+  ]); // Diinisialisasi sebagai array
   const [flightDetail, setFlightDetail] = useState([]);
 
   function handleCustomerBtn() {
@@ -236,7 +239,7 @@ const Checkout = () => {
                         label="Berlaku Sampai"
                         placeholder="dd/mm/yy"
                         type="date"
-                        name="validuntil_0"
+                        name="validuntil_1"
                       />
                     </motion.div>
                   </AnimatePresence>
