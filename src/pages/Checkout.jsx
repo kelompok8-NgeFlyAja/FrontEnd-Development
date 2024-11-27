@@ -156,6 +156,12 @@ const Checkout = () => {
                         type="text"
                         name="citizenship_0"
                       />
+                      <CheckoutInput
+                        label="Berlaku Sampai"
+                        placeholder="dd/mm/yy"
+                        type="date"
+                        name="validuntil_0"
+                      />
                     </motion.div>
                   </AnimatePresence>
                 </CheckoutForm>
@@ -225,6 +231,12 @@ const Checkout = () => {
                         placeholder="Indonesia"
                         type="text"
                         name="citizenship_1"
+                      />
+                      <CheckoutInput
+                        label="Berlaku Sampai"
+                        placeholder="dd/mm/yy"
+                        type="date"
+                        name="validuntil_0"
                       />
                     </motion.div>
                   </AnimatePresence>
