@@ -5,7 +5,7 @@ function Sort() {
   const [tempSelectedSort, setTempSelectedSort] = useState("Harga Termurah");
   const [selectedSort, setSelectedSort] = useState("Harga Termurah");
 
-  const options = ["Harga Termurah", "Harga Termahal", "Keberangkatan Paling Awal", "Keberangkatan Paling Akhir", "Kedatangan Paling Awal", "Kedatangan Paling Akhir"];
+  const options = ["Harga Termurah", "Keberangkatan Paling Awal", "Keberangkatan Paling Akhir", "Kedatangan Paling Awal", "Kedatangan Paling Akhir"];
 
   const handleConfirmSort = () => {
     setSelectedSort(tempSelectedSort);
