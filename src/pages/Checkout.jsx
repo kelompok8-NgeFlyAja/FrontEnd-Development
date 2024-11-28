@@ -171,6 +171,12 @@ const Checkout = () => {
                         name="citizenship_0"
                       />
                       <CheckoutInput
+                        label="KTP/Paspor"
+                        placeholder="Masukkan nomor paspor"
+                        type="text"
+                        name="passport_number_0"
+                      />
+                      <CheckoutInput
                         label="Negara Penerbit"
                         placeholder="Indonesia"
                         type="text"
@@ -245,6 +251,12 @@ const Checkout = () => {
                         placeholder="Indonesia"
                         type="text"
                         name="citizenship_1"
+                      />
+                      <CheckoutInput
+                        label="KTP/Paspor"
+                        placeholder="Masukkan nomor paspor"
+                        type="text"
+                        name="passport_number_0"
                       />
                       <CheckoutInput
                         label="Negara Penerbit"
