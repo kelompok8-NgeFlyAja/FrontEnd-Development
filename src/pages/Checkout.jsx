@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
+import Seats from "../components/Seats";
 import CheckoutCards from "../components/CheckoutCards";
 import CheckoutForm from "../components/CheckoutForm";
 import CheckoutInput from "../components/CheckoutInput";
 import { AnimatePresence, motion } from "framer-motion";
+import FlightDetails from "../components/FlightDetails";
+import { flightDetails } from "../lib/flightDummy";
+import { getSeatsData } from "../lib/seatsDummy";
 import Navbar from "../components/Navbar";
 import CheckoutAlert from "../components/CheckoutAlert";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -10,16 +14,26 @@ import Breadcrumbs from "../components/Breadcrumbs";
 const Checkout = () => {
   const [datas, setDatas] = useState([]);
   const [isCustomerFamilyName, setIsCustomerFamilyName] = useState(false);
-  const [isPassengerFamilyName, setIsPassengerFamilyName] = useState([
-    false,
-    false,
-  ]); // Diinisialisasi sebagai array
+  const [isPassengerFamilyName, setIsPassengerFamilyName] = useState([]);
   const [flightDetail, setFlightDetail] = useState([]);
+  const [isDataSaved, setIsDataSaved] = useState(false);
+
+  useEffect(() => {
+    setDatas(getSeatsData());
+    setFlightDetail(flightDetails());
+
+    // Kurang Dinamis
+    setIsPassengerFamilyName(new Array(2).fill(false));
+  }, []);
 
   function handleCustomerBtn() {
-    setIsCustomerFamilyName((prev) => !prev);
+    if (isCustomerFamilyName) {
+      setIsCustomerFamilyName(false);
+    } else {
+      setIsCustomerFamilyName(true);
+    }
   }
-
+  // Menampilkan Form Keluarga Tiap Masing - Masing Form
   function handlePassengerBtn(id) {
     setIsPassengerFamilyName((prev) =>
       prev.map((item, index) => (index === id ? !item : item))
@@ -37,10 +51,13 @@ const Checkout = () => {
       <Breadcrumbs isPayment={false} isSuccess={false} /> {/* Default values */}
       {/* You can adjust the message based on your conditions */}
       <CheckoutAlert type="Danger" message="Selesaikan dalam 00:15:00" />
+      {isDataSaved && (
+        <CheckoutAlert type="Success" message="Data anda berhasil disimpan!" />
+      )}
       <div className="my-5 flex justify-center gap-10">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-10">
-            {/* Form Data Customer */}
+            {/*  Data Customer */}
             <CheckoutCards>
               <h3 className="text-xl font-bold mb-4"> Isi Data Pemesan </h3>
               <CheckoutForm title="Data Diri Pemesan" isSaved={false}>
@@ -154,7 +171,7 @@ const Checkout = () => {
                         name="citizenship_0"
                       />
                       <CheckoutInput
-                        label="Negara Penertbit"
+                        label="Negara Penerbit"
                         placeholder="Indonesia"
                         type="text"
                         name="citizenship_0"
@@ -230,7 +247,7 @@ const Checkout = () => {
                         name="citizenship_1"
                       />
                       <CheckoutInput
-                        label="Negara Penertbit"
+                        label="Negara Penerbit"
                         placeholder="Indonesia"
                         type="text"
                         name="citizenship_1"
@@ -246,6 +263,32 @@ const Checkout = () => {
                 </CheckoutForm>
               </div>
             </CheckoutCards>
+            {/*Pilih Kursi Penumpang*/}
+            <div className="flex flex-col gap-5">
+              <CheckoutCards>
+                <Seats datas={datas} />
+              </CheckoutCards>
+              {isDataSaved ? (
+                <button
+                  className="py-4 text-center w-full bg-[#D0D0D0] rounded-xl text-white shadow-xl text-xl font-semibold"
+                  disabled
+                >
+                  Simpan
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="py-4 text-center w-full bg-[#7126B5] rounded-xl text-white shadow-xl text-xl font-semibold"
+                >
+                  Simpan
+                </button>
+              )}
+            </div>
+            {/* Detail Penerbangan */}
+            <FlightDetails
+              flightDetail={flightDetail}
+              isSavedData={isDataSaved}
+            />
           </div>
         </form>
       </div>
