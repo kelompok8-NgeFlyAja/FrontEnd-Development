@@ -17,7 +17,6 @@ const FlightDetails = ({ flightDetail, isSavedData }) => {
         <p className="text-sm"> 3 Maret 2023 </p>
         <p className="font-medium text-sm mt-2">{datas.departure_airport}</p>
       </div>
-      {/* Departure Information */}
       {/* Airline Information */}
       <div className="my-2 border-0 border-y-2 border-y-gray-300 py-2 mx-2">
         <div className="font-bold text-sm px-8 mb-3">
@@ -38,14 +37,13 @@ const FlightDetails = ({ flightDetail, isSavedData }) => {
           </div>
         </div>
       </div>
-      {/* Airline Information */}
       {/* Arrive Information */}
       <div id="arrive-information">
         <div className="flex justify-between">
           <p className="text-sm font-bold"> 11:00</p>
           <p className="text-xs text-[#A06ECE] font-bold"> Kedatangan </p>
         </div>
-        <p className="text-sm font-bold">3 Maret 2024</p>
+        <p className="text-sm font-bold">3 Maret 2023</p>
         <p className="text-sm font-medium"> {datas.arrival_airport} </p>
       </div>
       <div className="my-2 border-0 border-y-2 border-y-gray-300 py-2 mx-2">

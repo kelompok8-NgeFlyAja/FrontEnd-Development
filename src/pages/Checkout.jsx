@@ -296,13 +296,10 @@ const Checkout = () => {
                 </button>
               )}
             </div>
-            {/* Detail Penerbangan */}
-            <FlightDetails
-              flightDetail={flightDetail}
-              isSavedData={isDataSaved}
-            />
           </div>
         </form>
+        {/* Detail Penerbangan */}
+        <FlightDetails flightDetail={flightDetail} isSavedData={isDataSaved} />
       </div>
     </>
   );
