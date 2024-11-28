@@ -21,8 +21,8 @@ function Filter() {
   };
 
   return (
-    <div className="max-w-sm ml-[185px] pr-[100px]">
-      <div className="max-w-sm bg-white shadow-lg rounded-lg py-6 px-4 shadow-md">
+    <div className="max-w-sm ml-[185px]">
+      <div className="max-w-sm bg-white shadow-lg rounded-lg py-6 px-4 shadow-md border">
         {/* Header Filter */}
         <h2 className="font-bold mb-4">Filter</h2>
 

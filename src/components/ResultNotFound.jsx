@@ -2,7 +2,7 @@ import React from "react";
 
 function ResultNotFound() {
   return (
-    <div className="content max-w-full w-full mx-auto relative flex flex-col items-center py-7">
+    <div className="content max-w-full w-full relative flex flex-col items-center py-7">
       <img src="resultnotfound.png" alt="soldout" className="mb-4" />
 
       <div className="text-center">
