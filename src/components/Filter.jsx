@@ -24,7 +24,7 @@ function Filter() {
     <div className="max-w-sm ml-[185px] pr-[100px]">
       <div className="max-w-sm bg-white shadow-lg rounded-lg py-6 px-4 shadow-md">
         {/* Header Filter */}
-        <h2 className="font-bold  mb-4">Filter</h2>
+        <h2 className="font-bold mb-4">Filter</h2>
 
         {/* Filter Transit */}
         <div className="border-b pb-3 mb-3">
@@ -117,9 +117,24 @@ function Filter() {
                   <label htmlFor="baggage" className="text-gray-700">
                     Baggage
                   </label>
-                  <div className="flex gap-2 mt-2">
-                    <input type="number" placeholder="Min" value={baggageRange.min} onChange={(e) => setBaggageRange({ ...baggageRange, min: e.target.value })} className="border border-gray-300 rounded-md p-2 w-full focus:outline-none" />
-                    <input type="number" placeholder="Max" value={baggageRange.max} onChange={(e) => setBaggageRange({ ...baggageRange, max: e.target.value })} className="border border-gray-300 rounded-md p-2 w-full focus:outline-none" />
+                  {/* Input Min/Max untuk Baggage */}
+                  <div className="mt-2">
+                    <input
+                      type="number"
+                      placeholder="Min"
+                      value={baggageRange.min}
+                      onChange={(e) => setBaggageRange({ ...baggageRange, min: e.target.value })}
+                      disabled={!facilities.baggage} // Disabled jika Baggage tidak dicentang
+                      className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+                    />
+                    <input
+                      type="number"
+                      placeholder="Max"
+                      value={baggageRange.max}
+                      onChange={(e) => setBaggageRange({ ...baggageRange, max: e.target.value })}
+                      disabled={!facilities.baggage} // Disabled jika Baggage tidak dicentang
+                      className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+                    />
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -138,7 +153,8 @@ function Filter() {
                   <label htmlFor="cabinBaggage" className="text-gray-700">
                     Cabin Baggage
                   </label>
-                  <div className="flex gap-2 mt-2">
+                  {/* Input Min/Max untuk Cabin Baggage */}
+                  <div className="mt-2">
                     <input
                       type="number"
                       placeholder="Min"
@@ -149,6 +165,7 @@ function Filter() {
                           min: e.target.value,
                         })
                       }
+                      disabled={!facilities.cabinBaggage} // Disabled jika Cabin Baggage tidak dicentang
                       className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
                     />
                     <input
@@ -161,6 +178,7 @@ function Filter() {
                           max: e.target.value,
                         })
                       }
+                      disabled={!facilities.cabinBaggage} // Disabled jika Cabin Baggage tidak dicentang
                       className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
                     />
                   </div>
