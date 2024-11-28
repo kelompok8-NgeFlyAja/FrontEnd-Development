@@ -149,16 +149,6 @@ const Checkout = () => {
                     )}
                     <motion.div layout transition={{ duration: 0.3 }}>
                       <CheckoutInput
-                        label="Nomor Telepon"
-                        placeholder="081217177979"
-                        name="phoneNumber_0"
-                      />
-                      <CheckoutInput
-                        label="Email"
-                        placeholder="johndoe@gmail.com"
-                        name="email_0"
-                      />
-                      <CheckoutInput
                         label="Tanggal Lahir"
                         placeholder="dd/mm/yy"
                         type="date"
@@ -230,16 +220,6 @@ const Checkout = () => {
                       </motion.div>
                     )}
                     <motion.div layout transition={{ duration: 0.3 }}>
-                      <CheckoutInput
-                        label="Nomor Telepon"
-                        placeholder="081217177979"
-                        name="phoneNumber_1"
-                      />
-                      <CheckoutInput
-                        label="Email"
-                        placeholder="johndoe@mail.com"
-                        name="email_1"
-                      />
                       <CheckoutInput
                         label="Tanggal Lahir"
                         placeholder="dd/mm/yy"
