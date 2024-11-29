@@ -10,8 +10,11 @@ import {
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 function FlightSearchForm() {
+  const navigate = useNavigate();
+
   const [fromCity, setFromCity] = useState("");
   const [toCity, setToCity] = useState("");
   const [departureDate, setDepartureDate] = useState(null);
@@ -153,7 +156,11 @@ function FlightSearchForm() {
         </div>
 
         {/* Search Button */}
-        <Button type="submit" className="bg-[#7126B5] text-white w-full py-3">
+        <Button
+          type="submit"
+          onClick={() => navigate("/search")}
+          className="bg-[#7126B5] text-white w-full py-3"
+        >
           Cari Penerbangan
         </Button>
       </form>
