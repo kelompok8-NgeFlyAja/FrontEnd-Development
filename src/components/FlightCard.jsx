@@ -2,7 +2,22 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function FlightCard(props) {
-  const { time, duration, price, departure, arrival, baggage, cabin, entertainment, date, departureCode, arrivalCode, index, isOpen, toggleOpen } = props;
+  const {
+    time,
+    duration,
+    price,
+    departure,
+    arrival,
+    baggage,
+    cabin,
+    entertainment,
+    date,
+    departureCode,
+    arrivalCode,
+    index,
+    isOpen,
+    toggleOpen,
+  } = props;
   const navigate = useNavigate();
 
   return (
@@ -13,7 +28,12 @@ function FlightCard(props) {
           <p className="ml-2">Jet Air - Economy</p>
         </div>
         <div>
-          <img src="icons/Suffix.svg" alt="" className="cursor-pointer" onClick={() => toggleOpen(index)} />
+          <img
+            src="icons/Suffix.svg"
+            alt=""
+            className="cursor-pointer"
+            onClick={() => toggleOpen(index)}
+          />
         </div>
       </div>
       <div className="flex items-center pl-7">
@@ -34,8 +54,13 @@ function FlightCard(props) {
           <img src="icons/baggage.svg" alt="" />
         </div>
         <div className="text-right">
-          <h1 className="font-bold text-[#4B1979] text-md ml-[90px]">{price}</h1>
-          <button className="bg-purple-700 text-white py-2 px-10 rounded-2xl hover:bg-purple-600 mt-2" onClick={() => navigate("/checkout")}>
+          <h1 className="font-bold text-[#4B1979] text-md ml-[90px]">
+            {price}
+          </h1>
+          <button
+            className="bg-purple-700 text-white py-2 px-10 rounded-2xl hover:bg-purple-600 mt-2"
+            onClick={() => navigate("/chart")}
+          >
             Pilih
           </button>
         </div>
@@ -44,7 +69,9 @@ function FlightCard(props) {
         <>
           <div className="px-2">
             <div className="flex items-center border-t mt-5">
-              <h3 className="font-bold text-[#4B1979] mt-3">Detail Penerbangan</h3>
+              <h3 className="font-bold text-[#4B1979] mt-3">
+                Detail Penerbangan
+              </h3>
             </div>
             <div className="flex items-center justify-between relative">
               <div>
@@ -53,7 +80,9 @@ function FlightCard(props) {
                 {departure}
               </div>
               <div className="absolute top-0 right-0 mt-2 mr-2">
-                <p className="font-bold text-sm text-[#A06ECE]">Keberangkatan</p>
+                <p className="font-bold text-sm text-[#A06ECE]">
+                  Keberangkatan
+                </p>
               </div>
             </div>
           </div>
@@ -161,7 +190,13 @@ function FlightList() {
   return (
     <div className="max-w-3xl mx-auto">
       {flights.map((flight, index) => (
-        <FlightCard key={index} index={index} isOpen={openIndex === index} toggleOpen={toggleOpen} {...flight} />
+        <FlightCard
+          key={index}
+          index={index}
+          isOpen={openIndex === index}
+          toggleOpen={toggleOpen}
+          {...flight}
+        />
       ))}
     </div>
   );
