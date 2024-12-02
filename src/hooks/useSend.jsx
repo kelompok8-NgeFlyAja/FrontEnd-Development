@@ -7,7 +7,7 @@ const useSend = () => {
   const [statusCode, setStatusCode] = useState(null);
 
   const sendData = async (url, method, body = null, token = null) => {
-    const BASE_URL = "http://airline.azkazk11.my.id";
+    const BASE_URL = "";
     let data;
 
     try {
