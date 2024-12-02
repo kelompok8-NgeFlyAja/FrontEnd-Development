@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SeatItem from "./SeatItem";
+import SeatItem from "./chart/SeatItem";
 
 const Seats = ({ datas }) => {
   const [seats, setSeats] = useState([]);

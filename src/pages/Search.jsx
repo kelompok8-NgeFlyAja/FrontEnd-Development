@@ -1,11 +1,11 @@
-import DateFilter from "@/components/DateFilter";
+import DateFilter from "@/components/search/DateFilter";
 import Navbar from "@/components/Navbar";
-import Sort from "@/components/Sort";
-import ChangeResult from "@/components/ChangeResult";
-import SoldOut from "@/components/SoldOut";
-import Filter from "@/components/Filter";
-import ResultNotFound from "@/components/ResultNotFound";
-import FlightCard from "@/components/FlightCard";
+import Sort from "@/components/search/Sort";
+import ChangeResult from "@/components/search/ChangeResult";
+import SoldOut from "@/components/search/SoldOut";
+import Filter from "@/components/search/Filter";
+import ResultNotFound from "@/components/search/ResultNotFound";
+import FlightCard from "@/components/search/FlightCard";
 import React from "react";
 
 export default function Search() {
