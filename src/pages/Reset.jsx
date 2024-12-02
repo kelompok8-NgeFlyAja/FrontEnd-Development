@@ -6,18 +6,19 @@ import useSend from "../hooks/useSend";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
 
-const Login = () => {
+const Reset = () => {
   const { loading, error, statusCode, sendData } = useSend();
   const [isSuccess, setIsSuccess] = useState(null);
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [login, setLogin] = useState({
-    email: "",
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState({
     password: "",
+    confirmPassword: "",
   });
   const [errors, setErrors] = useState({
-    email: false,
     password: false,
+    confirmPassword: false,
   });
   const navigate = useNavigate();
   const cookies = new Cookies();
@@ -30,7 +31,7 @@ const Login = () => {
 
     if (isSuccess) {
       const timer = setTimeout(() => {
-        navigate("/");
+        navigate("/login");
       }, 3000);
       return () => clearTimeout(timer);
     }
@@ -38,39 +39,35 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const response = await sendData("/api/v1/auth/login", "POST", login);
-      if (response && response.token) {
-        cookies.set("token", response.token, {
-          path: "/",
-          expires: new Date(Date.now() + 604800000),
-        });
-        setIsSuccess(true);
-        setMessage("Login berhasil!");
-        setErrors({ email: false, password: false });
-      } else {
-        setIsSuccess(false);
-        if (error == null) {
-          setMessage("Terjadi Kesalahan Ketika Login!");
-        } else {
-          setMessage(`${error}`);
-        }
-        if (statusCode === 401) {
-          setErrors({ email: false, password: true });
-        } else if (statusCode === 404) {
-          setErrors({ email: true, password: false });
-        } else {
-          setErrors({ email: true, password: true });
-        }
-      }
-    } catch (err) {
-      console.log(err);
+    let hasError = false;
+
+    if (newPassword.password.length < 8) {
+      setErrors((prevErrors) => ({ ...prevErrors, password: true }));
+      setIsSuccess(false);
+      setMessage("Password min 8 karakter!");
+      hasError = true;
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, password: false }));
+    }
+
+    if (newPassword.password !== newPassword.confirmPassword) {
+      setErrors((prevErrors) => ({ ...prevErrors, confirmPassword: true }));
+      setIsSuccess(false);
+      setMessage("Password tidak cocok!");
+      hasError = true;
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, confirmPassword: false }));
+    }
+
+    if (!hasError) {
+      setIsSuccess(true);
+      setMessage("Reset password berhasil!");
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setLogin((prev) => ({ ...prev, [name]: value }));
+    setNewPassword((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -98,7 +95,7 @@ const Login = () => {
           >
             <IoMdCheckmarkCircle className="text-green-500 text-8xl md:text-9xl" />
             <h2 className="text-center text-green-500 font-bold text-3xl md:text-4xl">
-              Login berhasil
+              Reset Password berhasil
             </h2>
           </motion.div>
         </>
@@ -110,7 +107,6 @@ const Login = () => {
           transition={{ duration: 0.5, delay: 0.25 }}
           className="space-y-4 md:space-y-6 w-full max-w-md p-6 py-10 bg-white md:bg-transparent rounded-md md:rounded-none shadow-md md:shadow-none"
           onSubmit={handleSubmit}
-          method="POST"
         >
           <motion.div
             initial={{ opacity: 0, x: 75 }}
@@ -119,12 +115,12 @@ const Login = () => {
           >
             <h1 className="text-xl font-bold mb-5 leading-tight tracking-tight flex gap-3 text-black md:text-2xl">
               <Link
-                to="/"
+                to="/login"
                 className="bg-[#7126B5] rounded-full p-1 text-white hover:bg-[#7126B5]/90"
               >
                 <IoMdArrowRoundBack />
               </Link>
-              Masuk
+              Reset Password
             </h1>
           </motion.div>
           <motion.div
@@ -133,87 +129,77 @@ const Login = () => {
             transition={{ duration: 0.5, delay: 0.75 }}
           >
             <label
-              htmlFor="email"
+              htmlFor="password"
               className="block mb-2 text-xs font-normal text-black"
             >
-              Email/No Telepon
+              Masukkan Password Baru
             </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              className={`bg-gray-50 border ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              } text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:border-cyan-500`}
-              placeholder="Contoh: johndoe@gmail.com"
-              value={login.email}
-              onChange={handleChange}
-              required
-              autoComplete="email"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                id="password"
+                className={`bg-gray-50 border ${
+                  errors.password ? "border-red-500" : "border-gray-300"
+                } text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:border-cyan-500`}
+                placeholder="Password"
+                value={newPassword.password}
+                onChange={handleChange}
+                required
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                className="absolute top-1/2 transform -translate-y-1/2 right-3 text-2xl text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+              </button>
+            </div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, x: 75 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 1 }}
-            className="relative"
           >
             <label
-              htmlFor="password"
+              htmlFor="confirmPassword"
               className="flex justify-between mb-2 text-xs text-black"
             >
-              <p className="font-normal">Password</p>
-              <Link to="/reset-password" className="text-[#7126B5] font-medium">
-                Lupa Kata Sandi
-              </Link>
+              Ulangi Password Baru
             </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              id="password"
-              placeholder="Masukkan password"
-              className={`bg-gray-50 border ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              } text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:border-cyan-500`}
-              value={login.password}
-              onChange={handleChange}
-              required
-              autoComplete="current-password"
-            />
-            <button
-              type="button"
-              className="absolute top-1/2 transform right-3 text-2xl text-gray-600"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
-            </button>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                id="confirmPassword"
+                placeholder="Konfirmasi Password"
+                className={`bg-gray-50 border ${
+                  errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                } text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:border-cyan-500`}
+                value={newPassword.confirmPassword}
+                onChange={handleChange}
+                required
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                className="absolute top-1/2 transform -translate-y-1/2 right-3 text-2xl text-gray-600"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+              </button>
+            </div>
           </motion.div>
           <motion.button
             initial={{ opacity: 0, x: 75 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 1.25 }}
             type="submit"
-            disabled={loading}
-            className={`w-full text-white bg-[#7126B5] hover:bg-[#7126B5]/90 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
-              loading ? "cursor-not-allowed" : ""
-            }`}
+            className="w-full text-white bg-[#7126B5] hover:bg-[#7126B5]/90 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            {loading ? "Loading..." : "Masuk"}{" "}
+            Simpan
           </motion.button>
-          <motion.p
-            initial={{ opacity: 0, x: 75 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 1.5 }}
-            className="text-sm font-light text-black text-center"
-          >
-            Belum punya akun?{" "}
-            <Link
-              to="/register"
-              className="font-medium text-[#7126B5] hover:underline"
-            >
-              Daftar di sini
-            </Link>
-          </motion.p>
           {isSuccess !== null && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -236,4 +222,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Reset;
