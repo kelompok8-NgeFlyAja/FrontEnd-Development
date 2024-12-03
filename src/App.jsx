@@ -6,10 +6,15 @@ import Login from "./pages/Login";
 import Reset from "./pages/Reset";
 import Register from "./pages/Register";
 import Otp from "./pages/Otp";
+import Send from "./pages/Send";
 const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/send-email",
+    element: <Send />,
   },
   {
     path: "/reset-password",
