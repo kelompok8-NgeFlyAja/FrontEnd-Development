@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Seats from "../components/Seats";
+
+import Seats from "@/components/chart/Seats";
 import CheckoutCards from "../components/chart/CheckoutCards";
 import CheckoutForm from "../components/chart/CheckoutForm";
 import CheckoutInput from "../components/chart/CheckoutInput";
