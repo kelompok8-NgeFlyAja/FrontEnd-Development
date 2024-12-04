@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const FlightDetails = ({ flightDetail, isSavedData }) => {
   const [datas, setDatas] = useState([]);

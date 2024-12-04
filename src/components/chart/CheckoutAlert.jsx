@@ -1,4 +1,3 @@
-import React from "react";
 const CheckoutAlert = ({ type, message }) => {
   return (
     <div className="w-full flex justify-center">
