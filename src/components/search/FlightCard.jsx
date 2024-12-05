@@ -59,7 +59,7 @@ function FlightCard(props) {
           </h1>
           <button
             className="bg-purple-700 text-white py-2 px-10 rounded-2xl hover:bg-purple-600 mt-2"
-            onClick={() => navigate("/chart")}
+            onClick={() => navigate("/checkout")}
           >
             Pilih
           </button>

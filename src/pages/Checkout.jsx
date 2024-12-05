@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import Seats from "@/components/chart/Seats";
-import CheckoutCards from "@/components/chart/CheckoutCards";
-import CheckoutForm from "@/components/chart/CheckoutForm";
-import CheckoutInput from "@/components/chart/CheckoutInput";
+import Seats from "@/components/checkout/Seats";
+import CheckoutCards from "@/components/checkout/CheckoutCards";
+import CheckoutForm from "@/components/checkout/CheckoutForm";
+import CheckoutInput from "@/components/checkout/CheckoutInput";
 import { AnimatePresence, motion } from "framer-motion";
-import FlightDetails from "@/components/chart/FlightDetails";
+import FlightDetails from "@/components/checkout/FlightDetails";
 import { flightDetails } from "@/lib/flightDummy";
 import { getSeatsData } from "@/lib/seatsDummy";
 import Navbar from "@/components/Navbar";
-import CheckoutAlert from "@/components/chart/CheckoutAlert";
-import Breadcrumbs from "@/components/chart/Breadcrumbs";
+import CheckoutAlert from "@/components/checkout/CheckoutAlert";
+import Breadcrumbs from "@/components/checkout/Breadcrumbs";
 
 const Checkout = () => {
   const [datas, setDatas] = useState([]);
