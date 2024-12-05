@@ -1,4 +1,3 @@
-import React from "react";
 const CheckoutForm = ({ children, title, isSaved }) => {
   return (
     <div>

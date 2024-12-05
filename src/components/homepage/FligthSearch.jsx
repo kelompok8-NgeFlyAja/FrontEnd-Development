@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { airports } from "@/lib/airport";
 
-function FlightSearchForm() {
+function FlightSearch() {
   const navigate = useNavigate();
   const [date, setDate] = React.useState({
     from: new Date(),
@@ -106,7 +106,11 @@ function FlightSearchForm() {
                       <Input
                         id="departure"
                         value={
-                          date.from ? format(date.from, "d MMMM yyyy") : ""
+                          date.from
+                            ? format(date.from, "d MMMM yyyy")
+                            : "" && date.to
+                            ? format(date.to, "d MMMM yyyy")
+                            : " "
                         }
                         onClick={() => setIsOpenPopoverDate(!isOpenPopoverDate)}
                         placeholder="Select date"
@@ -167,4 +171,4 @@ function FlightSearchForm() {
   );
 }
 
-export default FlightSearchForm;
+export default FlightSearch;

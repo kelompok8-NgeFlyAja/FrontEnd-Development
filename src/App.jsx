@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     element: <Search />,
   },
   {
-    path: "/chart",
+    path: "/checkout",
     element: <Checkout />,
   },
 ]);

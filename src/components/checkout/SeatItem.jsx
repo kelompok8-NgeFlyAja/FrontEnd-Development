@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 const SeatItem = ({ seatNumber, sendData, isAvailable }) => {
   const [isSelected, setIsSelected] = useState(false);
   function handleClick(seat_number) {
