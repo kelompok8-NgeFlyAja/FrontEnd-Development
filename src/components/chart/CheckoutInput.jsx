@@ -1,5 +1,24 @@
 import React from "react";
-const CheckoutInput = ({ label, placeholder, name, type }) => {
+import { useFormContext } from "react-hook-form";
+import { findInputError, isFormInvalid } from "@/lib/form_validate";
+import { AnimatePresence } from "framer-motion";
+import CheckoutInputError from "./CheckoutInputError";
+
+const CheckoutInput = ({
+  label,
+  placeholder,
+  name,
+  type,
+  isSaved,
+  validation,
+}) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
+  const inputError = findInputError(errors, name);
+  const isInvalid = isFormInvalid(inputError);
   return (
     <div className="flex flex-col gap-1 px-4 py-2">
       <label htmlFor={name} className="text-purple-900 font-bold">
@@ -11,8 +30,19 @@ const CheckoutInput = ({ label, placeholder, name, type }) => {
         id={name}
         name={name}
         placeholder={placeholder}
+        disabled={isSaved}
+        {...register(name, validation)}
       />
+      <AnimatePresence mode="wait" initial={false}>
+        {isInvalid && (
+          <CheckoutInputError
+            message={inputError.error.message}
+            key={inputError.error.message}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
+
 export default CheckoutInput;

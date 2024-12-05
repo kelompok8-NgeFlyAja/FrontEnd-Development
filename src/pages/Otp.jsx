@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import OtpInput from "../components/OtpInput";
+import OtpInput from "@/components/OtpInput";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
