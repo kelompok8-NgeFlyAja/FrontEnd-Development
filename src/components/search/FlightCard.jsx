@@ -1,23 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function FlightCard(props) {
-  const {
-    time,
-    duration,
-    price,
-    departure,
-    arrival,
-    baggage,
-    cabin,
-    entertainment,
-    date,
-    departureCode,
-    arrivalCode,
-    index,
-    isOpen,
-    toggleOpen,
-  } = props;
+  const { time, duration, price, departure, arrival, baggage, cabin, entertainment, date, departureCode, arrivalCode, index, isOpen, toggleOpen } = props;
   const navigate = useNavigate();
 
   return (
@@ -28,12 +13,7 @@ function FlightCard(props) {
           <p className="ml-2">Jet Air - Economy</p>
         </div>
         <div>
-          <img
-            src="icons/Suffix.svg"
-            alt=""
-            className="cursor-pointer"
-            onClick={() => toggleOpen(index)}
-          />
+          <img src="icons/Suffix.svg" alt="" className="cursor-pointer" onClick={() => toggleOpen(index)} />
         </div>
       </div>
       <div className="flex items-center pl-7">
@@ -54,13 +34,8 @@ function FlightCard(props) {
           <img src="icons/baggage.svg" alt="" />
         </div>
         <div className="text-right">
-          <h1 className="font-bold text-[#4B1979] text-md ml-[90px]">
-            {price}
-          </h1>
-          <button
-            className="bg-purple-700 text-white py-2 px-10 rounded-2xl hover:bg-purple-600 mt-2"
-            onClick={() => navigate("/checkout")}
-          >
+          <h1 className="font-bold text-[#4B1979] text-md ml-[90px]">{price}</h1>
+          <button className="bg-purple-700 text-white py-2 px-10 rounded-2xl hover:bg-purple-600 mt-2" onClick={() => navigate("/checkout")}>
             Pilih
           </button>
         </div>
@@ -69,9 +44,7 @@ function FlightCard(props) {
         <>
           <div className="px-2">
             <div className="flex items-center border-t mt-5">
-              <h3 className="font-bold text-[#4B1979] mt-3">
-                Detail Penerbangan
-              </h3>
+              <h3 className="font-bold text-[#4B1979] mt-3">Detail Penerbangan</h3>
             </div>
             <div className="flex items-center justify-between relative">
               <div>
@@ -80,9 +53,7 @@ function FlightCard(props) {
                 {departure}
               </div>
               <div className="absolute top-0 right-0 mt-2 mr-2">
-                <p className="font-bold text-sm text-[#A06ECE]">
-                  Keberangkatan
-                </p>
+                <p className="font-bold text-sm text-[#A06ECE]">Keberangkatan</p>
               </div>
             </div>
           </div>
@@ -123,61 +94,86 @@ function FlightCard(props) {
 
 function FlightList() {
   const [openIndex, setOpenIndex] = useState(null);
+  const [flights, setFlights] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const navigate = useNavigate();
 
-  const flights = [
-    {
-      time: { departure: "07:00", arrival: "11:00" },
-      duration: "4h 0m",
-      price: "IDR 4.950.000",
-      departure: "Soekarno Hatta - Terminal 1A Domestik",
-      departureCode: "JKT",
-      arrival: "Melbourne International Airport",
-      arrivalCode: "MLB",
-      baggage: 20,
-      cabin: 7,
-      entertainment: "In Flight Entertainment",
-      date: "01 Maret 2023",
-    },
-    {
-      time: { departure: "08:00", arrival: "12:00" },
-      duration: "4h 0m",
-      price: "IDR 5.950.000",
-      departure: "Soekarno Hatta - Terminal 1A Domestik",
-      departureCode: "JKT",
-      arrival: "Melbourne International Airport",
-      arrivalCode: "MLB",
-      baggage: 20,
-      cabin: 7,
-      entertainment: "In Flight Entertainment",
-      date: "02 Maret 2023",
-    },
-    {
-      time: { departure: "13:15", arrival: "17:15" },
-      duration: "4h 0m",
-      price: "IDR 7.225.000",
-      departure: "Soekarno Hatta - Terminal 1A Domestik",
-      departureCode: "JKT",
-      arrival: "Melbourne International Airport",
-      arrivalCode: "MLB",
-      baggage: 20,
-      cabin: 7,
-      entertainment: "In Flight Entertainment",
-      date: "03 Maret 2023",
-    },
-    {
-      time: { departure: "20:15", arrival: "23:30" },
-      duration: "3h 15m",
-      price: "IDR 8.010.000",
-      departure: "Soekarno Hatta - Terminal 1A Domestik",
-      departureCode: "JKT",
-      arrival: "Melbourne International Airport",
-      arrivalCode: "MLB",
-      baggage: 20,
-      cabin: 7,
-      entertainment: "In Flight Entertainment",
-      date: "04 Maret 2023",
-    },
-  ];
+  const loadFlights = () => {
+    if (loading) return; // Prevent loading multiple times
+    setLoading(true);
+
+    // Simulate an API call for loading flights
+    setTimeout(() => {
+      const newFlights = [
+        {
+          time: { departure: "07:00", arrival: "11:00" },
+          duration: "4h 0m",
+          price: "IDR 4.950.000",
+          departure: "Soekarno Hatta - Terminal 1A Domestik",
+          departureCode: "JKT",
+          arrival: "Melbourne International Airport",
+          arrivalCode: "MLB",
+          baggage: 20,
+          cabin: 7,
+          entertainment: "In Flight Entertainment",
+          date: "01 Maret 2023",
+        },
+        {
+          time: { departure: "08:00", arrival: "12:00" },
+          duration: "4h 0m",
+          price: "IDR 5.950.000",
+          departure: "Soekarno Hatta - Terminal 1A Domestik",
+          departureCode: "JKT",
+          arrival: "Melbourne International Airport",
+          arrivalCode: "MLB",
+          baggage: 20,
+          cabin: 7,
+          entertainment: "In Flight Entertainment",
+          date: "02 Maret 2023",
+        },
+        {
+          time: { departure: "13:15", arrival: "17:15" },
+          duration: "4h 0m",
+          price: "IDR 7.225.000",
+          departure: "Soekarno Hatta - Terminal 1A Domestik",
+          departureCode: "JKT",
+          arrival: "Melbourne International Airport",
+          arrivalCode: "MLB",
+          baggage: 20,
+          cabin: 7,
+          entertainment: "In Flight Entertainment",
+          date: "03 Maret 2023",
+        },
+        {
+          time: { departure: "20:15", arrival: "23:30" },
+          duration: "3h 15m",
+          price: "IDR 8.010.000",
+          departure: "Soekarno Hatta - Terminal 1A Domestik",
+          departureCode: "JKT",
+          arrival: "Melbourne International Airport",
+          arrivalCode: "MLB",
+          baggage: 20,
+          cabin: 7,
+          entertainment: "In Flight Entertainment",
+          date: "04 Maret 2023",
+        },
+      ];
+
+      setFlights((prevFlights) => [...prevFlights, ...newFlights]);
+
+      // Simulate no more data after 10 flights
+      if (flights.length + newFlights.length > 10) {
+        setHasMore(false);
+      }
+
+      setLoading(false);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    loadFlights();
+  }, []);
 
   const toggleOpen = (index) => {
     if (openIndex === index) {
@@ -187,17 +183,20 @@ function FlightList() {
     }
   };
 
+  const handleScroll = (e) => {
+    const bottom = e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
+    if (bottom && hasMore) {
+      loadFlights();
+    }
+  };
+
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto overflow-auto" onScroll={handleScroll} style={{ maxHeight: "80vh" }}>
       {flights.map((flight, index) => (
-        <FlightCard
-          key={index}
-          index={index}
-          isOpen={openIndex === index}
-          toggleOpen={toggleOpen}
-          {...flight}
-        />
+        <FlightCard key={index} index={index} isOpen={openIndex === index} toggleOpen={toggleOpen} {...flight} />
       ))}
+      {loading && <div className="text-center mt-4">Loading...</div>}
+      {!hasMore && <div className="text-center mt-4">No more flights</div>}
     </div>
   );
 }
