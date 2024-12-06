@@ -3,7 +3,7 @@ import logo from "/Checkout_Plane_Logo.png";
 
 import { formatDate, formatTime } from "@/lib/formatDate";
 
-const FlightDetails = ({ flightDetail }) => {
+const FlightDetails = ({ flightDetail, isPayment }) => {
   const [datas, setDatas] = useState([]);
 
   useEffect(() => {
@@ -14,7 +14,16 @@ const FlightDetails = ({ flightDetail }) => {
     <div>
       {datas && (
         <>
-          <h3 className="text-lg font-bold"> Detail Penerbangan </h3>
+          {isPayment ? (
+            <h3 className="text-lg font-bold">
+              Booking Code :{" "}
+              <span className="font-semibold text-[#A06ECE]">
+                ISI Booking code
+              </span>
+            </h3>
+          ) : (
+            <h3 className="text-lg font-bold">Detail Penerbangan</h3>
+          )}
           <div id="departure-info">
             <div className="flex w-full justify-between items-center">
               <p className="font-bold text">

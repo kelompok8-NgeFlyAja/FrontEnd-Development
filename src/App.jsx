@@ -7,6 +7,8 @@ import Reset from "./pages/Reset";
 import Register from "./pages/Register";
 import Otp from "./pages/Otp";
 import Send from "./pages/Send";
+import Succes from "./pages/Succes";
+
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -39,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: "/chart",
     element: <Checkout />,
+  },
+  {
+    path: "/succes",
+    element: <Succes />,
   },
 ]);
 
