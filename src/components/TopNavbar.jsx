@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdSearch, IoMdPerson, IoIosList } from "react-icons/io";
 import { FiBell } from "react-icons/fi";
-// import NavbarItems from "./NavbarItems";
-// import InputSearch from "./InputSearch";
+import NavbarItems from "./NavbarItems";
+import InputSearch from "../components/search/InputSearch";
+
 import useSend from "../hooks/useSend";
 import Cookies from "universal-cookie";
 
