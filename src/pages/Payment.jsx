@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import PaymentMethod from "../components/PaymentMethod";
-import Topnav from "../components/Topnav";
-import Breadcrumbs from "../components/Breadcrumbs";
-import CheckoutAlert from "../components/CheckoutAlert";
-import FlightDetails from "../components/FlightDetails";
-import CheckoutPricing from "../components/CheckoutPricing";
-import { flightDetails } from "../utils/flightDummy";
-import { passenger } from "../utils/generatePassanger";
+import PaymentMethod from "@/components/payment/PaymentMethod";
+import Topnav from "@/components/TopNavbar";
+import Breadcrumbs from "@/components/chart/Breadcrumbs";
+import CheckoutAlert from "@/components/chart/CheckoutAlert";
+import FlightDetails from "@/components/chart/FlightDetails";
+import CheckoutPricing from "@/components/chart/CheckoutPricing";
+import { flightDetails } from "../lib/flightDummy";
+import { passenger } from "@/lib/generatePassenger";
 import Passenger from "@/components/chart/Passenger";
 
 const Payment = () => {

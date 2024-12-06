@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import Otp from "./pages/Otp";
 import Send from "./pages/Send";
 import Succes from "./pages/Succes";
+import Payment from "./pages/Payment";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "/succes",
     element: <Succes />,
+  },
+  {
+    path: "/payment",
+    element: <Payment />,
   },
 ]);
 
