@@ -5,7 +5,7 @@ import { BiFilterAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 //import NotificationItemSkeleton from "../components/NotificationItemSkeleton";
-import NotificationItem from "@/notificationitem.jsx/NotificationItem";
+import NotificationItem from "@/components/notificationitem/NotificationItem";
 import { motion } from "framer-motion";
 import Topnav from "@/components/TopNavbar";
 import useSend from "@/hooks/useSend";
