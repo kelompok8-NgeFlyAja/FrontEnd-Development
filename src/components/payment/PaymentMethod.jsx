@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 const PaymentMethod = () => {
   const [selected, setSelected] = useState(null);
@@ -51,7 +52,9 @@ const PaymentMethod = () => {
             </div>
           </div>
         ))}
-        <button className="w-full h-[42px] bg-[#7126B5] hover:bg-[#7126B580] text-white py-2 rounded-md mt-4">
+        <button 
+        onClick={() => Navigate("/payment-completed")}
+        className="w-full h-[42px] bg-[#7126B5] hover:bg-[#7126B580] text-white py-2 rounded-md mt-4">
           Bayar
         </button>
       </div>

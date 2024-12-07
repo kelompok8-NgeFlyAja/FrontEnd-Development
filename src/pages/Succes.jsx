@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Topnav from "@/components/TopNavbar";
-import PaymentSucces from "@/components/payment/PaymentSucces";
+import PaymentSucces from "@/components/payment/PaymentCompleted";
 import Breadcrumbs from "@/components/chart/Breadcrumbs";
 import CheckoutAlert from "@/components/chart/CheckoutAlert";
 
