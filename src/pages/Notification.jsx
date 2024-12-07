@@ -4,11 +4,11 @@ import { IoMdSearch, IoMdArrowRoundBack } from "react-icons/io";
 import { BiFilterAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
-import NotificationItemSkeleton from "../components/NotificationItemSkeleton";
-import NotificationItem from "../components/NotificationItem";
+//import NotificationItemSkeleton from "../components/NotificationItemSkeleton";
+import NotificationItem from "@/notificationitem.jsx/NotificationItem";
 import { motion } from "framer-motion";
-import Topnav from "../components/Topnav";
-import useSend from "../hooks/useSend";
+import Topnav from "@/components/TopNavbar";
+import useSend from "@/hooks/useSend";
 
 const Notification = () => {
   const { loading, sendData } = useSend();
