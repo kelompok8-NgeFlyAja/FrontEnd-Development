@@ -10,6 +10,7 @@ import Send from "./pages/Send";
 //import Success from "./pages/Success";
 import Payment from "./pages/Payment";
 import Notification from "./pages/Notification";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
   {
     path: "/payment",
     element: <Payment />,
+  },
+  {
+    path: "/payment-completed",
+    element: <PaymentSuccess />,
   },
   // {
   //   path: "/payment-success",
