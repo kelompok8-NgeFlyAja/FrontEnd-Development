@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import PaymentMethod from "@/components/payment/PaymentMethod";
 import Topnav from "@/components/TopNavbar";
-import Breadcrumbs from "@/components/chart/Breadcrumbs";
-import CheckoutAlert from "@/components/chart/CheckoutAlert";
-import FlightDetails from "@/components/chart/FlightDetails";
-import CheckoutPricing from "@/components/chart/CheckoutPricing";
+import Breadcrumbs from "@/components/checkout/Breadcrumbs";
+import CheckoutAlert from "@/components/checkout/CheckoutAlert";
+import FlightDetails from "@/components/checkout/FlightDetails";
+import CheckoutPricing from "@/components/checkout/CheckoutPricing";
 import { flightDetails } from "../lib/flightDummy";
 import { passenger } from "@/lib/generatePassenger";
-import Passenger from "@/components/chart/Passenger";
+import Passenger from "@/components/checkout/Passenger";
 
 const Payment = () => {
   const [isLogin, setIsLogin] = useState(true);

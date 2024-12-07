@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Topnav from "@/components/TopNavbar";
-import Breadcrumbs from "@/components/chart/Breadcrumbs";
-import CheckoutAlert from "@/components/chart/CheckoutAlert";
-import FlightDetails from "@/components/chart/FlightDetails";
-import CheckoutPricing from "@/components/chart/CheckoutPricing";
+import Breadcrumbs from "@/components/checkout/Breadcrumbs";
+import CheckoutAlert from "@/components/checkout/CheckoutAlert";
+import FlightDetails from "@/components/checkout/FlightDetails";
+import CheckoutPricing from "@/components/checkout/CheckoutPricing";
 import { flightDetails } from "../lib/flightDummy";
 import { passenger } from "@/lib/generatePassenger";
-import Passenger from "@/components/chart/Passenger";
+import Passenger from "@/components/checkout/Passenger";
 import PaymentCompleted from "@/components/payment/PaymentCompleted";
 
 const PaymentSuccess = () => {
@@ -28,7 +28,6 @@ const PaymentSuccess = () => {
       setIsLogin(false);
     }
   }, [navigate]);
-
 
   return (
     <div>

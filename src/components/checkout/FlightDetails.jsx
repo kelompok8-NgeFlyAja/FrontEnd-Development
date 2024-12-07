@@ -1,9 +1,5 @@
-<<<<<<< HEAD:src/components/checkout/FlightDetails.jsx
-import { useEffect, useState } from "react";
-=======
 import React, { useEffect, useState } from "react";
 import logo from "/Checkout_Plane_Logo.png";
->>>>>>> page-login:src/components/chart/FlightDetails.jsx
 
 import { formatDate, formatTime } from "@/lib/formatDate";
 

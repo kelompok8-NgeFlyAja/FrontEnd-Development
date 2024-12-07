@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Seats from "@/components/chart/Seats";
-import CheckoutCards from "@/components/chart/CheckoutCards";
-import CheckoutForm from "@/components/chart/CheckoutForm";
-import CheckoutInput from "@/components/chart/CheckoutInput";
-import CheckoutDropdown from "@/components/chart/CheckoutDropdown";
+import Seats from "@/components/checkout/Seats";
+import CheckoutCards from "@/components/checkout/CheckoutCards";
+import CheckoutForm from "@/components/checkout/CheckoutForm";
+import CheckoutInput from "@/components/checkout/CheckoutInput";
+import CheckoutDropdown from "@/components/checkout/CheckoutDropdown";
 import { AnimatePresence, motion } from "framer-motion";
-import FlightDetails from "@/components/chart/FlightDetails";
+import FlightDetails from "@/components/checkout/FlightDetails";
 import { flightDetails } from "@/lib/flightDummy";
 import Navbar from "@/components/Navbar";
-import CheckoutAlert from "@/components/chart/CheckoutAlert";
-import Breadcrumbs from "@/components/chart/Breadcrumbs";
+import CheckoutAlert from "@/components/checkout/CheckoutAlert";
+import Breadcrumbs from "@/components/checkout/Breadcrumbs";
 import { passenger } from "@/lib/generatePassenger";
-import CheckoutPricing from "@/components/chart/CheckoutPricing";
+import CheckoutPricing from "@/components/checkout/CheckoutPricing";
 import { getSeats } from "@/lib/seatsDummy";
 import { FormProvider, useForm } from "react-hook-form";
 
