@@ -7,7 +7,7 @@ import Reset from "./pages/Reset";
 import Register from "./pages/Register";
 import Otp from "./pages/Otp";
 import Send from "./pages/Send";
-import Succes from "./pages/Succes";
+import Success from "./pages/Success";
 import Payment from "./pages/Payment";
 
 const router = createBrowserRouter([
@@ -44,12 +44,12 @@ const router = createBrowserRouter([
     element: <Checkout />,
   },
   {
-    path: "/succes",
-    element: <Succes />,
-  },
-  {
     path: "/payment",
     element: <Payment />,
+  },
+  {
+    path: "/payment-success",
+    element: <Success />,
   },
 ]);
 
