@@ -3,6 +3,7 @@ import Seats from "@/components/chart/Seats";
 import CheckoutCards from "@/components/chart/CheckoutCards";
 import CheckoutForm from "@/components/chart/CheckoutForm";
 import CheckoutInput from "@/components/chart/CheckoutInput";
+import CheckoutDropdown from "@/components/chart/CheckoutDropdown";
 import { AnimatePresence, motion } from "framer-motion";
 import FlightDetails from "@/components/chart/FlightDetails";
 import { flightDetails } from "@/lib/flightDummy";
