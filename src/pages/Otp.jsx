@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "@/components/Navbar";
 import OtpInput from "@/components/OtpInput";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
-// import useSend from "../hooks/useSend";
-// import { jwtDecode } from "jwt-decode";
+import useSend from "@/hooks/useSend";
+import { jwtDecode } from "jwt-decode";
 
 const Otp = () => {
-  // const { loading, sendData } = useSend();
-  const [email, setEmail] = useState("dummyemail@example.com"); // Data dummy
+  const { loading, sendData } = useSend();
+  const [email, setEmail] = useState(null);
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [countdown, setCountdown] = useState(0);
   const [message, setMessage] = useState("");
@@ -26,12 +26,12 @@ const Otp = () => {
           navigate("/");
           return;
         }
-        // const decoded = jwtDecode(checkToken);
-        // if (decoded.isVerified) {
-        //   navigate("/account");
-        // } else {
-        //   setEmail(decoded.email);
-        // }
+        const decoded = jwtDecode(checkToken);
+        if (decoded.isVerified) {
+          navigate("/account");
+        } else {
+          setEmail(decoded.email);
+        }
       } catch (err) {
         console.log(err);
         navigate("/");
@@ -66,31 +66,41 @@ const Otp = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // const otpString = otp.join("");
-      // const sendVerify = { email, otp: otpString };
-      // const response = await sendData("/api/v1/auth/verify", "POST", sendVerify);
-      // if (response && response.statusCode === 200) {
-      //   setIsSuccess(true);
-      //   setMessage(`${response.message}`);
-      // } else {
-      //   setIsSuccess(false);
-      //   setMessage(`${response.message}`);
-      // }
-      setIsSuccess(true); // Dummy success
-      setMessage("Kode OTP berhasil diverifikasi.");
+      const otpString = otp.join("");
+      const sendVerify = { email, otp: otpString };
+      const response = await sendData(
+        "/api/v1/auth/verify",
+        "POST",
+        sendVerify
+      );
+      if (response && response.statusCode === 200) {
+        setIsSuccess(true);
+        setMessage(`${response.message}`);
+      } else {
+        setIsSuccess(false);
+        setMessage(`${response.message}`);
+      }
     } catch (err) {
-      console.log(err);
+      if (err.statusCode === 500) {
+        navigate("/error");
+      } else {
+        console.log(err);
+      }
     }
   };
 
   const handleResend = async () => {
     try {
-      // const resendOTP = await sendData("/api/v1/auth/resend-otp", "POST", {
-      //   email: email,
-      // });
+      const resendOTP = await sendData("/api/v1/auth/resend-otp", "POST", {
+        email: email,
+      });
       setCountdown(60);
     } catch (err) {
-      console.log(err);
+      if (err.statusCode === 500) {
+        navigate("/error");
+      } else {
+        console.log(err);
+      }
     }
   };
 

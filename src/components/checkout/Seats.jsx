@@ -1,12 +1,23 @@
+<<<<<<< HEAD:src/components/checkout/Seats.jsx
 import React, { useEffect, useState, useCallback } from "react";
 import useSend from "@/hooks/useSend";
+=======
+import React, { useCallback, useEffect, useState } from "react";
+>>>>>>> page-login:src/components/chart/Seats.jsx
 import { useSearchParams } from "react-router-dom";
 import SeatItem from "./SeatItem";
+import useSend from "@/hooks/useSend";
 
-const Seats = ({ maxSeatsSelected, flightID, Text }) => {
+const Seats = ({
+  maxSeatsSelected,
+  flightID,
+  Text,
+  selectedSeats,
+  setSelectedSeats,
+  isSaved,
+}) => {
   const { loading, sendData } = useSend();
   const [collumn, setCollumn] = useState([]);
-  const [selectedSeats, setSelectedSeats] = useState([]);
   const [rowItems, setRowItems] = useState([]);
   const [seatRows, setSeatRows] = useState([]);
   const [isMaxSeats, setIsMaxSeats] = useState(false);
@@ -43,7 +54,12 @@ const Seats = ({ maxSeatsSelected, flightID, Text }) => {
         );
         setFetchedSeat(seats);
       } catch (error) {
-        setIsError(error);
+        if (error.statusCode === 500) {
+          navigate("/error");
+        } else {
+          setIsError(error);
+          console.log(error);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -133,7 +149,7 @@ const Seats = ({ maxSeatsSelected, flightID, Text }) => {
         return prevSelectedSeats;
       });
     },
-    [maxSeatsSelected]
+    [maxSeatsSelected, setSelectedSeats]
   );
 
   useEffect(() => {
@@ -142,7 +158,7 @@ const Seats = ({ maxSeatsSelected, flightID, Text }) => {
     } else {
       setIsMaxSeats(false);
     }
-  }, [selectedSeats]);
+  }, [selectedSeats, maxSeatsSelected]);
 
   const getPassengerNumber = (seatId) => {
     const seat = selectedSeats.find((seat) => seat.seat_id === seatId);
@@ -156,7 +172,7 @@ const Seats = ({ maxSeatsSelected, flightID, Text }) => {
       {isError && isError.message === "Network Error" && (
         <p className="text-center mt-1 font-semibold">
           Terjadi kesalahan ketika memuat data. Periksa jaringan anda terlebih
-          dahulu
+          dahulu dengan Refresh
         </p>
       )}
       {!isLoading && fetchedSeat.length > 0 && (
@@ -200,6 +216,7 @@ const Seats = ({ maxSeatsSelected, flightID, Text }) => {
                               sendData={handleSeatClick}
                               isAvailable={item.is_available === "A"}
                               isMax={isMaxSeats}
+                              isSaved={isSaved}
                             />
                           );
                         } else {
@@ -208,6 +225,7 @@ const Seats = ({ maxSeatsSelected, flightID, Text }) => {
                               key={`nullSeat-${rowIndex}`}
                               isAvailable={false}
                               isMax={isMaxSeats}
+                              isSaved={isSaved}
                             />
                           );
                         }
@@ -234,6 +252,7 @@ const Seats = ({ maxSeatsSelected, flightID, Text }) => {
                           sendData={handleSeatClick}
                           isAvailable={item.is_available === "A"}
                           isMax={isMaxSeats}
+                          isSaved={isSaved}
                         />
                       );
                     } else {
@@ -242,6 +261,7 @@ const Seats = ({ maxSeatsSelected, flightID, Text }) => {
                           key={`nullSeat-${rowIndex}`}
                           isAvailable={false}
                           isMax={isMaxSeats}
+                          isSaved={isSaved}
                         />
                       );
                     }
