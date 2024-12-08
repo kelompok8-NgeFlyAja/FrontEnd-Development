@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { formatPrice } from "@/lib/formatPrice";
+import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 
 const CheckoutPricing = ({ passengerInfo, flightID, onTotalPriceChange }) => {
   const [priceData, setPriceData] = useState([]);
@@ -7,7 +9,7 @@ const CheckoutPricing = ({ passengerInfo, flightID, onTotalPriceChange }) => {
   const [isError, setIsError] = useState(false);
   const [searchParams] = useSearchParams();
 
-  const URL = "https://airline.azkazk11.my.id/api/v1";
+  const URL = "http://localhost:3000";
   const TAX_AMOUNT = 0;
 
   const calculateTotalPrice = () => {
