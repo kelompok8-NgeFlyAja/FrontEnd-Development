@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  formatDate,
-  formatFlightCode,
-  formatTime,
-} from "../utils/checkoutUtils";
+import { formatDate, formatFlightCode, formatTime } from "@/lib/checkoutUtils";
+
 import axios from "axios";
 import { motion } from "framer-motion";
 

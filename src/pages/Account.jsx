@@ -2,17 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdCheckmarkCircle, IoMdArrowRoundBack } from "react-icons/io";
 import Cookies from "universal-cookie";
-// import Topnav from "../components/Topnav";
+import Topnav from "@/components/TopNavbar";
 import { motion } from "framer-motion";
-import AccountSkeleton from "../components/AccountContentSkeleton";
-import AccountItem from "../components/AccountItem";
+import AccountSkeleton from "@/components/AccountContentSkeleton";
+import AccountItem from "@/components/AccountItem";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AccountSideNav from "../components/AccountSideNav";
-import AccountSideNavSkeleton from "../components/AccountSideNavSkeleton";
+import AccountSideNav from "@/components/AccountSideNav";
+import AccountSideNavSkeleton from "@/components/AccountSideNavSkeleton";
 import { jwtDecode } from "jwt-decode";
-
-//import useSend from "../hooks/useSend";
 import useSend from "@/hooks/useSend";
 
 const Account = () => {
