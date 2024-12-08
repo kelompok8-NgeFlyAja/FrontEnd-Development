@@ -100,7 +100,7 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
       <div className="flex gap-10">
         <a href="/">
           <img
-            src="/skypass_horizontal.png"
+            src="/logo.svg"
             alt="navbar logo"
             className="h-[60px] md:ps-10"
           />
