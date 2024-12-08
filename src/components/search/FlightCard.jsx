@@ -1,204 +1,124 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-function FlightCard(props) {
-  const { time, duration, price, departure, arrival, baggage, cabin, entertainment, date, departureCode, arrivalCode, index, isOpen, toggleOpen } = props;
-  const navigate = useNavigate();
+const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
+  const handleSelect = () => {
+    console.log("Selected ticket:", flight);
+  };
 
   return (
-    <div className="border rounded-lg shadow-lg p-4 mb-4 ml-6">
-      <div className="flex justify-between mb-2">
-        <div className="flex justify-between">
-          <img src="icons/Image.svg" alt="image" />
-          <p className="ml-2">Jet Air - Economy</p>
+    <div className="shadow-md border-2 rounded-3xl bg-white mb-4 transition-all duration-500 w-[95vw] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-[640px] relative">
+      {/* Header Section */}
+      <div className={`px-4 py-3 text-left text-lg font-medium text-gray-900 bg-white flex items-center justify-between ${isOpen ? "rounded-t-lg" : "rounded-lg"}`}>
+        <div className="flex items-start">
+          <img src="Image.svg" alt="Logo" className="h-6 mr-2" />
+          <div className="flex flex-col ml-2">
+            <span className="text-sm text-gray-500">
+              {flight.airline} - {flight.class}
+            </span>
+            <div
+              className="grid grid-cols-3 gap-0 text-sm text-gray-500 mt-1"
+              style={{
+                gridTemplateColumns: "1fr 5fr 2fr",
+                gridTemplateRows: "repeat(3, auto)",
+                alignItems: "center",
+              }}
+            >
+              <div>
+                <strong className="text-black">{flight.departureTime}</strong>
+              </div>
+              <div className="text-sm text-center">Duration</div>
+              <div>
+                <strong className="text-black">{flight.arrivalTime}</strong>
+              </div>
+              <div></div>
+              <div className="text-center">
+                <img src="Suffix.svg" alt="Arrow Icon" />
+              </div>
+              <div></div>
+              <div className="text-black">{flight.origin}</div>
+              <div className="text-sm text-center">Direct</div>
+              <div className="text-black">{flight.destination}</div>
+            </div>
+          </div>
         </div>
         <div>
-          <img src="icons/Suffix.svg" alt="" className="cursor-pointer" onClick={() => toggleOpen(index)} />
+          <img className="hidden md:block me-10" src="baggage.svg" alt="Baggage Icon" />
         </div>
-      </div>
-      <div className="flex items-center pl-7">
-        <div>
-          <h3 className="font-bold">{time.departure}</h3>
-          {departureCode}
-        </div>
-        <div className="text-center ml-7">
-          <p className="text-gray-500 text-sm">{duration}</p>
-          <img src="icons/Arrow.svg" alt="arrow" />
-          <p className="text-gray-500 text-sm">Direct</p>
-        </div>
-        <div className="ml-3">
-          <h3 className="font-bold">{time.arrival}</h3>
-          {arrivalCode}
-        </div>
-        <div className="ml-6">
-          <img src="icons/baggage.svg" alt="" />
-        </div>
-        <div className="text-right">
-          <h1 className="font-bold text-[#4B1979] text-md ml-[90px]">{price}</h1>
-          <button className="bg-purple-700 text-white py-2 px-10 rounded-2xl hover:bg-purple-600 mt-2" onClick={() => navigate("/checkout")}>
+        <div className="flex flex-col items-end">
+          <div className="md:text-[16px] text-sm text-purple-600 mt-4 md:mt-7 mb-1">{flight.price}</div>
+          <button
+            className="text-sm md:w-[100px] md:h-[32px] w-[70px] h-[20px] mr-2 px-4 py-2 bg-purple-600 text-white rounded mb-1 hover:bg-purple-700"
+            style={{
+              borderRadius: "12px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "background-color 0.3s ease",
+            }}
+            onClick={handleSelect}
+          >
             Pilih
           </button>
         </div>
       </div>
-      {isOpen && (
-        <>
-          <div className="px-2">
-            <div className="flex items-center border-t mt-5">
-              <h3 className="font-bold text-[#4B1979] mt-3">Detail Penerbangan</h3>
-            </div>
-            <div className="flex items-center justify-between relative">
-              <div>
-                <h3 className="mt-2 font-bold text-lg">{time.departure}</h3>
-                {date} <br />
-                {departure}
-              </div>
-              <div className="absolute top-0 right-0 mt-2 mr-2">
-                <p className="font-bold text-sm text-[#A06ECE]">Keberangkatan</p>
-              </div>
-            </div>
-          </div>
 
-          <div className="px-2">
-            <div className="flex items-center border-t mt-2">
-              <div className="flex items-center">
-                <img src="icons/Image.svg" alt="" />
-              </div>
-              <div className="mt-2 ml-3">
-                <h3 className="font-bold text-md ">Jet Air - Economy</h3>
-                <h3 className="font-bold text-md">JT - 203</h3>
-                <h3 className="font-bold text-md mt-5">Informasi:</h3>
-                <p>Baggage {baggage} kg</p>
-                <p>Cabin Baggage {cabin} kg</p>
-                <p>{entertainment}</p>
-              </div>
-            </div>
-          </div>
+      {/* Accordion Toggle */}
+      <button className="focus:outline-none flex items-center justify-center absolute top-2 right-2 w-5 h-5 border border-gray-400 rounded-full bg-transparent" onClick={toggleAccordion}>
+        {isOpen ? <FaChevronUp color="rgba(128, 128, 128, 0.7)" size={16} /> : <FaChevronDown color="rgba(128, 128, 128, 0.7)" size={16} />}
+      </button>
 
-          <div className="px-2">
-            <div className="flex items-center justify-between relative border-t mt-5 mb-7">
-              <div>
-                <h3 className="mt-2 font-bold text-lg">{time.arrival}</h3>
-                {date} <br />
-                {arrival}
-              </div>
-              <div className="absolute top-0 right-0 mt-2 mr-2">
-                <p className="font-bold text-sm text-[#A06ECE]">Kedatangan</p>
-              </div>
+      {/* Accordion Content */}
+      <div className={`${isOpen ? "block" : "hidden"} px-4 py-3 bg-gray-50 transition-all duration-500 rounded-b-lg border-t border-gray-300`}>
+        <div className="mb-2">
+          <div className="text-sm text-gray-500 font-semibold" style={{ color: "#7126B5" }}>
+            Detail Penerbangan
+          </div>
+          <div className="text-sm flex justify-between text-black">
+            <div>
+              <strong>{flight.departureTime}</strong>
+            </div>
+            <div className="font-semibold" style={{ color: "#A06ECE" }}>
+              Keberangkatan
             </div>
           </div>
-        </>
-      )}
+          <div className="text-sm">{flight.departureDate}</div>
+          <div className="text-sm">{flight.originAirport}</div>
+        </div>
+        <hr className="my-1 border-gray-300" />
+        <div className="text-black text-sm mb-2">
+          <strong>
+            {flight.airline} - {flight.class}
+          </strong>
+          <div>
+            <strong>Kode Pesawat: JT03</strong>
+          </div>
+        </div>
+        <div className="mb-2 flex items-center">
+          <img src="Image.svg" alt="Logo" className="h-6 mr-2" />
+          <div className="flex flex-col ml-2">
+            <div className="text-sm text-gray-500 font-semibold">Informasi</div>
+            <div className="text-sm">Baggage: {flight.baggage} kg</div>
+            <div className="text-sm">Cabin Baggage: {flight.cabinBaggage} kg</div>
+            <div className="text-sm">In-Flight Entertainment: {flight.entertainment ? "Yes" : "No"}</div>
+          </div>
+        </div>
+        <hr className="my-1 border-gray-300" />
+        <div className="mb-2">
+          <div className="flex justify-between text-black">
+            <div className="text-sm">
+              <strong>{flight.arrivalTime}</strong>
+            </div>
+            <div className="text-sm font-semibold" style={{ color: "#A06ECE" }}>
+              Kedatangan
+            </div>
+          </div>
+          <div className="text-sm">{flight.arrivalDate}</div>
+          <div className="text-sm">{flight.destinationAirport}</div>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
-function FlightList() {
-  const [openIndex, setOpenIndex] = useState(null);
-  const [flights, setFlights] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const navigate = useNavigate();
-
-  const loadFlights = () => {
-    if (loading) return; // Prevent loading multiple times
-    setLoading(true);
-
-    // Simulate an API call for loading flights
-    setTimeout(() => {
-      const newFlights = [
-        {
-          time: { departure: "07:00", arrival: "11:00" },
-          duration: "4h 0m",
-          price: "IDR 4.950.000",
-          departure: "Soekarno Hatta - Terminal 1A Domestik",
-          departureCode: "JKT",
-          arrival: "Melbourne International Airport",
-          arrivalCode: "MLB",
-          baggage: 20,
-          cabin: 7,
-          entertainment: "In Flight Entertainment",
-          date: "01 Maret 2023",
-        },
-        {
-          time: { departure: "08:00", arrival: "12:00" },
-          duration: "4h 0m",
-          price: "IDR 5.950.000",
-          departure: "Soekarno Hatta - Terminal 1A Domestik",
-          departureCode: "JKT",
-          arrival: "Melbourne International Airport",
-          arrivalCode: "MLB",
-          baggage: 20,
-          cabin: 7,
-          entertainment: "In Flight Entertainment",
-          date: "02 Maret 2023",
-        },
-        {
-          time: { departure: "13:15", arrival: "17:15" },
-          duration: "4h 0m",
-          price: "IDR 7.225.000",
-          departure: "Soekarno Hatta - Terminal 1A Domestik",
-          departureCode: "JKT",
-          arrival: "Melbourne International Airport",
-          arrivalCode: "MLB",
-          baggage: 20,
-          cabin: 7,
-          entertainment: "In Flight Entertainment",
-          date: "03 Maret 2023",
-        },
-        {
-          time: { departure: "20:15", arrival: "23:30" },
-          duration: "3h 15m",
-          price: "IDR 8.010.000",
-          departure: "Soekarno Hatta - Terminal 1A Domestik",
-          departureCode: "JKT",
-          arrival: "Melbourne International Airport",
-          arrivalCode: "MLB",
-          baggage: 20,
-          cabin: 7,
-          entertainment: "In Flight Entertainment",
-          date: "04 Maret 2023",
-        },
-      ];
-
-      setFlights((prevFlights) => [...prevFlights, ...newFlights]);
-
-      // Simulate no more data after 10 flights
-      if (flights.length + newFlights.length > 10) {
-        setHasMore(false);
-      }
-
-      setLoading(false);
-    }, 1000);
-  };
-
-  useEffect(() => {
-    loadFlights();
-  }, []);
-
-  const toggleOpen = (index) => {
-    if (openIndex === index) {
-      setOpenIndex(null); // Close the accordion if the same flight is clicked
-    } else {
-      setOpenIndex(index); // Open the clicked flight card
-    }
-  };
-
-  const handleScroll = (e) => {
-    const bottom = e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
-    if (bottom && hasMore) {
-      loadFlights();
-    }
-  };
-
-  return (
-    <div className="max-w-3xl mx-auto overflow-auto" onScroll={handleScroll} style={{ maxHeight: "80vh" }}>
-      {flights.map((flight, index) => (
-        <FlightCard key={index} index={index} isOpen={openIndex === index} toggleOpen={toggleOpen} {...flight} />
-      ))}
-      {loading && <div className="text-center mt-4">Loading...</div>}
-      {!hasMore && <div className="text-center mt-4">No more flights</div>}
-    </div>
-  );
-}
-
-export default FlightList;
+export default FlightCard;
