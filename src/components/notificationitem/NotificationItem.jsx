@@ -34,7 +34,7 @@ const NotificationItem = ({ title, date, message, extraMessage, is_read }) => {
   };
 
   return (
-    <div className="flex gap-5 mx-4 text-[#8A8A8A] text-sm p-2 rounded-lg">
+    <div className="bg-white flex gap-5 mx-4 text-[#8A8A8A] text-sm p-2 rounded-lg">
       <IoIosNotifications className="text-white bg-[#7126B580]/50 rounded-full p-1 text-2xl" />
       <div className="flex flex-col w-4/5">
         <div className="flex justify-between">

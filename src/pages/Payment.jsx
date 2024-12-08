@@ -7,12 +7,14 @@ import Breadcrumbs from "@/components/checkout/Breadcrumbs";
 import CheckoutAlert from "@/components/checkout/CheckoutAlert";
 import FlightDetails from "@/components/checkout/FlightDetails";
 import CheckoutPricing from "@/components/checkout/CheckoutPricing";
+import NotificationItem from "@/components/notificationitem/NotificationItem";
 import { flightDetails } from "../lib/flightDummy";
 import { passenger } from "@/lib/generatePassenger";
 import Passenger from "@/components/checkout/Passenger";
 
 const Payment = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
   const cookies = new Cookies();
 
@@ -37,6 +39,20 @@ const Payment = () => {
     setPassengerInfo(passenger.sort());
   }, []);
 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const mockNotifications = [
+        { title: "Status pembayaran(unpaid)", 
+          date: new Date().toISOString(),
+          message: "Selesaikan pembayaran Anda sebelum tanggal 10 Maret 2023!", 
+          is_read: false },
+      ];
+      setNotifications(mockNotifications);
+    };
+
+    fetchNotifications();
+  }, []);
+
   return (
     <div>
       <Topnav isLogin={isLogin} isSearch={true} />
@@ -54,6 +70,20 @@ const Payment = () => {
           <CheckoutPricing passengerInfo={passengerInfo} />
         </div>
       </div>
+      {notifications.length > 0 && (
+        <div className="fixed top-5 right-5 z-50 flex flex-col gap-4">
+          {notifications.map((notification) => (
+            <NotificationItem
+              key={notification.id}
+              title={notification.title}
+              date={notification.date}
+              message={notification.message}
+              extraMessage={notification.extraMessage}
+              is_read={notification.is_read}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
