@@ -11,3 +11,7 @@
 html {
   scroll-behavior: smooth;
 }
+
+:root {
+  --radius: 10px;
+}
