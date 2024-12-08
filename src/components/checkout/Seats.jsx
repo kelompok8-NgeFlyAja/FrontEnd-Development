@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import useSend from "@/hooks/useSend";
-
+import { useSearchParams } from "react-router-dom";
 import SeatItem from "./SeatItem";
 
 const Seats = ({ maxSeatsSelected, flightID, Text }) => {
