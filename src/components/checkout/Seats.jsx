@@ -1,12 +1,7 @@
-<<<<<<< HEAD:src/components/checkout/Seats.jsx
 import React, { useEffect, useState, useCallback } from "react";
 import useSend from "@/hooks/useSend";
-=======
-import React, { useCallback, useEffect, useState } from "react";
->>>>>>> page-login:src/components/chart/Seats.jsx
 import { useSearchParams } from "react-router-dom";
 import SeatItem from "./SeatItem";
-import useSend from "@/hooks/useSend";
 
 const Seats = ({
   maxSeatsSelected,
