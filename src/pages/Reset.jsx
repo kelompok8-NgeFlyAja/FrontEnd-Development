@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { IoMdArrowRoundBack, IoMdCheckmarkCircle } from "react-icons/io";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import useSend from "../hooks/useSend";
+import useSend from "@/hooks/useSend";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
 
@@ -112,12 +112,27 @@ const Reset = () => {
         className="hidden md:block w-1/2 h-screen"
       >
         <img
-          src="Auth_Side_Background.png"
+          src="/Auth_Side_Background.png"
           alt="Auth Background"
           className="w-full h-full object-cover"
         />
       </motion.div>
-
+      {/* {isSuccess && (
+        <>
+          <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.75, delay: 0.25 }}
+            className="fixed flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-20 px-40 rounded-md shadow-md z-50"
+          >
+            <IoMdCheckmarkCircle className="text-green-500 text-8xl md:text-9xl" />
+            <h2 className="text-center text-green-500 font-bold text-3xl md:text-4xl">
+              Reset Password berhasil
+            </h2>
+          </motion.div>
+        </>
+      )} */}
       <div className="w-full md:w-1/2 flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 md:from-white md:to-white h-screen">
         <motion.form
           initial={{ opacity: 0, x: 75 }}

@@ -4,7 +4,7 @@ import { IoMdArrowRoundBack, IoMdCheckmarkCircle } from "react-icons/io";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import useSend from "../hooks/useSend";
+import useSend from "@/hooks/useSend";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
 
