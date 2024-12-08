@@ -4,7 +4,6 @@ import { IoMdSearch, IoMdPerson, IoIosList } from "react-icons/io";
 import { FiBell } from "react-icons/fi";
 import NavbarItems from "./NavbarItems";
 import InputSearch from "../components/search/InputSearch";
-
 import useSend from "../hooks/useSend";
 import Cookies from "universal-cookie";
 
@@ -96,48 +95,33 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
   };
 
   return (
-    <nav className="flex justify-between items-center bg-[#f1f5f9] fixed top-0 left-0 w-full z-50 py-4 px-4 md:px-2 xl:px-28 border-b-[1px]">
-      <div className="flex gap-10">
-        <a href="/">
+    <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50 py-4 px-4 xl:px-28 flex justify-between items-center">
+      <div className="flex flex-1 gap-10 items-center">
+        <a href="/" onClick={() => navigate("/")}>
           <img
-            src="/skypass_horizontal.png"
+            src="/logo.svg"
             alt="navbar logo"
-            className="h-[60px] md:ps-10"
+            className="h-[53px]"
           />
         </a>
         {isSearch && (
-          <InputSearch placeholder="Cari disini....." isSearch={isSearch} />
+          <div className="relative w-full max-w-md">
+            <input
+              ref={searchRef}
+              type="text"
+              placeholder="Cari di sini ..."
+              value={searchText}
+              onChange={handleInputChange}
+              className="pl-4 pr-10 rounded-[16px] bg-[#EEEEEE] h-12 md:h-[48px] text-left w-full"
+            />
+            <img
+              className="w-6 h-6 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              src="/icons/search.svg"
+              alt="search icon"
+            />
+          </div>
         )}
       </div>
-
-      <dialog ref={dialogRef} onClick={clickOutsideModal}>
-        <div
-          id="dialog"
-          className={`min-w[70vw] flex flex-col items-center fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-black/60 py-20 w-11/12 backdrop-blur-sm md:hidden`}
-        >
-          <Link
-            to="/riwayat-pesanan"
-            className="text-white/70 text-2xl font-bold my-3 hover:underline flex items-center gap-3"
-          >
-            <IoIosList className="text-3xl" />
-            <p>Riwayat Pesanan</p>
-          </Link>
-          <Link
-            to="/notification"
-            className="text-white/70 text-2xl font-bold my-3 hover:underline flex items-center gap-3"
-          >
-            <FiBell className="text-3xl" />
-            <p>Notifikasi</p>
-          </Link>
-          <Link
-            to="/account"
-            className="text-white/70 text-2xl font-bold my-3 hover:underline flex items-center gap-3"
-          >
-            <IoMdPerson className="text-3xl" />
-            <p>Akun</p>
-          </Link>
-        </div>
-      </dialog>
 
       <div className="flex gap-6 items-center">
         {isSearch && (
@@ -156,27 +140,6 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
             )}
           </button>
         )}
-        {isSearchOpen && (
-          <div className="flex items-center absolute top-16 mt-3 right-0 rounded-md w-full z-40">
-            <div className="relative w-11/12 mx-auto border-2 border-[#7126B5] z-40 rounded-lg">
-              <input
-                ref={searchRef}
-                type="text"
-                placeholder="Search..."
-                value={searchText}
-                onChange={handleInputChange}
-                className={`bg-gray-50 border-2 text-gray-900 sm:text-sm rounded-lg w-full pr-16 p-3 focus:outline-none`}
-              />
-              <button
-                type="button"
-                className="absolute top-1/2 transform -translate-y-1/2 right-3 text-4xl text-gray-600"
-                onClick={handleSearch}
-              >
-                <IoMdSearch />
-              </button>
-            </div>
-          </div>
-        )}
 
         {!isOTP && (
           <>
@@ -188,10 +151,9 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
                   </Link>
                   <Link to="/notification" className="relative">
                     <FiBell className="text-2xl" />
-                    <span className="sr-only">Notifications</span>
-                    <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-3 -end-3 dark:border-gray-900">
+                    <span className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-3 -end-3 dark:border-gray-900">
                       {notifications}
-                    </div>
+                    </span>
                   </Link>
                   <Link to="/account">
                     <IoMdPerson className="text-2xl" />
@@ -224,7 +186,7 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
                 className="bg-[#7126B5] py-3 px-4 rounded-xl text-white flex gap-2 items-center hover:opacity-80 transition-all"
               >
                 <img
-                  src="/Navbar_Button_Icon.svg"
+                  src="/icons/login.svg"
                   alt="button icon"
                   width={20}
                   height={20}
