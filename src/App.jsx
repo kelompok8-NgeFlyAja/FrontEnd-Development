@@ -11,6 +11,7 @@ import Send from "./pages/Send";
 import Payment from "./pages/Payment";
 import Notification from "./pages/Notification";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import Account from "./pages/Account";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: "/notification",
     element: <Notification />,
+  },
+  {
+    path: "/account",
+    element: <Account />,
   },
 ]);
 
