@@ -2,22 +2,35 @@ import { useState } from "react";
 import axios from "axios";
 
 const useSend = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [statusCode, setStatusCode] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const sendData = async (url, method, body = null, token = null) => {
-    const BASE_URL = "";
-    let data;
+  const sendData = async (
+    url,
+    method,
+    body = null,
+    token = null,
+    json = false,
+    formData = false
+  ) => {
+    const BASE_URL = "http://localhost:3000";
+    let data = null,
+      message = null,
+      statusCode = null;
 
     try {
       setLoading(true);
-      setError(null);
-      setStatusCode(null);
 
       const headers = {};
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      if (json) {
+        headers["Content-Type"] = "application/json";
+      }
+
+      if (formData) {
+        headers["Content-Type"] = "multipart/form-data";
       }
 
       const response = await axios({
@@ -26,18 +39,23 @@ const useSend = () => {
         data: body,
         headers,
       });
-      data = await response.data;
-      setStatusCode(response.status);
-    } catch (error) {
-      setError(error);
-      setStatusCode(error.response.status);
+
+      data = response.data;
+      statusCode = response.status;
+      message = response.data.message;
+    } catch (err) {
+      statusCode = err.response.status || 500;
+      message =
+        err.response?.data?.message ||
+        "Something went wrong. Please try again.";
     } finally {
       setLoading(false);
-      return data;
     }
+
+    return { data, message, statusCode };
   };
 
-  return { loading, error, statusCode, sendData };
+  return { loading, sendData };
 };
 
 export default useSend;

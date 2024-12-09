@@ -1,8 +1,5 @@
-<<<<<<< HEAD:src/components/checkout/CheckoutForm.jsx
-=======
 import React from "react";
 
->>>>>>> page-login:src/components/chart/CheckoutForm.jsx
 const CheckoutForm = ({ children, title, isSaved }) => {
   return (
     <div>

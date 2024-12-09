@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdArrowRoundBack, IoMdCheckmarkCircle } from "react-icons/io";
-import useSend from "../hooks/useSend";
+import useSend from "@/hooks/useSend";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
 
@@ -29,7 +29,7 @@ const Send = () => {
   useEffect(() => {
     if (isSuccess) {
       const timer = setTimeout(() => {
-        navigate(`/reset-password?rpkey=${resetToken}`);
+        navigate(`/send-email`);
       }, 3000);
       return () => clearTimeout(timer);
     }
@@ -88,9 +88,13 @@ const Send = () => {
           }
         }
       } catch (err) {
-        console.log(err);
-        setIsSuccess(false);
-        setMessage("Something went wrong. Please try again.");
+        if (err.statusCode === 500) {
+          navigate("/error");
+        } else {
+          console.log(err);
+          setIsSuccess(false);
+          setMessage("Something went wrong. Please try again.");
+        }
       }
     } else {
       setIsSuccess(false);
@@ -112,7 +116,7 @@ const Send = () => {
         className="hidden md:block w-1/2 h-screen"
       >
         <img
-          src="/Auth_Skypass_Background.png"
+          src="/Auth_Side_Background.png"
           alt="Auth Background"
           className="w-full h-full object-cover"
         />
@@ -174,7 +178,7 @@ const Send = () => {
             type="submit"
             disabled={loading || isSuccess}
             className={`w-full text-white bg-[#7126B5] hover:bg-[#7126B5]/90 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
-              loading ? "cursor-not-allowed" : ""
+              loading || isSuccess ? "cursor-not-allowed" : ""
             }`}
           >
             {loading ? "Loading..." : "Kirim"}

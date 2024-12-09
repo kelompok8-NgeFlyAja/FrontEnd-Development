@@ -15,8 +15,8 @@ import useSend from "@/hooks/useSend";
 
 const Account = () => {
   const { loading, sendData } = useSend();
-  const [accountId, setAccountId] = useState("");
-  const [isLogin, setIsLogin] = useState(true); // Tetap default true untuk akses sementara
+  const [accountId, setAccountId] = useState("1"); // Set default accountId, for example "1"
+  const [isLogin, setIsLogin] = useState(true); // Default to true for logged in state
   const [isLoggedOut, setIsLoggedOut] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,14 +25,15 @@ const Account = () => {
   const [profile, setProfile] = useState({
     current_image: "",
     images: "",
-    name: "",
-    telepon: "",
-    email: "",
+    name: "John Doe", // Default name
+    telepon: "1234567890", // Default phone number
+    email: "johndoe@example.com", // Default email
   });
   const navigate = useNavigate();
   const cookies = new Cookies();
 
   useEffect(() => {
+    // Skip token check to allow access without login
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
@@ -46,17 +47,9 @@ const Account = () => {
     }
   }, [accountId]);
 
-  useEffect(() => {
-    if (isLoggedOut) {
-      const timer = setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [isLoggedOut, navigate]);
-
   const fetchData = async () => {
     try {
+      // Simulate an API response, or use a real API here
       const response = await sendData(`/api/v1/user/${accountId}`, "GET");
       setProfile({
         current_image:
