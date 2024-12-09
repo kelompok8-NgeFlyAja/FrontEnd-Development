@@ -12,7 +12,8 @@ const useSend = () => {
     json = false,
     formData = false
   ) => {
-    const BASE_URL = "http://localhost:3000";
+    const BASE_URL = import.meta.env.VITE_API_URL;
+
     let data = null,
       message = null,
       statusCode = null;
@@ -20,7 +21,11 @@ const useSend = () => {
     try {
       setLoading(true);
 
-      const headers = {};
+      const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      };
+
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
       }
