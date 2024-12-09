@@ -12,6 +12,7 @@ import Payment from "./pages/Payment";
 import Notification from "./pages/Notification";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Account from "./pages/Account";
+import Riwayat from "./pages/Riwayat";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
   {
     path: "/account",
     element: <Account />,
+  },
+  {
+    path: "/riwayat-pesanan",
+    element: <Riwayat />,
   },
 ]);
 
