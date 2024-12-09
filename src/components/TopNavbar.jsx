@@ -4,7 +4,11 @@ import { IoMdSearch, IoMdPerson, IoIosList } from "react-icons/io";
 import { FiBell } from "react-icons/fi";
 import NavbarItems from "./NavbarItems";
 import InputSearch from "../components/search/InputSearch";
+<<<<<<< HEAD
 import useSend from "../hooks/useSend";
+=======
+import useSend from "@/hooks/useSend";
+>>>>>>> page-login
 import Cookies from "universal-cookie";
 
 const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
