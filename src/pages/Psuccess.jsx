@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Topnav from "@/components/TopNavbar";
 import PaymentSucces from "@/components/payment/PaymentCompleted";
-import Breadcrumbs from "@/components/chart/Breadcrumbs";
-import CheckoutAlert from "@/components/chart/CheckoutAlert";
+import Breadcrumbs from "@/components/checkout/Breadcrumbs";
+import CheckoutAlert from "@/components/checkout/CheckoutAlert";
 
 const Psuccess = () => {
   const [isLogin, setIsLogin] = useState(true);
