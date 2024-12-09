@@ -31,7 +31,7 @@ const PaymentSuccess = () => {
 
   return (
     <div>
-      <Topnav isLogin={isLogin} isSearch={true}></Topnav>
+      <Topnav isLogin={isLogin} isSearch={true} />
       <Breadcrumbs isPayment={true} isSuccess={false} />
       <CheckoutAlert
         type="Success"

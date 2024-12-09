@@ -39,7 +39,7 @@ const Payment = () => {
 
   return (
     <div>
-      <Topnav isLogin={isLogin} isSearch={true}></Topnav>
+      <Topnav isLogin={isLogin} isSearch={true} />
       <Breadcrumbs isPayment={true} isSuccess={false} />
       <CheckoutAlert
         type="Danger"
