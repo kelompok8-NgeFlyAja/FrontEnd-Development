@@ -141,7 +141,7 @@ function FlightSearchForm() {
                     placeholder="Select date"
                     className="w-[150px] border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
                     disabled={!isReturnChecked}
-                    readonly
+                    readOnly
                   />
                 </div>
                 <Switch

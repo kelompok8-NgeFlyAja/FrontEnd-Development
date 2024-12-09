@@ -7,13 +7,17 @@ import Reset from "./pages/Reset";
 import Register from "./pages/Register";
 import Otp from "./pages/Otp";
 import Send from "./pages/Send";
-//import Success from "./pages/Success";
 import Payment from "./pages/Payment";
+import Psuccess from "./pages/Psuccess";
 import Notification from "./pages/Notification";
-import PaymentSuccess from "./pages/PaymentSuccess";
 import Account from "./pages/Account";
+import Error from "./pages/Error";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Homepage />,
+  },
   {
     path: "/login",
     element: <Login />,
@@ -31,13 +35,10 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: "/register/OTP",
+    path: "/otp",
     element: <Otp />,
   },
-  {
-    path: "/",
-    element: <Homepage />,
-  },
+
   {
     path: "/search",
     element: <Search />,
@@ -51,13 +52,9 @@ const router = createBrowserRouter([
     element: <Payment />,
   },
   {
-    path: "/payment-completed",
-    element: <PaymentSuccess />,
+    path: "/payment-success",
+    element: <Psuccess />,
   },
-  // {
-  //   path: "/payment-success",
-  //   element: <Success />,
-  // },
   {
     path: "/notification",
     element: <Notification />,
@@ -65,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: "/account",
     element: <Account />,
+  },
+  {
+    path: "/error",
+    element: <Error />,
   },
 ]);
 
