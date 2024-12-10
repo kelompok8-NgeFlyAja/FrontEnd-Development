@@ -1,5 +1,5 @@
 import Banner from "@/components/Banner";
-import FeauteredFlightCard from "@/components/homepage/FeauteredFlightCard";
+import FeaturedFlightCard from "@/components/homepage/FeaturedFlightCard";
 import SearchFeatured from "@/components/homepage/FeautredSearch";
 import FlightSearch from "@/components/homepage/FligthSearch";
 import Topnav from "@/components/TopNavbar";
@@ -30,8 +30,7 @@ export default function Homepage() {
       <Topnav isLogin={isLogin} isSearch={true} />
       <Banner />
       <FlightSearch />
-      <SearchFeatured />
-      <FeauteredFlightCard />
+      <FeaturedFlightCard />
     </div>
   );
 }
