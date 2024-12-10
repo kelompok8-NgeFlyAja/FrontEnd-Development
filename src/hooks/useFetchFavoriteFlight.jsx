@@ -1,31 +1,35 @@
 import { getFavoriteDestinations } from "@/services/flights.service";
 import { useState, useEffect } from "react";
 
-
-const useFavoriteDestinations = (params) => {
+const useFavoriteDestinations = (page = 1, limit = 5, filters = {}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log("stage pertama")
+  const [success, setSuccess] = useState(false);
+
   useEffect(() => {
     const fetchDestinations = async () => {
       setLoading(true);
+      setError(null); // Reset error state on each fetch
       try {
-        const result = await getFavoriteDestinations(params);
-        setData(result.data || []);
-        console.log(result.data)
+        const result = await getFavoriteDestinations(page, limit, filters);
+        if (result.success) {
+          setData(result.data || []);
+          setSuccess(true);
+        } else {
+          setError(result.message || "Failed to fetch destinations");
+        }
       } catch (err) {
-        setError(err);
-        console.log(err)
+        setError(err.message || "An error occurred");
       } finally {
         setLoading(false);
       }
     };
 
     fetchDestinations();
-  }, [params]);
+  }, [page, limit, filters]);
 
-  return { data, loading, error };
+  return { data, loading, error, success };
 };
 
-export {useFavoriteDestinations};
+export { useFavoriteDestinations };
