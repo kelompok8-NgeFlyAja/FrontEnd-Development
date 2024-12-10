@@ -1,43 +1,68 @@
-import { useEffect, useState } from "react";
-import { IoMdCheckmarkCircle } from "react-icons/io";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import Beranda from "@/components/homepage/Beranda";
+import Topnav from "@/components/TopNavbar";
+import useSend from "@/hooks/useSend";
 
 const Home = () => {
-  const [isLoggedOut, setIsLoggedOut] = useState(false);
+  const { loading, sendData } = useSend();
+  const [isLogin, setIsLogin] = useState(false);
+  const [airport, setAirport] = useState([]);
+  const [favorite, setFavorite] = useState([]);
   const navigate = useNavigate();
   const cookies = new Cookies();
 
-  const handleLogout = async (event) => {
-    cookies.remove("token");
-    setIsLoggedOut(true);
+  useEffect(() => {
+    const checkToken = cookies.get("token");
+    if (checkToken) {
+      if (checkToken === "undefined") {
+        setIsLogin(false);
+      } else {
+        setIsLogin(true);
+      }
+    } else {
+      setIsLogin(false);
+    }
+  }, [navigate]);
+
+  const fetchSearchForm = async () => {
+    try {
+      const {
+        data: {
+          data: {
+            pagination: { totalData },
+          },
+        },
+      } = await sendData("/api/v1/airport/?limit=1", "GET");
+      const {
+        data: {
+          data: { airport },
+        },
+      } = await sendData(`/api/v1/airport/?limit=${totalData}`, "GET");
+      const {
+        data: { data: favorite },
+      } = await sendData("/api/v1/flight/favorites", "GET");
+      setAirport(airport);
+      setFavorite(favorite);
+    } catch (err) {
+      if (err.statusCode === 500) {
+        navigate("/error");
+      } else {
+        console.log(err);
+      }
+    }
   };
 
   useEffect(() => {
-    if (isLoggedOut) {
-      const timer = setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [isLoggedOut, navigate]);
+    fetchSearchForm();
+  }, []);
 
   return (
-    <div className="relative flex flex-col gap-4 min-h-screen text-3xl text-violet-600">
-      {isLoggedOut && (
-        <>
-          <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
-          <div className="fixed flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-20 px-40 rounded-md shadow-md z-50">
-            <IoMdCheckmarkCircle className="text-green-500 text-8xl md:text-9xl" />
-            <h2 className="text-center text-green-500 font-bold text-3xl md:text-4xl">
-              Anda Berhasil Logout
-            </h2>
-          </div>
-        </>
-      )}
-      <h1>Home</h1>
-      <button onClick={handleLogout}>Logout</button>
-    </div>
+    <>
+      <Topnav isLogin={isLogin} isSearch={true} />
+      <Beranda airport={airport} favorite={favorite} />
+    </>
   );
 };
 

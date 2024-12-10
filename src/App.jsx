@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Homepage from "./pages/Homepage";
+import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
@@ -17,7 +17,7 @@ import Error from "./pages/Error";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Homepage />,
+    element: <Home />,
   },
   {
     path: "/login",
