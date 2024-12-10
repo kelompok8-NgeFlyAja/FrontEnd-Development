@@ -23,7 +23,7 @@ export default function Homepage() {
     } else {
       setIsLogin(false);
     }
-  }, [navigate]);
+  }, []);
   
   return (
     <div>

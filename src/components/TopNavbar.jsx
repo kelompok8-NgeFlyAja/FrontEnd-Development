@@ -40,32 +40,6 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await sendData(
-          `/api/v1/notification`,
-          "GET",
-          null,
-          cookies.get("token")
-        );
-        const notifications = response.data.data.notification.filter(
-          (notif) => notif.user_id !== null && notif.is_read === false
-        );
-        setNotifications(notifications.length);
-      } catch (err) {
-        if (err.statusCode === 500) {
-          navigate("/error");
-        } else {
-          console.log(err);
-        }
-      }
-    };
-    if (isLogin) {
-      fetchData();
-    }
-  }, [isLogin]);
-
   const clickOutsideModal = (e) => {
     if (e.target.id !== "dialog") {
       dialogRef.current.close();
