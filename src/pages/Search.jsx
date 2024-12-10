@@ -4,15 +4,13 @@ import { motion } from "framer-motion";
 import { LuArrowUpDown } from "react-icons/lu";
 import Topnav from "@/components/TopNavbar";
 import EditSearch from "@/components/search/EditSearch";
-//import ButtonSear
-//import MOdalFilter
 import TicketSoldOut from "@/components/search/SoldOut";
 import Loading from "@/components/search/Loading";
 import Filter from "@/components/search/Filter";
-//import AccordionTicket
+import AccordionTicket from "@/components/search/AccordionTicket";
 import Pagination from "@/components/search/Pagination";
-//import TicketEmpty
-import useSend from "../hooks/useSend";
+import TicketEmpty from "@/components/search/TicketEmpety";
+import useSend from "@/hooks/useSend";
 import Cookies from "universal-cookie";
 
 const Search = () => {
