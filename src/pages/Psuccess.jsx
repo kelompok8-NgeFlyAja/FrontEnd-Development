@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Topnav from "@/components/TopNavbar";
 import PaymentSucces from "@/components/payment/PaymentCompleted";
-import Breadcrumbs from "@/components/chart/Breadcrumbs";
-import CheckoutAlert from "@/components/chart/CheckoutAlert";
+import Breadcrumbs from "@/components/checkout/Breadcrumbs";
+import CheckoutAlert from "@/components/checkout/CheckoutAlert";
 
-const Succes = () => {
+const Psuccess = () => {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
   const cookies = new Cookies();
@@ -27,14 +27,16 @@ const Succes = () => {
   return (
     <div>
       <Topnav isLogin={isLogin} isSearch={true}></Topnav>
-      <Breadcrumbs isPayment={true} isSuccess={true}></Breadcrumbs>
-      <CheckoutAlert
-        type="Success"
-        message="Terimakasih atas pembayaran transaksi"
-      ></CheckoutAlert>
+      <div className="shadow-md py-4 mt-24 w-11/12 mx-auto md:w-full">
+        <Breadcrumbs isPayment={true} isSuccess={true}></Breadcrumbs>
+        <CheckoutAlert
+          type="Success"
+          message="Terimakasih atas pembayaran transaksi"
+        ></CheckoutAlert>
+      </div>
       <PaymentSucces></PaymentSucces>
     </div>
   );
 };
 
-export default Succes;
+export default Psuccess;

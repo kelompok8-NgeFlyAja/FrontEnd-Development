@@ -9,7 +9,7 @@ const CheckoutPricing = ({ passengerInfo, flightID, onTotalPriceChange }) => {
   const [isError, setIsError] = useState(false);
   const [searchParams] = useSearchParams();
 
-  const URL = "http://localhost:3000";
+  const URL = import.meta.env.VITE_API_URL;
   const TAX_AMOUNT = 0;
 
   const calculateTotalPrice = () => {

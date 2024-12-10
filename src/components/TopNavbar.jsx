@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoMdSearch, IoMdPerson, IoIosList } from "react-icons/io";
 import { FiBell } from "react-icons/fi";
 import NavbarItems from "./NavbarItems";
-import InputSearch from "../components/search/InputSearch";
-import useSend from "../hooks/useSend";
+import InputSearch from "./search/InputSearch";
+import useSend from "@/hooks/useSend";
 import Cookies from "universal-cookie";
 
 const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
@@ -98,11 +98,7 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
     <nav className="bg-white shadow-md sticky top-0 left-0 w-full z-50 py-4 px-4 xl:px-28 flex justify-between items-center">
       <div className="flex flex-1 gap-10 items-center">
         <a href="/" onClick={() => navigate("/")}>
-          <img
-            src="/logo.svg"
-            alt="navbar logo"
-            className="h-[53px]"
-          />
+          <img src="/logo.svg" alt="navbar logo" className="h-[53px]" />
         </a>
         {isSearch && (
           <div className="relative w-full max-w-md">

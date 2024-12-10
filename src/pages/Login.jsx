@@ -42,8 +42,9 @@ const Login = () => {
     event.preventDefault();
     try {
       const response = await sendData("/login", "POST", login);
-      if (response.data && response.data.data.token) {
-        cookies.set("token", response.data.data.token, {
+
+      if (response.data && response.data.accessToken) {
+        cookies.set("token", response.data.accessToken, {
           path: "/",
           expires: new Date(Date.now() + 43200000),
         });

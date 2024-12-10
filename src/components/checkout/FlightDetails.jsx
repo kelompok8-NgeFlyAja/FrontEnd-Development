@@ -10,7 +10,7 @@ const FlightDetails = ({ flightID, typeTicket }) => {
   const [isError, setIsError] = useState();
 
   // simpan di .env nanti
-  const URL = "http://localhost:3000";
+  const URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchFlightData = async () => {
