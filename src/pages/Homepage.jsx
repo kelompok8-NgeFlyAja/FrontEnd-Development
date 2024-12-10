@@ -3,8 +3,6 @@ import FeauteredFlightCard from "@/components/homepage/FeauteredFlightCard";
 import SearchFeatured from "@/components/homepage/FeautredSearch";
 import FlightSearch from "@/components/homepage/FligthSearch";
 import Topnav from "@/components/TopNavbar";
-
-import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";

@@ -11,7 +11,6 @@ function FeaturedSearch() {
     "Afrika",
   ];
   const [selected, setSelected] = React.useState("Semua");
-
   return (
     <div
       className="content max-w-[1098px] w-full mx-auto relative pt-6 bg-none rounded-lg mt-[36px]"
