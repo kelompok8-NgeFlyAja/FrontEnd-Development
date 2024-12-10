@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
 
 const SeatItem = ({ seat, sendData, isAvailable, isMax, passengerNumber }) => {
-=======
-import { useState } from "react";
-const SeatItem = ({ seatNumber, sendData, isAvailable }) => {
->>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
   const [isSelected, setIsSelected] = useState(false);
 
   function handleClick(seat) {

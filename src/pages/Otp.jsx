@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -9,8 +8,6 @@ import Cookies from "universal-cookie";
 import useSend from "@/hooks/useSend";
 import { jwtDecode } from "jwt-decode";
 
-=======
->>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
 const Otp = () => {
   const { loading, sendData } = useSend();
   const [email, setEmail] = useState(null);

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -35,19 +34,4 @@ const CheckoutAlert = ({ type, message, timeOver = false }) => {
   );
 };
 
-=======
-const CheckoutAlert = ({ type, message }) => {
-  return (
-    <div className="w-full flex justify-center">
-      <div
-        className={`w-[850px] max-w-[850px] ${
-          type === "Danger" ? "bg-[#FF0000]" : "bg-[#73CA5C]"
-        } h-12 rounded-lg flex items-center justify-center text-white font-semibold`}
-      >
-        {message}
-      </div>
-    </div>
-  );
-};
->>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
 export default CheckoutAlert;

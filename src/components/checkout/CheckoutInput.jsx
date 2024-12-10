@@ -1,60 +1,37 @@
-<<<<<<< HEAD
 import React from "react";
-import { useFormContext } from "react-hook-form";
-import { findInputError, isFormInvalid } from "@/lib/form_validate";
-import { AnimatePresence } from "framer-motion";
-import CheckoutInputError from "./CheckoutInputError";
+import { useNavigate } from "react-router-dom";
 
-const CheckoutInput = ({
-  label,
-  placeholder,
-  name,
-  type,
-  isSaved,
-  validation,
-}) => {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+const CheckoutAlert = ({ type, message, timeOver = false }) => {
+  const navigate = useNavigate();
 
-  const inputError = findInputError(errors, name);
-  const isInvalid = isFormInvalid(inputError);
+  const handleReBuy = () => {
+    navigate("/");
+  };
 
-=======
-const CheckoutInput = ({ label, placeholder, name, type }) => {
->>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
   return (
-    <div className="flex flex-col gap-1 px-4 py-2">
-      <label htmlFor={name} className="text-purple-900 font-bold">
-        {label}
-      </label>
-      <input
-        className="bg-slate-100 py-2 px-3 rounded-md border border-slate-300"
-        type={type}
-        id={name}
-        name={name}
-        placeholder={placeholder}
-<<<<<<< HEAD
-        disabled={isSaved}
-        {...register(name, validation)}
-      />
-      <AnimatePresence mode="wait" initial={false}>
-        {isInvalid && (
-          <CheckoutInputError
-            message={inputError.error.message}
-            key={inputError.error.message}
-          />
-        )}
-      </AnimatePresence>
-    </div>
+    <>
+      {timeOver && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" />
+      )}
+      <div className="w-full flex justify-center px-3 relative z-40">
+        <div
+          className={`w-[850px] max-w-[850px] ${
+            type === "Danger" ? "bg-[#FF0000]" : "bg-[#73CA5C]"
+          } h-12 rounded-lg flex items-center justify-center text-white font-semibold relative`}
+        >
+          {message}
+          {timeOver && (
+            <button
+              className="absolute right-3 w-9 h-9 flex text-xl items-center justify-center rounded-full border-white border-4 text-white"
+              onClick={handleReBuy}
+            >
+              X
+            </button>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 
-=======
-      />
-    </div>
-  );
-};
->>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
-export default CheckoutInput;
+export default CheckoutAlert;
