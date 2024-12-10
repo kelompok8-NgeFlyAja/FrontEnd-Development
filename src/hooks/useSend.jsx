@@ -12,7 +12,7 @@ const useSend = () => {
     json = false,
     formData = false
   ) => {
-    const BASE_URL = import.meta.env.VITE_API_URI;
+    const BASE_URL = import.meta.env.VITE_API_URL;
 
     let data = null,
       message = null,

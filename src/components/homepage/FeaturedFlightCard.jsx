@@ -2,6 +2,8 @@ import { useMemo, useState, useEffect } from "react";
 import { useFavoriteDestinations } from "@/hooks/useFetchFavoriteFlight";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "../ui/button";
+import Loading from "../search/Loading";
+import ResultNotFound from "../search/ResultNotFound";
 
 function FeaturedFlightCard() {
   const continents = ["Semua", "Asia", "Amerika", "Australia", "Eropa", "Afrika"];
@@ -11,12 +13,11 @@ function FeaturedFlightCard() {
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect
   const filters = useMemo(() => {
     return selected !== "Semua" ? { continent: selected } : {};
   }, [selected]);
 
+  
   const { data, loading: isLoading, error: fetchError } = useFavoriteDestinations(page, limit, filters);
 
   useEffect(() => {
@@ -53,20 +54,19 @@ function FeaturedFlightCard() {
           ))}
         </div>
       </div>
+      
+      <div className="content max-w-[1098px] w-full mx-auto relative pt-6 bg-none rounded-lg mt-3 mb-10">
       {loading && (
-        <div className="content max-w-[1098px] w-full mx-auto relative pt-6 bg-none rounded-lg mt-3 mb-10">
-        <p className="text-gray-500">Loading...</p>
-        </div>
+        <Loading loading={loading} />
       )}
       {error && (
-        <div className="content max-w-[1098px] w-full mx-auto relative pt-6 bg-none rounded-lg mt-3 mb-10">
-        <p className="text-gray-500">Error mengambil data...</p>
-        </div>
+        <p className="text-gray-500 text-center">Error mengambil data...</p>
       )}
       {!loading && !error && (
-      <div className="content max-w-[1098px] w-full mx-auto relative pt-6 bg-none rounded-lg mt-3 mb-10">
-        {destinations.length === 0 ? (
-          <p className="text-gray-500">No Data Available.</p>
+        destinations.length === 0 ? (
+          <div className="mt-4">
+          <ResultNotFound />
+          </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {destinations.map((dest, index) => (
@@ -97,9 +97,9 @@ function FeaturedFlightCard() {
               </Card>
             ))}
           </div>
-        )}
-      </div>
+        )
       )}
+      </div>
     </>
   );
 }
