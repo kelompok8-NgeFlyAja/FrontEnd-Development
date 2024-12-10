@@ -15,8 +15,8 @@ import useSend from "@/hooks/useSend";
 
 const Account = () => {
   const { loading, sendData } = useSend();
-  const [accountId, setAccountId] = useState("1"); // Set default accountId, for example "1"
-  const [isLogin, setIsLogin] = useState(true); // Default to true for logged in state
+  const [accountId, setAccountId] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
   const [isLoggedOut, setIsLoggedOut] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,15 +25,29 @@ const Account = () => {
   const [profile, setProfile] = useState({
     current_image: "",
     images: "",
-    name: "John Doe", // Default name
-    telepon: "1234567890", // Default phone number
-    email: "johndoe@example.com", // Default email
+    name: "",
+    telepon: "",
+    email: "",
   });
   const navigate = useNavigate();
   const cookies = new Cookies();
 
   useEffect(() => {
-    // Skip token check to allow access without login
+    const checkToken = cookies.get("token");
+    if (checkToken) {
+      if (checkToken === "undefined") {
+        setIsLogin(false);
+        navigate("/");
+      } else {
+        setIsLogin(true);
+        const decoded = jwtDecode(checkToken);
+        setAccountId(decoded.id);
+      }
+    } else {
+      setIsLogin(false);
+      navigate("/");
+    }
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
@@ -47,9 +61,17 @@ const Account = () => {
     }
   }, [accountId]);
 
+  useEffect(() => {
+    if (isLoggedOut) {
+      const timer = setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoggedOut, navigate]);
+
   const fetchData = async () => {
     try {
-      // Simulate an API response, or use a real API here
       const response = await sendData(`/api/v1/user/${accountId}`, "GET");
       setProfile({
         current_image:
