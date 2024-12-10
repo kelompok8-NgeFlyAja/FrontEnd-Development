@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { LuArrowUpDown } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
 import ChangeResult from "@/components/search/ChangeResult";
+<<<<<<< HEAD
 import DateFilter from "@/components/search/DateFilter";
 import Sort from "@/components/search/Sort";
 import SoldOut from "@/components/search/SoldOut";
@@ -313,6 +314,10 @@ const Search = () => {
       setTotalPages(pagination.totalPages);
     }
   }, [dataFlight]);
+=======
+import Filter from "@/components/search/Filter";
+import FlightCard from "@/components/search/FlightCard";
+>>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
 
   return (
     <>

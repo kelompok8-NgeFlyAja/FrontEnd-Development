@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 import React from "react";
 
+=======
+>>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
 const CheckoutForm = ({ children, title, isSaved }) => {
   return (
     <div>

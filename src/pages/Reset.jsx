@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
+=======
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+>>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
 import { IoMdArrowRoundBack, IoMdCheckmarkCircle } from "react-icons/io";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import useSend from "@/hooks/useSend";

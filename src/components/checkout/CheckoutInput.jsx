@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { findInputError, isFormInvalid } from "@/lib/form_validate";
@@ -20,6 +21,9 @@ const CheckoutInput = ({
   const inputError = findInputError(errors, name);
   const isInvalid = isFormInvalid(inputError);
 
+=======
+const CheckoutInput = ({ label, placeholder, name, type }) => {
+>>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
   return (
     <div className="flex flex-col gap-1 px-4 py-2">
       <label htmlFor={name} className="text-purple-900 font-bold">
@@ -31,6 +35,7 @@ const CheckoutInput = ({
         id={name}
         name={name}
         placeholder={placeholder}
+<<<<<<< HEAD
         disabled={isSaved}
         {...register(name, validation)}
       />
@@ -46,4 +51,10 @@ const CheckoutInput = ({
   );
 };
 
+=======
+      />
+    </div>
+  );
+};
+>>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
 export default CheckoutInput;

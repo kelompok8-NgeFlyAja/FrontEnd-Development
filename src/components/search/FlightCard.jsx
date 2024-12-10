@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import React from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+=======
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+>>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
 
 const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
   const handleSelect = () => {
@@ -48,6 +53,7 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
         <div className="flex flex-col items-end">
           <div className="md:text-[16px] text-sm text-purple-600 mt-4 md:mt-7 mb-1">{flight.price}</div>
           <button
+<<<<<<< HEAD
             className="text-sm md:w-[100px] md:h-[32px] w-[70px] h-[20px] mr-2 px-4 py-2 bg-purple-600 text-white rounded mb-1 hover:bg-purple-700"
             style={{
               borderRadius: "12px",
@@ -57,6 +63,10 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
               transition: "background-color 0.3s ease",
             }}
             onClick={handleSelect}
+=======
+            className="bg-purple-700 text-white py-2 px-10 rounded-2xl hover:bg-purple-600 mt-2"
+            onClick={() => navigate("/checkout")}
+>>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
           >
             Pilih
           </button>

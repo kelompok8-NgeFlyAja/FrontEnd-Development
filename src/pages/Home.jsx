@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
+=======
+import { useEffect, useState } from "react";
+import { IoMdCheckmarkCircle } from "react-icons/io";
+>>>>>>> 4cadb8f88eeaed04bf088fbcb5991b6a8d328d6d
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Beranda from "@/components/homepage/Beranda";
