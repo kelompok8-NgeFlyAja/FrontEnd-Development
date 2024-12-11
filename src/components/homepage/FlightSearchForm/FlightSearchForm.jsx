@@ -23,6 +23,14 @@ function FlightSearchForm() {
     setIsOpenPopoverDate(!isOpenPopoverDate);
   };
 
+  const onFromChange = (e) => {
+    setFromCity(e); 
+  };
+
+  const onToChange = (e) => {
+    setToCity(e); 
+  };
+
   return (
     <div className="content max-w-[1098px] w-full mx-auto -mt-12 relative z-20 pt-6 bg-white rounded-lg shadow-md">
       <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-800 px-8">
@@ -34,8 +42,8 @@ function FlightSearchForm() {
           <LocationInput
             fromValue={fromCity}
             toValue={toCity}
-            onFromChange={(e) => setFromCity(e.target.value)}
-            onToChange={(e) => setToCity(e.target.value)}
+            onFromChange={onFromChange}
+            onToChange={onToChange}    
             onSwitch={handleSwitchCities}
           />
           <div className="flex items-center gap-8 mt-9">
@@ -50,7 +58,7 @@ function FlightSearchForm() {
           </div>
         </div>
         <Button
-          type="submit"
+          type="button" 
           onClick={() => navigate("/search")}
           className="bg-[#7126B5] text-white w-full py-3 rounded-b-md rounded-t-none"
         >

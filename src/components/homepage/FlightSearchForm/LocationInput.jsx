@@ -1,7 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useFetchAirports from "@/hooks/useFetchAirports"; // import the custom hook
+import useFetchAirports from "@/hooks/useFetchAirports"; 
 
 const LocationInput = ({
   fromValue,
@@ -11,12 +11,27 @@ const LocationInput = ({
   onSwitch,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeField, setActiveField] = useState(null);
   const fromInputRef = useRef(null);
+  const [airportsData, setAirportsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Fetch airports using the custom hook
-  const { airports, loading, error } = useFetchAirports();
+  const { airports, loading: isLoading, error: fetchError } = useFetchAirports();
 
-  const toggleModal = () => setIsModalOpen((prev) => !prev);
+  useEffect(() => {
+    setLoading(isLoading);
+    if (fetchError) {
+      setError(fetchError);
+    } else if (airports) {
+      setAirportsData(airports);
+    }
+  }, [airports, isLoading, fetchError]);
+
+  const toggleModal = (field) => {
+    setActiveField(field);
+    setIsModalOpen((prev) => !prev);
+  };
 
   const getModalStyles = () => {
     if (!fromInputRef.current) return {};
@@ -39,7 +54,7 @@ const LocationInput = ({
             value={fromValue}
             onChange={onFromChange}
             placeholder="Jakarta (JKTA)"
-            onFocus={toggleModal}
+            onFocus={() => toggleModal('from')}
             className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
             autoComplete="off"
           />
@@ -55,6 +70,7 @@ const LocationInput = ({
             value={toValue}
             onChange={onToChange}
             placeholder="Melbourne (MLB)"
+            onFocus={() => toggleModal('to')} 
             className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
             autoComplete="off"
           />
@@ -70,7 +86,7 @@ const LocationInput = ({
           ></div>
 
           <div
-            className="absolute bg-white px-4 py-4 shadow-lg rounded-lg w-[90vw] md:w-[600px] max-h-[300px] overflow-auto z-50"
+            className="absolute bg-white px-4 py-4 shadow-lg rounded-lg w-[90vw] md:w-[600px] max-h-[300px] z-50"
             style={getModalStyles()}
           >
             <div className="relative flex items-center gap-2">
@@ -97,22 +113,24 @@ const LocationInput = ({
                 />
               </button>
             </div>
-
-            {/* Display airports in the modal */}
             {loading ? (
               <p>Loading airports...</p>
             ) : error ? (
               <p>Error: {error}</p>
             ) : (
-              <div className="mt-4 max-h-60 overflow-auto">
-                {airports.map((airport) => (
+              <div className="mt-4 max-h-52 overflow-auto">
+                {airportsData.map((airport) => (
                   <div
                     key={airport.id}
                     className="flex justify-between items-center p-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
-                      // You can handle selecting an airport here, for example, update the input fields
-                      console.log(airport.name);
-                      setIsModalOpen(false); // Close modal after selection
+                      const formattedValue = `${airport.name} (${airport.airportCode})`;
+                      if (activeField === "from") {
+                        onFromChange(formattedValue); 
+                      } else if (activeField === "to") {
+                        onToChange(formattedValue); 
+                      }
+                      setIsModalOpen(false);
                     }}
                   >
                     <div>
