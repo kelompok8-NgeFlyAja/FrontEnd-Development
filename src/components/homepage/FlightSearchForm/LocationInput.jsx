@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useFetchAirports from "@/hooks/useFetchAirports"; 
+import useFetchAirports from "@/hooks/useFetchAirports";
 
 const LocationInput = ({
   fromValue,
@@ -12,8 +12,10 @@ const LocationInput = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeField, setActiveField] = useState(null);
-  const fromInputRef = useRef(null);
+  const fromInputRef = useRef(null); // Restored this line
   const [airportsData, setAirportsData] = useState([]);
+  const [filteredAirports, setFilteredAirports] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -25,8 +27,21 @@ const LocationInput = ({
       setError(fetchError);
     } else if (airports) {
       setAirportsData(airports);
+      setFilteredAirports(airports);
     }
   }, [airports, isLoading, fetchError]);
+
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    setFilteredAirports(
+      airportsData.filter((airport) =>
+        `${airport.name} ${airport.city} ${airport.country} ${airport.airportCode}`
+          .toLowerCase()
+          .includes(query)
+      )
+    );
+  };
 
   const toggleModal = (field) => {
     setActiveField(field);
@@ -54,7 +69,7 @@ const LocationInput = ({
             value={fromValue}
             onChange={onFromChange}
             placeholder="Jakarta (JKTA)"
-            onFocus={() => toggleModal('from')}
+            onFocus={() => toggleModal("from")}
             className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
             autoComplete="off"
           />
@@ -70,7 +85,7 @@ const LocationInput = ({
             value={toValue}
             onChange={onToChange}
             placeholder="Melbourne (MLB)"
-            onFocus={() => toggleModal('to')} 
+            onFocus={() => toggleModal("to")}
             className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
             autoComplete="off"
           />
@@ -93,12 +108,13 @@ const LocationInput = ({
               <input
                 className="w-full px-4 py-2 pl-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-violet-700"
                 type="text"
-                placeholder="Masukkan Nama Airport"
-                onChange={() => {}}
+                placeholder="Search Airport"
+                value={searchQuery}
+                onChange={handleSearch}
               />
               <img
                 src="/icons/magnifying_glass.svg"
-                alt="Magnifying Glass"
+                alt="Search"
                 className="absolute left-3 h-5 w-5 text-gray-600"
               />
               <button
@@ -109,26 +125,25 @@ const LocationInput = ({
                   src="/icons/x.svg"
                   alt="Close"
                   className="h-6 w-6 cursor-pointer"
-                  onClick={() => setIsModalOpen(false)}
                 />
               </button>
             </div>
-            {loading ? (
-              <p>Loading airports...</p>
-            ) : error ? (
-              <p>Error: {error}</p>
-            ) : (
               <div className="mt-4 max-h-52 overflow-auto">
-                {airportsData.map((airport) => (
+              {loading ? (
+              <p>Loading airports...</p>
+                ) : error ? (
+                <p>Error: {error}</p>
+                ) : (
+                filteredAirports.map((airport) => (
                   <div
                     key={airport.id}
                     className="flex justify-between items-center p-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
                       const formattedValue = `${airport.name} (${airport.airportCode})`;
                       if (activeField === "from") {
-                        onFromChange(formattedValue); 
+                        onFromChange(formattedValue);
                       } else if (activeField === "to") {
-                        onToChange(formattedValue); 
+                        onToChange(formattedValue);
                       }
                       setIsModalOpen(false);
                     }}
@@ -143,9 +158,9 @@ const LocationInput = ({
                       {airport.airportCode}
                     </span>
                   </div>
-                ))}
-              </div>
+                ))
             )}
+            </div>
           </div>
         </>
       )}
