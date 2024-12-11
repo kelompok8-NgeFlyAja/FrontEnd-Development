@@ -1,7 +1,6 @@
 import Banner from "@/components/Banner";
 import FeaturedFlightCard from "@/components/homepage/FeaturedFlightCard";
-import SearchFeatured from "@/components/homepage/FeautredSearch";
-import FlightSearch from "@/components/homepage/FligthSearch";
+import FlightSearchForm from "@/components/homepage/FlightSearchForm/FlightSearchForm";
 import Topnav from "@/components/TopNavbar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +28,7 @@ export default function Homepage() {
     <div>
       <Topnav isLogin={isLogin} isSearch={true} />
       <Banner />
-      <FlightSearch />
+      <FlightSearchForm />
       <FeaturedFlightCard />
     </div>
   );
