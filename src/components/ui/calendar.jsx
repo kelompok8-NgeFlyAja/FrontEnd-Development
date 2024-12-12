@@ -4,13 +4,21 @@ import { DayPicker } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
+function Calendar({ 
+  className, 
+  classNames, 
+  showOutsideDays = true, 
+  numberOfMonths = 2, // Default to showing 2 months
+  ...props 
+}) {
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      numberOfMonths={numberOfMonths} // Pass the number of months
+      pagedNavigation={numberOfMonths > 1} // Enable navigation for multiple months
       className={cn("p-3", className)}
       classNames={{
-        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+        months: "grid grid-cols-2 gap-4", // Display months in a grid
         month: "space-y-4",
         caption: "flex justify-center pt-1 relative items-center",
         caption_label: "text-sm font-medium",
@@ -51,6 +59,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
     />
   );
 }
+
 Calendar.displayName = "Calendar";
 
 export { Calendar };

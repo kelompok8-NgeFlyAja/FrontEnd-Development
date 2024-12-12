@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import DateInput from "./DateInput";
 import LocationInput from "./LocationInput";
+import DateInputNew from "./DateInputNew";
 
 function FlightSearchForm() {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ function FlightSearchForm() {
             onSwitch={handleSwitchCities}
           />
           <div className="flex items-center gap-8 mt-9">
-            <DateInput
+            <DateInputNew
               date={date}
               isOpenPopover={isOpenPopoverDate}
               isReturnChecked={isReturnChecked}
