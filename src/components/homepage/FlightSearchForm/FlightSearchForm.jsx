@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import LocationInput from "./LocationInput";
 import DateInput from "./DateInput";
-import Passenger from "./PassengerInput";
+import PassengerInput from "./PassengerInput";
+import SeatClassInput from "./SeatClassInput";
 
 function FlightSearchForm() {
   const navigate = useNavigate();
@@ -60,7 +61,8 @@ function FlightSearchForm() {
               onSelectDate={handleSelectDate}
               onSwitchChange={() => setIsReturnChecked(!isReturnChecked)}
             />
-            <Passenger />
+            <PassengerInput />
+            <SeatClassInput />
           </div>
         </div>
         <Button

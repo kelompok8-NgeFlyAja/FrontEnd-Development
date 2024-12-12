@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import React, { useState, useRef } from "react";
 
-function PassengerInput() {
+function SeatClassInput() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
 
@@ -14,23 +14,17 @@ function PassengerInput() {
     if (!modalRef.current) return {};
     const rect = modalRef.current.getBoundingClientRect();
     return {
-      left: "50%",
-      transform: "translateX(-50%)",
     };
   };
 
   return (
-    <div className="ps-14 relative">
+    <div className="relative">
       <div className="flex gap-4 items-center">
-        <div className="flex items-center gap-4">
-          <img src="/icons/seat.svg" alt="Departure" />
-          <Label htmlFor="passengers">To</Label>
-        </div>
         <div className="flex flex-col w-[150px]">
-          <label htmlFor="passengers">Passengers</label>
+          <label htmlFor="passengers">Seat Class</label>
           <Input
-            id="passengers"
-            placeholder="Select Passengers"
+            id="seat-class"
+            placeholder="Business"
             onFocus={toggleModal}
             className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
             readOnly
@@ -61,4 +55,4 @@ function PassengerInput() {
   );
 }
 
-export default PassengerInput;
+export default SeatClassInput;
