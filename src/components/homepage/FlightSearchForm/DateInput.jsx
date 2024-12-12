@@ -1,74 +1,97 @@
+import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { Switch } from "@radix-ui/react-switch";
+import { Switch } from "@/components/ui/switch";
 
-const DateInput = ({
+const DateInputNew = ({
   date,
-  isOpenPopover,
   isReturnChecked,
-  onTogglePopover,
   onSelectDate,
   onSwitchChange,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeField, setActiveField] = useState(null);
+  const modalRef = useRef(null);
+
+  const toggleModal = (field) => {
+    setActiveField(field);
+    setIsModalOpen((prev) => !prev);
+  };
+
+  const getModalStyles = () => {
+    if (!modalRef.current) return {};
+    return {
+      left: "50%",
+      transform: "translateX(-50%)",
+    };
+  };
+
   return (
-    <div className="flex gap-4">
-      <div className="flex items-center gap-4">
-        <img src="/icons/date.svg" alt="Departure" />
-        <Label>Date</Label>
+    <div className="relative">
+      <div className="flex gap-4 items-center">
+        <div className="flex items-center gap-4">
+          <img src="/icons/date.svg" alt="Departure" />
+          <Label>Date</Label>
+        </div>
+        <div className="flex flex-col w-[150px]">
+          <label htmlFor="departure">Departure</label>
+          <Input
+            id="departure"
+            value={date.from ? format(date.from, "d MMMM yyyy") : ""}
+            placeholder="Select date"
+            onFocus={() => toggleModal("from")}
+            className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
+            readOnly
+          />
+        </div>
+        <div className="flex flex-col w-[150px]">
+          <label htmlFor="return">Return</label>
+          <Input
+            id="return"
+            value={isReturnChecked && date.to ? format(date.to, "d MMMM yyyy") : ""}
+            placeholder="Select date"
+            onFocus={() => isReturnChecked && toggleModal("to")}
+            className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
+            disabled={!isReturnChecked}
+            readOnly
+          />
+        </div>
+        <Switch checked={isReturnChecked} onCheckedChange={onSwitchChange} />
       </div>
-      <div className="flex flex-col">
-        <label htmlFor="departure">Departure</label>
-        <Popover open={isOpenPopover} onOpenChange={onTogglePopover}>
-          <PopoverTrigger asChild>
-            <Input
-              id="departure"
-              value={date?.from ? format(date.from, "d MMMM yyyy") : ""}
-              placeholder="Select date"
-              className="w-[150px] border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
-              readOnly
-            />
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" side="bottom" align="start">
-            <Calendar
-              initialFocus
-              defaultMonth={date?.from || new Date()}
-              mode={isReturnChecked ? "range" : "single"}
-              selected={isReturnChecked ? date : date?.from}
-              onSelect={onSelectDate}
-              numberOfMonths={2}
-              pagedNavigation={isReturnChecked} // Ensures correct pagination
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
-      <div>
-        <label htmlFor="return">Return</label>
-        <Input
-          id="return"
-          value={
-            isReturnChecked && date?.to ? format(date?.to, "d MMMM yyyy") : ""
-          }
-          placeholder="Select date"
-          className="w-[150px] border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
-          disabled={!isReturnChecked}
-          readOnly
-        />
-      </div>
-      <Switch
-        checked={isReturnChecked}
-        onCheckedChange={(checked) => {
-          onSwitchChange(checked);
-          if (!checked) {
-            // Reset return date when switching off
-            onSelectDate({ from: date?.from, to: undefined });
-          }
-        }}
-      />
+
+      {/* Modal */}
+      {isModalOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setIsModalOpen(false)}
+          ></div>
+
+          <div
+            className="absolute bg-white px-4 shadow-lg rounded-lg w-[90vw] md:w-[600px] max-h-[400px] z-50"
+            ref={modalRef}
+            style={getModalStyles()}
+          >
+            <div className="mt-4">
+              <Calendar
+                initialFocus
+                defaultMonth={date?.from}
+                mode={isReturnChecked ? "range" : "single"}
+                numberOfMonths={2}
+                selected={date}
+                onSelect={(selectedDate) => {
+                  onSelectDate(selectedDate);
+                  setIsModalOpen(false);
+                }}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
-export default DateInput;
+export default DateInputNew;

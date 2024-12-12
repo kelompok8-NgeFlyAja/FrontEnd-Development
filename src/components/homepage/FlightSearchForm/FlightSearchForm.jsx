@@ -19,10 +19,14 @@ function FlightSearchForm() {
     setToCity(temp);
   };
 
-  const handleSelectDate = (selectedDate) => {
-    setDate({ from: selectedDate, to: selectedDate });
-    setIsOpenPopoverDate(!isOpenPopoverDate);
+  const handleSelectDate = (selectedDate, field) => {
+    if (field === "from") {
+      setDate({ ...date, from: selectedDate });
+    } else if (field === "to") {
+      setDate({ ...date, to: selectedDate });
+    }
   };
+  
 
   const onFromChange = (e) => {
     setFromCity(e); 

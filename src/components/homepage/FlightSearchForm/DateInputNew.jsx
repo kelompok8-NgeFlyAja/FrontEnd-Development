@@ -3,14 +3,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { Switch } from "@radix-ui/react-switch";
+import { Switch } from "@/components/ui/switch";
 
-const DateInputNew = ({
-  date,
-  isReturnChecked,
-  onSelectDate,
-  onSwitchChange,
-}) => {
+const DateInputNew = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeField, setActiveField] = useState(null);
   const modalRef = useRef(null);
@@ -70,7 +65,7 @@ const DateInputNew = ({
           ></div>
 
           <div
-            className="absolute bg-white px-4 py-4 shadow-lg rounded-lg w-[90vw] md:w-[600px] max-h-[400px] z-50"
+            className="absolute bg-white px-4 shadow-lg rounded-lg w-[90vw] md:w-[600px] max-h-[400px] z-50"
             ref={modalRef}
             style={getModalStyles()}
           >
@@ -78,11 +73,11 @@ const DateInputNew = ({
               <Calendar
                 initialFocus
                 defaultMonth={date?.from}
-                mode={isReturnChecked ? "range" : "single"}
+                mode={"single"}
                 numberOfMonths={2}
-                selected={date}
+                selected={activeField === "from" ? date.from : date.to}
                 onSelect={(selectedDate) => {
-                  onSelectDate(selectedDate);
+                  onSelectDate(selectedDate, activeField); // Pass the selected date and field
                   setIsModalOpen(false);
                 }}
               />
@@ -93,5 +88,6 @@ const DateInputNew = ({
     </div>
   );
 };
+
 
 export default DateInputNew;
