@@ -44,7 +44,7 @@ function PassengerInput() {
           <Input
             id="passengers"
             placeholder="Select Passengers"
-            value={`${totalPassengers} Passenger${totalPassengers > 1 ? "s" : ""}`}
+            value={`${totalPassengers} Penumpang`}
             onFocus={toggleModal}
             className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
             readOnly
@@ -62,38 +62,36 @@ function PassengerInput() {
 
           <div
             className="absolute bg-white px-4 py-4 shadow-lg rounded-lg w-[70vw] md:w-[400px] max-h-[300px] z-50"
-            onClick={handleModalClick} // Prevent modal close on interaction inside the modal
+            onClick={handleModalClick}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-bold">Select Passengers</h2>
+            <div className="flex justify-end">
               <button onClick={closeModal} className="text-gray-600">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+              <img
+                  src="/icons/x.svg"
+                  alt="Close"
+                  className="h-6 w-6 cursor-pointer"
+                />
               </button>
             </div>
 
             <div className="space-y-4">
               {/* Adults */}
               <div className="flex items-center justify-between">
-                <div>
-                  <strong>Adults</strong>
-                  <p className="text-sm text-gray-500">(12 years and older)</p>
+                <div className="flex row-auto" >
+                    <img
+                    src="/icons/adult.svg"
+                    alt="Close"
+                    className="mr-2"
+                    />
+                    <div>
+                        <strong>Dewasa</strong>
+                        <p className="text-sm text-gray-500">(12 tahun keatas)</p>
+                    </div>
                 </div>
                 <div className="flex items-center">
                   <button
                     type="button"
-                    className="px-2 py-1 border rounded"
+                    className="px-2 py-1 border border-violet-700 rounded"
                     onClick={() => decrement(setAdults, adults, 1)}
                   >
                     -
@@ -106,7 +104,7 @@ function PassengerInput() {
                   />
                   <button
                     type="button"
-                    className="px-2 py-1 border rounded"
+                    className="px-2 py-1 border border-violet-700 rounded"
                     onClick={() => increment(setAdults, adults)}
                   >
                     +
@@ -116,14 +114,21 @@ function PassengerInput() {
 
               {/* Children */}
               <div className="flex items-center justify-between">
-                <div>
-                  <strong>Children</strong>
-                  <p className="text-sm text-gray-500">(2 - 11 years)</p>
+                <div className="flex row-auto" >
+                    <img
+                    src="/icons/children.svg"
+                    alt="Close"
+                    className="mr-2"
+                    />
+                    <div>
+                    <strong>Anak</strong>
+                    <p className="text-sm text-gray-500">(2 - 11 tahun)</p>
+                    </div>
                 </div>
                 <div className="flex items-center">
                   <button
                     type="button"
-                    className="px-2 py-1 border rounded"
+                    className="px-2 py-1 border border-violet-700 rounded"
                     onClick={() => decrement(setChildrens, childrens)}
                   >
                     -
@@ -136,7 +141,7 @@ function PassengerInput() {
                   />
                   <button
                     type="button"
-                    className="px-2 py-1 border rounded"
+                    className="px-2 py-1 border border-violet-700 rounded"
                     onClick={() => increment(setChildrens, childrens)}
                   >
                     +
@@ -146,14 +151,21 @@ function PassengerInput() {
 
               {/* Infants */}
               <div className="flex items-center justify-between">
-                <div>
-                  <strong>Infants</strong>
-                  <p className="text-sm text-gray-500">(Under 2 years)</p>
+                <div className="flex row-auto" >
+                    <img
+                    src="/icons/baby.svg"
+                    alt="Close"
+                    className="mr-2"
+                    />
+                    <div>
+                    <strong>Bayi</strong>
+                    <p className="text-sm text-gray-500">(Dibawah 2 tahun)</p>
+                    </div>
                 </div>
                 <div className="flex items-center">
                   <button
                     type="button"
-                    className="px-2 py-1 border rounded"
+                    className="px-2 py-1 border border-violet-700 rounded"
                     onClick={() => decrement(setInfants, infants)}
                   >
                     -
@@ -166,7 +178,7 @@ function PassengerInput() {
                   />
                   <button
                     type="button"
-                    className="px-2 py-1 border rounded"
+                    className="px-2 py-1 border border-violet-700 rounded"
                     onClick={() => increment(setInfants, infants)}
                   >
                     +
@@ -177,10 +189,10 @@ function PassengerInput() {
 
             <div className="flex justify-end mt-4">
               <button
-                className="px-4 py-2 bg-purple-700 text-white rounded"
+                className="px-4 py-2 bg-violet-900 text-white rounded-lg"
                 onClick={closeModal}
               >
-                Save
+                Simpan
               </button>
             </div>
           </div>
