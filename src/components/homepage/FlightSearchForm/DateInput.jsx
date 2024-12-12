@@ -5,12 +5,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 
-const DateInputNew = ({
-  date,
-  isReturnChecked,
-  onSelectDate,
-  onSwitchChange,
-}) => {
+const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeField, setActiveField] = useState(null);
   const modalRef = useRef(null);
@@ -78,11 +73,11 @@ const DateInputNew = ({
               <Calendar
                 initialFocus
                 defaultMonth={date?.from}
-                mode={isReturnChecked ? "range" : "single"}
+                mode={"single"}
                 numberOfMonths={2}
-                selected={date}
+                selected={activeField === "from" ? date.from : date.to}
                 onSelect={(selectedDate) => {
-                  onSelectDate(selectedDate);
+                  onSelectDate(selectedDate, activeField);
                   setIsModalOpen(false);
                 }}
               />
@@ -94,4 +89,5 @@ const DateInputNew = ({
   );
 };
 
-export default DateInputNew;
+
+export default DateInput;
