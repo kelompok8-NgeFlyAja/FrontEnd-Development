@@ -189,7 +189,7 @@ function PassengerInput() {
 
             <div className="flex justify-end mt-4">
               <button
-                className="px-4 py-2 bg-violet-900 text-white rounded-lg"
+                className="px-10 py-3 bg-violet-900 text-white rounded-lg"
                 onClick={closeModal}
               >
                 Simpan
