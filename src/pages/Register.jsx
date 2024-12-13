@@ -7,6 +7,7 @@ import "react-phone-input-2/lib/style.css";
 import useSend from "@/hooks/useSend";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
+import axios from "axios";
 
 const Register = () => {
   const { loading, sendData } = useSend();
@@ -16,13 +17,13 @@ const Register = () => {
   const [registerData, setRegisterData] = useState({
     name: "",
     email: "",
-    phone_number: "",
+    phoneNumber: "",
     password: "",
   });
   const [errors, setErrors] = useState({
     name: false,
     email: false,
-    phone_number: false,
+    phoneNumber: false,
     password: false,
   });
   const navigate = useNavigate();
@@ -33,14 +34,17 @@ const Register = () => {
     if (checkToken && checkToken !== "undefined") {
       navigate("/");
     }
+  }, []);
 
+  useEffect(() => {
     if (isSuccess) {
+      cookies.set("userEmail", registerData.email, { path: "/", maxAge: 3 * 60 * 60 });
       const timer = setTimeout(() => {
-        navigate("/login");
+        navigate("/otp");
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,7 +52,7 @@ const Register = () => {
   };
 
   const handlePhoneChange = (value) => {
-    setRegisterData((prev) => ({ ...prev, phone_number: value }));
+    setRegisterData((prev) => ({ ...prev, phoneNumber: value }));
   };
 
   const validateInputs = () => {
@@ -56,7 +60,7 @@ const Register = () => {
     const newErrors = {
       name: false,
       email: false,
-      phone_number: false,
+      phoneNumber: false,
       password: false,
     };
     let errorMessage = "";
@@ -64,7 +68,7 @@ const Register = () => {
     if (
       registerData.name.trim() === "" &&
       registerData.email.trim() === "" &&
-      registerData.phone_number.trim() === "" &&
+      registerData.phoneNumber.trim() === "" &&
       registerData.password.trim() === ""
     ) {
       errorMessage = "Masukkan Data Anda!";
@@ -87,8 +91,8 @@ const Register = () => {
         valid = false;
       }
 
-      if (registerData.phone_number.trim() === "") {
-        newErrors.phone_number = true;
+      if (registerData.phoneNumber.trim() === "") {
+        newErrors.phoneNumber = true;
         errorMessage = "Field Telepon Tidak Boleh Kosong!";
         valid = false;
       }
@@ -111,28 +115,35 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     if (validateInputs()) {
       try {
-        const response = await sendData(
-          "/api/v1/auth/register",
-          "POST",
-          registerData
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URI}/register`,
+          registerData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
-        if (response && response.statusCode === 201) {
+  
+        if (response.status === 201) {
           setIsSuccess(true);
           setMessage("Register berhasil!");
         } else {
           setIsSuccess(false);
-          setMessage(`${response.data.message}`);
+          setMessage(response.data.message || "Terjadi kesalahan.");
         }
       } catch (err) {
-        if (err.statusCode === 500) {
+        if (err.response && err.response.status === 500) {
           navigate("/error");
         } else {
-          console.log(err);
+          console.error(err);
           setIsSuccess(false);
-          setMessage("Something went wrong. Please try again.");
+          setMessage(
+            err.response?.data.message || "Something went wrong. Please try again."
+          );
         }
       }
     } else {
@@ -254,7 +265,7 @@ const Register = () => {
             </label>
             <PhoneInput
               country={"id"}
-              value={registerData.phone_number}
+              value={registerData.phoneNumber}
               onChange={handlePhoneChange}
               inputProps={{
                 name: "telepon",
@@ -263,7 +274,7 @@ const Register = () => {
               }}
               containerClass="w-full"
               inputClass={`w-full bg-gray-50 border border ${
-                errors.phone_number ? "text-red-500" : "text-gray-900"
+                errors.phoneNumber ? "text-red-500" : "text-gray-900"
               }  sm:text-sm rounded-lg p-2.5`}
             />
           </motion.div>
