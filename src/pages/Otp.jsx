@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
 import useSend from "@/hooks/useSend";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const Otp = () => {
   const { loading, sendData } = useSend();
@@ -17,28 +18,19 @@ const Otp = () => {
   const [isSuccess, setIsSuccess] = useState(null);
   const navigate = useNavigate();
   const cookies = new Cookies();
-
+  
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const checkToken = cookies.get("token");
-        if (!checkToken || checkToken === "undefined") {
-          navigate("/");
-          return;
-        }
-        const decoded = jwtDecode(checkToken);
-        if (decoded.isVerified) {
-          navigate("/account");
-        } else {
-          setEmail(decoded.email);
-        }
-      } catch (err) {
-        console.log(err);
-        navigate("/");
-      }
-    };
+    const userEmail = cookies.get("userEmail");
+    const checkToken = cookies.get("token");
+    if (checkToken && checkToken !== "undefined") {
+      navigate("/");
+    }
 
-    fetchData();
+    if (!userEmail || userEmail === "undefined") {
+      navigate("/register");
+    } else {
+      setEmail(userEmail);
+    }
   }, []);
 
   useEffect(() => {
@@ -56,7 +48,7 @@ const Otp = () => {
   useEffect(() => {
     if (isSuccess) {
       const timer = setTimeout(() => {
-        cookies.remove("token");
+        cookies.remove("userEmail", { path: "/" });
         navigate(`/login`);
       }, 3000);
       return () => clearTimeout(timer);
@@ -65,41 +57,54 @@ const Otp = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
     try {
       const otpString = otp.join("");
-      const sendVerify = { email, otp: otpString };
-      const response = await sendData(
-        "/api/v1/auth/verify",
-        "POST",
-        sendVerify
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URI}/verify-otp`,
+        { otp: otpString }
       );
-      if (response && response.statusCode === 200) {
+  
+      if (response.status === 200) {
         setIsSuccess(true);
-        setMessage(`${response.message}`);
+        setMessage(response.data.message);
       } else {
         setIsSuccess(false);
-        setMessage(`${response.message}`);
+        setMessage(response.data.message || "Verification failed");
       }
-    } catch (err) {
-      if (err.statusCode === 500) {
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
         navigate("/error");
-      } else {
-        console.log(err);
+      } else if(error.response && error.response.status === 400){
+        setMessage(error.response.data.message || "Failed to resend OTP.");
+      }else{
+        console.error("Error verifying OTP:", error);
+        setMessage("An unexpected error occurred.");
       }
     }
   };
 
   const handleResend = async () => {
     try {
-      const resendOTP = await sendData("/api/v1/auth/resend-otp", "POST", {
-        email: email,
-      });
-      setCountdown(60);
-    } catch (err) {
-      if (err.statusCode === 500) {
-        navigate("/error");
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URI}/resend-otp`,
+        { email }
+      );
+  
+      if (response.status === 200) {
+        setCountdown(60);
+        setMessage("OTP has been resent. Please check your email.");
       } else {
-        console.log(err);
+        setMessage(response.data.message || "Failed to resend OTP.");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        navigate("/error");
+      } else if(error.response && error.response.status === 400){
+        setMessage(error.response.data.message || "Failed to resend OTP.");
+      }else{
+        console.error("Error resending OTP:", error);
+        setMessage("An unexpected error occurred.");
       }
     }
   };
