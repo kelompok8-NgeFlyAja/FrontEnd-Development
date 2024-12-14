@@ -3,6 +3,7 @@ import Homepage from "./pages/Homepage";
 import Search from "./pages/Search";
 import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
+import VerifyToken from "./pages/VerifyToken";
 import Reset from "./pages/Reset";
 import Register from "./pages/Register";
 import Otp from "./pages/Otp";
@@ -28,7 +29,11 @@ const router = createBrowserRouter([
     element: <Send />,
   },
   {
-    path: "/reset-password",
+    path: "/verify-token/:token",
+    element: <VerifyToken />,
+  },
+  {
+    path: "/reset-password/:token",
     element: <Reset />,
   },
   {

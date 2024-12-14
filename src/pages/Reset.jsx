@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams, useParams } from "react-router-dom";
 
 import { IoMdArrowRoundBack, IoMdCheckmarkCircle } from "react-icons/io";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import useSend from "@/hooks/useSend";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
+import axios from "axios";
 
 const Reset = () => {
   const [searchParams] = useSearchParams();
+  const { token } = useParams();
   const { loading, sendData } = useSend();
   const [isSuccess, setIsSuccess] = useState(null);
   const [message, setMessage] = useState("");
@@ -16,29 +18,20 @@ const Reset = () => {
   const [showConfPassword, setShowConfPassword] = useState(false);
   const [newPassword, setNewPassword] = useState({
     password: "",
-    confPassword: "",
+    confirmPassword: "",
   });
   const [errors, setErrors] = useState({
     password: false,
-    confPassword: false,
+    confirmPassword: false,
   });
   const navigate = useNavigate();
   const cookies = new Cookies();
 
   useEffect(() => {
-    const checkToken = cookies.get("token");
-    if (checkToken && checkToken !== "undefined") {
-      navigate("/");
-    }
-
-    if (
-      searchParams.size === 0 &&
-      !searchParams.has("rpkey") &&
-      searchParams.get("rpkey") == null
-    ) {
+    if (!token) {
       navigate("/login");
     }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -62,36 +55,37 @@ const Reset = () => {
       setErrors((prevErrors) => ({ ...prevErrors, password: false }));
     }
 
-    if (newPassword.password !== newPassword.confPassword) {
-      setErrors((prevErrors) => ({ ...prevErrors, confPassword: true }));
+    if (newPassword.password !== newPassword.confirmPassword) {
+      setErrors((prevErrors) => ({ ...prevErrors, confirmPassword: true }));
       setIsSuccess(false);
       setMessage("Password tidak cocok!");
       hasError = true;
     } else {
-      setErrors((prevErrors) => ({ ...prevErrors, confPassword: false }));
+      setErrors((prevErrors) => ({ ...prevErrors, confirmPassword: false }));
     }
 
     if (!hasError) {
       try {
-        const response = await sendData(
-          `/api/v1/auth/reset-password?rpkey=${searchParams.get("rpkey")}`,
-          "PUT",
-          newPassword
-        );
-        if (response && response.statusCode === 200) {
+        const newPasswordData = {
+          newPassword: newPassword.password,
+          confirmPassword: newPassword.confirmPassword
+        }
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/reset-password/${token}`, newPasswordData);
+
+        if (response && response.data.statusCode === 200) {
           setIsSuccess(true);
-          setMessage("Reset password berhasil!");
+          setMessage(  response.data.message || "Reset password berhasil!");
         } else {
           setIsSuccess(false);
-          setMessage("Invalid Token");
+          setMessage(  response.data.message || "Invalid Token");
         }
       } catch (err) {
-        if (err.statusCode === 500) {
+        if (err.response.status === 500) {
           navigate("/error");
         } else {
           console.log(err);
           setIsSuccess(false);
-          setMessage("Something went wrong. Please try again.");
+          setMessage(  err.response.data.message || "Something went wrong. Please try again.");
         }
       }
     } else {
@@ -207,7 +201,7 @@ const Reset = () => {
             transition={{ duration: 0.5, delay: 1 }}
           >
             <label
-              htmlFor="confPassword"
+              htmlFor="confirmPassword"
               className="flex justify-between mb-2 text-xs text-black"
             >
               Ulangi Password Baru
@@ -215,13 +209,13 @@ const Reset = () => {
             <div className="relative">
               <input
                 type={showConfPassword ? "text" : "password"}
-                name="confPassword"
-                id="confPassword"
+                name="confirmPassword"
+                id="confirmPassword"
                 placeholder="Konfirmasi Password"
                 className={`bg-gray-50 border ${
-                  errors.confPassword ? "border-red-500" : "border-gray-300"
+                  errors.confirmPassword ? "border-red-500" : "border-gray-300"
                 } text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:border-cyan-500`}
-                value={newPassword.confPassword}
+                value={newPassword.confirmPassword}
                 onChange={handleChange}
                 required
                 autoComplete="current-password"

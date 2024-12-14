@@ -4,6 +4,7 @@ import { IoMdArrowRoundBack, IoMdCheckmarkCircle } from "react-icons/io";
 import useSend from "@/hooks/useSend";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
+import axios from "axios";
 
 const Send = () => {
   const { loading, sendData } = useSend();
@@ -62,46 +63,33 @@ const Send = () => {
     event.preventDefault();
     if (validateForgotPwd()) {
       try {
-        const response = await sendData("/api/v1/auth/reset-password", "POST", {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/verify-email`, {
           email: login.email,
         });
-        if (response.statusCode === 400) {
+  
+        if (response.data.statusCode === 400) {
           setIsSuccess(false);
-          setMessage(response.message);
+          setMessage(response.data.message);
         } else {
-          const check = await sendData(
-            `/api/v1/auth/reset-password?rpkey=${response.data.data.token}`,
-            "GET"
-          );
-          if (check) {
-            if (check.statusCode === 200) {
-              setIsSuccess(true);
-              setResetToken(response.data.data.token);
-              setMessage("Tautan reset password terkirim");
-            } else {
-              setMessage("Tautan invalid atau kadaluarsa");
-              setIsSuccess(false);
-            }
-          } else {
-            setIsSuccess(false);
-            setMessage("Tautan invalid atau kadaluarsa");
-          }
+          setIsSuccess(true);
+          setResetToken(response.data.token);
+          setMessage("Tautan reset password terkirim ke email Anda.");
         }
       } catch (err) {
-        if (err.statusCode === 500) {
+        if (err.response?.status === 500) {
           navigate("/error");
         } else {
-          console.log(err);
+          console.error(err);
           setIsSuccess(false);
-          setMessage("Something went wrong. Please try again.");
+          setMessage(err.response?.data?.message || "Terjadi kesalahan, coba lagi.");
         }
       }
     } else {
       setIsSuccess(false);
-      setMessage("Something went wrong. Please try again.");
+      setMessage("Pastikan semua data valid sebelum mengirim.");
     }
   };
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLogin((prev) => ({ ...prev, [name]: value }));
