@@ -5,9 +5,9 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import useSend from "@/hooks/useSend";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
+import axios from "axios";
 
 const Login = () => {
-  const { loading, sendData } = useSend();
   const [isSuccess, setIsSuccess] = useState(null);
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +19,7 @@ const Login = () => {
     email: false,
     password: false,
   });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const cookies = new Cookies();
 
@@ -27,7 +28,7 @@ const Login = () => {
     if (checkToken && checkToken !== "undefined") {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -40,8 +41,9 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     try {
-      const response = await sendData("/login", "POST", login);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/login`, login);
 
       if (response.data && response.data.accessToken) {
         cookies.set("token", response.data.accessToken, {
@@ -49,25 +51,26 @@ const Login = () => {
           expires: new Date(Date.now() + 43200000),
         });
         setIsSuccess(true);
-        setMessage(`${response.message}`);
+        setMessage(response.data.message || "Login successful");
         setErrors({ email: false, password: false });
       } else {
         setIsSuccess(false);
-        setMessage(`${response.message}`);
-        if (response.statusCode === 401) {
+        setMessage(response.data.message || "Login failed");
+
+        if (response.status === 401) {
           setErrors({ email: false, password: true });
-        } else if (response.statusCode === 400) {
+        } else if (response.status === 400) {
           setErrors({ email: true, password: false });
         } else {
           setErrors({ email: true, password: true });
         }
       }
     } catch (err) {
-      if (err.statusCode === 500) {
-        navigate("/error");
-      } else {
-        console.log(err);
-      }
+      console.error(err);
+      setIsSuccess(false);
+      setMessage(err.response.data.message || "An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
