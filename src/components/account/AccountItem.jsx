@@ -46,7 +46,7 @@ const AccountItem = ({
               className="bg-white border border-gray-300 p-4 rounded-b-xl"
             >
               <div className="flex flex-col gap-4 mb-5">
-                <div className="flex items-center gap-2 mx-auto">
+                {/* <div className="flex items-center gap-2 mx-auto">
                   <div className="relative">
                     <img
                       src={profile.current_image}
@@ -62,7 +62,7 @@ const AccountItem = ({
                       className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
                     />
                   </div>
-                </div>
+                </div> */}
                 <div className="flex flex-col">
                   <label
                     htmlFor="name"
@@ -88,8 +88,8 @@ const AccountItem = ({
                     Telepon
                   </label>
                   <PhoneInput
-                    id="telepon"
                     country={"id"}
+                    id="telepon"
                     value={profile.telepon}
                     onChange={(telepon) =>
                       setProfile((prev) => ({ ...prev, telepon }))

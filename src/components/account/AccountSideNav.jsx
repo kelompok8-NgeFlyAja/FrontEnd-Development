@@ -21,7 +21,7 @@ const AccountSideNav = ({ activeSection, setActiveSection, handleLogout }) => {
         />
         <p>Ubah Profil</p>
       </button>
-      <button
+      {/* <button
         onClick={() => setActiveSection("settings")}
         className={`flex gap-4 items-center p-2 rounded-lg ${
           activeSection === "settings"
@@ -35,7 +35,7 @@ const AccountSideNav = ({ activeSection, setActiveSection, handleLogout }) => {
           }  text-xl`}
         />
         <p className="text-left">Pengaturan Akun</p>
-      </button>
+      </button> */}
       <button
         onClick={handleLogout}
         className={`flex gap-4 items-center p-2 rounded-lg ${

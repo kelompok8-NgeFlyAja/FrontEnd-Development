@@ -13,10 +13,10 @@ const AccountSideNavSkeleton = () => {
         <div className="h-6 w-6 bg-gray-400 rounded-full"></div>
         <div className="h-5 w-24 bg-gray-400 rounded-full"></div>
       </div>
-      <div className="animate-pulse flex gap-4 items-center p-2 rounded-lg bg-gray-100">
+      {/* <div className="animate-pulse flex gap-4 items-center p-2 rounded-lg bg-gray-100">
         <div className="h-6 w-6 bg-gray-400 rounded-full"></div>
         <div className="h-5 w-24 bg-gray-400 rounded-full"></div>
-      </div>
+      </div> */}
       <div className="animate-pulse flex gap-4 items-center p-2 rounded-lg bg-gray-100">
         <div className="h-6 w-6 bg-gray-400 rounded-full"></div>
         <div className="h-5 w-24 bg-gray-400 rounded-full"></div>

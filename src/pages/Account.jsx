@@ -12,6 +12,7 @@ import AccountSkeleton from "@/components/account/AccountContentSkeleton";
 import AccountSideNavSkeleton from "@/components/account/AccountSideNavSkeleton";
 import { jwtDecode } from "jwt-decode";
 import useSend from "@/hooks/useSend";
+import axios from "axios";
 
 const Account = () => {
   const { loading, sendData } = useSend();
@@ -23,14 +24,21 @@ const Account = () => {
   const [isVerify, setIsVerify] = useState(null);
   const [activeSection, setActiveSection] = useState("profile");
   const [profile, setProfile] = useState({
-    current_image: "",
-    images: "",
+    // current_image: "",
+    // images: "",
     name: "John Doe", // Default name
     telepon: "1234567890", // Default phone number
     email: "johndoe@example.com", // Default email
   });
   const navigate = useNavigate();
   const cookies = new Cookies();
+
+  useEffect(() => {
+    const checkToken = cookies.get("token");
+    if (!checkToken) {
+      navigate("/login");
+    }
+  }, [isLoggedOut]);
 
   useEffect(() => {
     // Skip token check to allow access without login
@@ -52,9 +60,9 @@ const Account = () => {
       // Simulate an API response, or use a real API here
       const response = await sendData(`/api/v1/user/${accountId}`, "GET");
       setProfile({
-        current_image:
-          response.data.data.user.image_url || "/placeholder-avatar.png",
-        images: response.data.data.user.image_url || "/placeholder-avatar.png",
+        // current_image:
+        //   response.data.data.user.image_url || "/placeholder-avatar.png",
+        // images: response.data.data.user.image_url || "/placeholder-avatar.png",
         name: response.data.data.user.name,
         telepon: response.data.data.user.phone_number,
         email: response.data.data.user.email,
@@ -71,7 +79,7 @@ const Account = () => {
 
   const handleLogout = async (event) => {
     setActiveSection("logout");
-    cookies.remove("token");
+    cookies.remove("userEmail", { path: "/" });
     setIsLoggedOut(true);
   };
 
@@ -87,48 +95,69 @@ const Account = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!profile.name) {
       toast.error("Name cannot be empty");
       return;
     }
-
+  
     if (!profile.telepon) {
       toast.error("Telepon cannot be empty");
       return;
     }
-
+  
     if (!profile.email) {
       toast.error("Email cannot be empty");
       return;
     }
-
+  
     if (!validateEmail(profile.email)) {
       toast.error("Invalid email format");
       return;
     }
-
+  
     setWaiting(true);
-
+  
     try {
+      const cookies = new Cookies();
       const token = cookies.get("token");
-      const response = await sendData(
-        `/api/v1/user/${accountId}`,
-        "PATCH",
-        profile,
-        token,
-        false,
-        true
-      );
+      const userData = {
+        name: profile.name,
+        phoneNumber: profile.telepon,
+        email: profile.email,
+      };
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URI}/update-user`, userData, config);
+  
       setTimeout(() => {
+        setProfile({
+          name: response.data.data.name || "Unknown",
+          telepon: response.data.data.phoneNumber || "Not provided",
+          email: response.data.data.email || "Not provided",
+        });
         setWaiting(false);
         toast.success("Profile saved successfully");
       }, 3000);
     } catch (error) {
       setTimeout(() => {
-        toast.error(error.response.message);
         setWaiting(false);
       }, 3000);
+
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.error || "Invalid input data.");
+      } else if (error.response && error.response.status === 401) {
+        toast.error("Unauthorized. Please log in again.");
+      } else if (error.response && error.response.status === 500) {
+        toast.error("Server error. Please try again later.");
+      } else {
+        toast.error(error.response.data.error || "An unexpected error occurred.");
+      }
     }
   };
 
