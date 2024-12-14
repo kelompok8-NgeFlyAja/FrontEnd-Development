@@ -76,8 +76,10 @@ const Otp = () => {
       if (error.response && error.response.status === 500) {
         navigate("/error");
       } else if(error.response && error.response.status === 400){
+        setIsSuccess(false);
         setMessage(error.response.data.message || "Failed to resend OTP.");
       }else{
+        setIsSuccess(false);
         console.error("Error verifying OTP:", error);
         setMessage("An unexpected error occurred.");
       }
@@ -93,17 +95,21 @@ const Otp = () => {
   
       if (response.status === 200) {
         setCountdown(60);
+        setIsSuccess(true);
         setMessage("OTP has been resent. Please check your email.");
       } else {
+        setIsSuccess(false);
         setMessage(response.data.message || "Failed to resend OTP.");
       }
     } catch (error) {
       if (error.response && error.response.status === 500) {
         navigate("/error");
       } else if(error.response && error.response.status === 400){
+        setIsSuccess(false);
         setMessage(error.response.data.message || "Failed to resend OTP.");
       }else{
         console.error("Error resending OTP:", error);
+        setIsSuccess(false);
         setMessage("An unexpected error occurred.");
       }
     }
@@ -164,21 +170,21 @@ const Otp = () => {
           </div>
         </div>
         {isSuccess !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="flex justify-center mt-4"
-          >
-            <div
-              className={`${
-                isSuccess ? "bg-[#73CA5C]" : "bg-[#FF0000]"
-              } text-center text-white text-sm font-medium px-6 py-4 rounded-xl inline-block`}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="flex justify-center mt-4"
             >
-              <h1>{message}</h1>
-            </div>
-          </motion.div>
-        )}
+              <div
+                className={`${
+                  isSuccess ? "bg-[#73CA5C]" : "bg-[#FF0000]"
+                } text-center text-white text-sm font-medium px-6 py-4 rounded-xl inline-block`}
+              >
+                <h1>{message}</h1>
+              </div>
+            </motion.div>
+          )}
       </div>
     </>
   );
