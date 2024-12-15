@@ -13,7 +13,7 @@ const Otp = () => {
   const { loading, sendData } = useSend();
   const [email, setEmail] = useState(null);
   const [otp, setOtp] = useState(new Array(6).fill(""));
-  const [countdown, setCountdown] = useState(0);
+  const [countdown, setCountdown] = useState(900);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(null);
   const navigate = useNavigate();
@@ -43,6 +43,14 @@ const Otp = () => {
   const maskEmail = (email) => {
     const [localPart, domain] = email.split("@");
     return `${localPart.charAt(0)}*****@${domain}`;
+  };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return minutes > 0
+      ? `${minutes} menit ${seconds} detik`
+      : `${seconds} detik`;
   };
 
   useEffect(() => {
@@ -94,7 +102,7 @@ const Otp = () => {
       );
   
       if (response.status === 200) {
-        setCountdown(60);
+        setCountdown(900);
         setIsSuccess(true);
         setMessage("OTP has been resent. Please check your email.");
       } else {
@@ -148,7 +156,7 @@ const Otp = () => {
                 </div>
                 <p className="text-center w-full text-sm">
                   {countdown > 0 ? (
-                    <>Kirim Ulang OTP dalam {countdown} detik</>
+                    <>Kirim Ulang OTP dalam {formatTime(countdown)}</>
                   ) : (
                     <button
                       type="button"
