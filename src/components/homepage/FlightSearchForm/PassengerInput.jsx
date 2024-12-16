@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 
-function PassengerInput() {
+function PassengerInput({ onPassengerChange }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [adults, setAdults] = useState(1);
   const [childrens, setChildrens] = useState(0);
@@ -31,6 +31,10 @@ function PassengerInput() {
   const handleModalClick = (e) => {
     e.stopPropagation();
   };
+
+  useEffect(() => {
+    onPassengerChange({ adults, childrens, infants });
+  }, [adults, childrens, infants, onPassengerChange]);
 
   return (
     <div className="ps-14 relative">

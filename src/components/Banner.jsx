@@ -1,13 +1,13 @@
 export default function Banner() {
   return (
     <div className="relative">
-      {/* Background Gradient */}
+
       <div
         className="absolute left-0 right-0 w-full h-[150px]"
         style={{
           background: "linear-gradient(to right, #7126B580, #E2D4F0)",
           top: "50%",
-          transform: "translateY(-50%)", // Memastikan gradien berada di tengah gambar
+          transform: "translateY(-50%)",
         }}
       ></div>
 

@@ -28,4 +28,44 @@ const getFavoriteDestinations = async (page = 1, limit = 5, filters = {}) => {
   }
 };
 
-export { getFavoriteDestinations };
+const searchFlights = async ({
+  departureAirportCode,
+  arrivalAirportCode,
+  departureTime,
+  seatClasses,
+  adultPassenger,
+  childPassenger,
+  babyPassenger,
+}) => {
+  try {
+    const response = await axiosInstance.get("/search-flights", {
+      params: {
+        departureAirportCode,
+        arrivalAirportCode,
+        departureTime,
+        seatClasses,
+        adultPassenger,
+        childPassenger,
+        babyPassenger,
+      },
+    });
+
+    if (response.data) {
+      return {
+        success: true,
+        data: response.data,
+      };
+    }
+    return {
+      success: false,
+      message: response.data?.message || "Failed to fetch flight data",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || "An error occurred",
+    };
+  }
+};
+
+export { getFavoriteDestinations, searchFlights };

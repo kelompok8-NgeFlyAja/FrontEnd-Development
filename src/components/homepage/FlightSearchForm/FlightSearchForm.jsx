@@ -12,12 +12,18 @@ function FlightSearchForm() {
   const [isOpenPopoverDate, setIsOpenPopoverDate] = useState(false);
   const [fromCity, setFromCity] = useState("");
   const [toCity, setToCity] = useState("");
+  const [fromAirportCode, setFromAirportCode] = useState(""); // Added state
+  const [toAirportCode, setToAirportCode] = useState(""); // Added state
   const [isReturnChecked, setIsReturnChecked] = useState(false);
+  const [seatClass, setSeatClass] = useState("Economy");
 
   const handleSwitchCities = () => {
-    const temp = fromCity;
+    const tempCity = fromCity;
+    const tempCode = fromAirportCode;
     setFromCity(toCity);
-    setToCity(temp);
+    setToCity(tempCity);
+    setFromAirportCode(toAirportCode);
+    setToAirportCode(tempCode);
   };
 
   const handleSelectDate = (selectedDate, field) => {
@@ -27,14 +33,34 @@ function FlightSearchForm() {
       setDate({ ...date, to: selectedDate });
     }
   };
-  
 
-  const onFromChange = (e) => {
-    setFromCity(e); 
+  const handleSeatClassChange = (newClass) => {
+    setSeatClass(newClass);
   };
 
-  const onToChange = (e) => {
-    setToCity(e); 
+  const [passengerCounts, setPassengerCounts] = useState({
+    adults: 1,
+    childrens: 0,
+    infants: 0,
+  });
+
+  const handlePassengerChange = (counts) => {
+    setPassengerCounts(counts);
+  };
+
+  const handleSearchClick = () => {
+    const searchParams = new URLSearchParams({
+      departureAirportCode: fromAirportCode,
+      arrivalAirportCode: toAirportCode,
+      departureTime: date.from.toISOString().split("T")[0], // Format as yyyy-mm-dd
+      seatClasses: seatClass,
+      adultPassenger: passengerCounts.adults.toString(),
+      childPassenger: passengerCounts.childrens.toString(),
+      babyPassenger: passengerCounts.infants.toString(),
+    });
+
+    // Debugging output
+    console.log("Search URL:", `/search-flights?${searchParams.toString()}`);
   };
 
   return (
@@ -48,8 +74,10 @@ function FlightSearchForm() {
           <LocationInput
             fromValue={fromCity}
             toValue={toCity}
-            onFromChange={onFromChange}
-            onToChange={onToChange}    
+            onFromChange={setFromCity}
+            onToChange={setToCity}
+            onFromAirportCodeChange={setFromAirportCode}
+            onToAirportCodeChange={setToAirportCode} 
             onSwitch={handleSwitchCities}
           />
           <div className="flex items-center gap-8 mt-9">
@@ -61,13 +89,17 @@ function FlightSearchForm() {
               onSelectDate={handleSelectDate}
               onSwitchChange={() => setIsReturnChecked(!isReturnChecked)}
             />
-            <PassengerInput />
-            <SeatClassInput />
+            <PassengerInput 
+            onPassengerChange={handlePassengerChange}
+            />
+            <SeatClassInput 
+            onClassSelect={handleSeatClassChange} 
+            />
           </div>
         </div>
         <Button
-          type="button" 
-          onClick={() => navigate("/search")}
+          type="button"
+          onClick={handleSearchClick}
           className="bg-[#7126B5] text-white w-full py-3 rounded-b-md rounded-t-none"
         >
           Cari Penerbangan

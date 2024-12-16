@@ -9,10 +9,12 @@ const LocationInput = ({
   onFromChange,
   onToChange,
   onSwitch,
+  onFromAirportCodeChange,
+  onToAirportCodeChange,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeField, setActiveField] = useState(null);
-  const fromInputRef = useRef(null); // Restored this line
+  const fromInputRef = useRef(null);
   const [airportsData, setAirportsData] = useState([]);
   const [filteredAirports, setFilteredAirports] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -128,12 +130,12 @@ const LocationInput = ({
                 />
               </button>
             </div>
-              <div className="mt-4 max-h-52 overflow-auto">
+            <div className="mt-4 max-h-52 overflow-auto">
               {loading ? (
-              <p>Loading airports...</p>
-                ) : error ? (
+                <p>Loading airports...</p>
+              ) : error ? (
                 <p>Error: {error}</p>
-                ) : (
+              ) : (
                 filteredAirports.map((airport) => (
                   <div
                     key={airport.id}
@@ -142,8 +144,10 @@ const LocationInput = ({
                       const formattedValue = `${airport.name} (${airport.airportCode})`;
                       if (activeField === "from") {
                         onFromChange(formattedValue);
+                        onFromAirportCodeChange(airport.airportCode); 
                       } else if (activeField === "to") {
                         onToChange(formattedValue);
+                        onToAirportCodeChange(airport.airportCode);
                       }
                       setIsModalOpen(false);
                     }}
@@ -159,7 +163,7 @@ const LocationInput = ({
                     </span>
                   </div>
                 ))
-            )}
+              )}
             </div>
           </div>
         </>
