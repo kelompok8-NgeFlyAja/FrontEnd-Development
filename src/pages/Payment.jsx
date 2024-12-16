@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import PaymentMethod from "@/components/payment/PaymentMethod";
@@ -9,7 +9,6 @@ import FlightDetails from "@/components/checkout/FlightDetails";
 import CheckoutPricing from "@/components/checkout/CheckoutPricing";
 import { flightDetails } from "../lib/flightDummy";
 import { passenger } from "@/lib/generatePassenger";
-import Passenger from "@/components/checkout/Passenger";
 
 const Payment = () => {
   const [isLogin, setIsLogin] = useState(true);

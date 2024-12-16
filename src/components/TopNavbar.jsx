@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdSearch, IoMdPerson, IoIosList } from "react-icons/io";
 import { FiBell } from "react-icons/fi";
@@ -40,32 +40,6 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await sendData(
-          `/api/v1/notification`,
-          "GET",
-          null,
-          cookies.get("token")
-        );
-        const notifications = response.data.data.notification.filter(
-          (notif) => notif.user_id !== null && notif.is_read === false
-        );
-        setNotifications(notifications.length);
-      } catch (err) {
-        if (err.statusCode === 500) {
-          navigate("/error");
-        } else {
-          console.log(err);
-        }
-      }
-    };
-    if (isLogin) {
-      fetchData();
-    }
-  }, [isLogin]);
-
   const clickOutsideModal = (e) => {
     if (e.target.id !== "dialog") {
       dialogRef.current.close();
@@ -95,7 +69,7 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
   };
 
   return (
-    <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50 py-4 px-4 xl:px-28 flex justify-between items-center">
+    <nav className="bg-white shadow-md sticky top-0 left-0 w-full z-50 py-4 px-4 xl:px-28 flex justify-between items-center">
       <div className="flex flex-1 gap-10 items-center">
         <a href="/" onClick={() => navigate("/")}>
           <img src="/logo.svg" alt="navbar logo" className="h-[53px]" />

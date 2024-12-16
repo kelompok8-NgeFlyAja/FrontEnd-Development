@@ -3,7 +3,7 @@ const Breadcrumbs = ({ isPayment, isSuccess }) => {
   return (
     <div className="w-full flex justify-center px-3">
 
-      <div className="py-5 text-lg mt-28 w-[850px] max-w-[850px]">
+      <div className="py-5 text-lg mt-4 w-[850px] max-w-[850px]">
         <ul className="flex gap-2">
           <li className="font-bold"> Isi Data Diri </li>
           <li
