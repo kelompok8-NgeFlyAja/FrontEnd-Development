@@ -4,6 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Switch } from "@/components/ui/switch";
+import { toast, ToastContainer } from "react-toastify"; // Correct import
+import "react-toastify/dist/ReactToastify.css"; // CSS import
 
 const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,6 +23,16 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
       left: "50%",
       transform: "translateX(-50%)",
     };
+  };
+
+  // Handle return date validation
+  const handleReturnDateChange = (selectedDate) => {
+    if (selectedDate && date.from && selectedDate < date.from) {
+      toast.error("Tanggal kembali tidak boleh sebelum tanggal berangkat!");
+    } else {
+      onSelectDate(selectedDate, activeField);
+      setIsModalOpen(false);
+    }
   };
 
   return (
@@ -77,17 +89,24 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
                 numberOfMonths={2}
                 selected={activeField === "from" ? date.from : date.to}
                 onSelect={(selectedDate) => {
-                  onSelectDate(selectedDate, activeField);
-                  setIsModalOpen(false);
+                  if (activeField === "to") {
+                    handleReturnDateChange(selectedDate); // Use validation for return date
+                  } else {
+                    onSelectDate(selectedDate, activeField);
+                    setIsModalOpen(false);
+                  }
                 }}
               />
             </div>
           </div>
         </>
       )}
+
+      <ToastContainer 
+      className="toast-position"
+      position="top-right"/>
     </div>
   );
 };
-
 
 export default DateInput;
