@@ -26,12 +26,12 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
   return (
     <div className="relative">
       <div className="flex gap-4 items-center">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 text-muted">
           <img src="/icons/date.svg" alt="Departure" />
           <Label>Date</Label>
         </div>
         <div className="flex flex-col w-[150px]">
-          <label htmlFor="departure">Departure</label>
+          <label className="text-muted" htmlFor="departure">Departure</label>
           <Input
             id="departure"
             value={date.from ? format(date.from, "d MMMM yyyy") : ""}
@@ -42,13 +42,13 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
           />
         </div>
         <div className="flex flex-col w-[150px]">
-          <label htmlFor="return">Return</label>
+          <label className="text-muted" htmlFor="return">Return</label>
           <Input
             id="return"
             value={isReturnChecked && date.to ? format(date.to, "d MMMM yyyy") : ""}
-            placeholder="Select date"
+            placeholder="Pilih Tanggal"
             onFocus={() => isReturnChecked && toggleModal("to")}
-            className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
+            className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0 placeholder-violet-900 placeholder-accent"
             disabled={!isReturnChecked}
             readOnly
           />

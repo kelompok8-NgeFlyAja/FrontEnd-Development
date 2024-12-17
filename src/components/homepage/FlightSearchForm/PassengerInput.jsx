@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@radix-ui/react-label";
+import { Label } from "@/components/ui/label";
 
 function PassengerInput({ onPassengerChange }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,12 +39,12 @@ function PassengerInput({ onPassengerChange }) {
   return (
     <div className="ps-14 relative">
       <div className="flex gap-4 items-center">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 text-muted">
           <img src="/icons/seat.svg" alt="Passengers" />
           <Label htmlFor="to">To</Label>
         </div>
         <div className="flex flex-col w-[150px]">
-          <label htmlFor="passengers">Passengers</label>
+          <label className="text-muted" htmlFor="passengers">Passengers</label>
           <Input
             id="passengers"
             placeholder="Select Passengers"
