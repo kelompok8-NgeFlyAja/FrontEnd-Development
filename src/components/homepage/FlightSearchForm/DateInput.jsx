@@ -4,8 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Switch } from "@/components/ui/switch";
-import { toast, ToastContainer } from "react-toastify"; // Correct import
-import "react-toastify/dist/ReactToastify.css"; // CSS import
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,7 +25,6 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
     };
   };
 
-  // Handle return date validation
   const handleReturnDateChange = (selectedDate) => {
     if (selectedDate && date.from && selectedDate < date.from) {
       toast.error("Tanggal kembali tidak boleh sebelum tanggal berangkat!");
@@ -90,7 +89,7 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
                 selected={activeField === "from" ? date.from : date.to}
                 onSelect={(selectedDate) => {
                   if (activeField === "to") {
-                    handleReturnDateChange(selectedDate); // Use validation for return date
+                    handleReturnDateChange(selectedDate);
                   } else {
                     onSelectDate(selectedDate, activeField);
                     setIsModalOpen(false);
