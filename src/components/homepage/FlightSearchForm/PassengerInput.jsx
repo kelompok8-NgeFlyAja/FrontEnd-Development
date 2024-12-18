@@ -70,7 +70,7 @@ function PassengerInput({ onPassengerChange }) {
           >
             <div className="flex justify-end">
               <button onClick={closeModal} className="text-gray-600">
-              <img
+                <img
                   src="/icons/x.svg"
                   alt="Close"
                   className="h-6 w-6 cursor-pointer"
@@ -81,16 +81,12 @@ function PassengerInput({ onPassengerChange }) {
             <div className="space-y-4">
               {/* Adults */}
               <div className="flex items-center justify-between">
-                <div className="flex row-auto" >
-                    <img
-                    src="/icons/adult.svg"
-                    alt="Close"
-                    className="mr-2"
-                    />
-                    <div>
-                        <strong>Dewasa</strong>
-                        <p className="text-sm text-gray-500">(12 tahun keatas)</p>
-                    </div>
+                <div className="flex row-auto">
+                  <img src="/icons/adult.svg" alt="Close" className="mr-2" />
+                  <div>
+                    <strong>Dewasa</strong>
+                    <p className="text-sm text-gray-500">(12 tahun keatas)</p>
+                  </div>
                 </div>
                 <div className="flex items-center">
                   <button
@@ -118,16 +114,12 @@ function PassengerInput({ onPassengerChange }) {
 
               {/* Children */}
               <div className="flex items-center justify-between">
-                <div className="flex row-auto" >
-                    <img
-                    src="/icons/children.svg"
-                    alt="Close"
-                    className="mr-2"
-                    />
-                    <div>
+                <div className="flex row-auto">
+                  <img src="/icons/children.svg" alt="Close" className="mr-2" />
+                  <div>
                     <strong>Anak</strong>
                     <p className="text-sm text-gray-500">(2 - 11 tahun)</p>
-                    </div>
+                  </div>
                 </div>
                 <div className="flex items-center">
                   <button
@@ -155,16 +147,12 @@ function PassengerInput({ onPassengerChange }) {
 
               {/* Infants */}
               <div className="flex items-center justify-between">
-                <div className="flex row-auto" >
-                    <img
-                    src="/icons/baby.svg"
-                    alt="Close"
-                    className="mr-2"
-                    />
-                    <div>
+                <div className="flex row-auto">
+                  <img src="/icons/baby.svg" alt="Close" className="mr-2" />
+                  <div>
                     <strong>Bayi</strong>
                     <p className="text-sm text-gray-500">(Dibawah 2 tahun)</p>
-                    </div>
+                  </div>
                 </div>
                 <div className="flex items-center">
                   <button
