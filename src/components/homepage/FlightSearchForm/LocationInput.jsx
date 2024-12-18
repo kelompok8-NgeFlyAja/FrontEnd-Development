@@ -72,7 +72,7 @@ const LocationInput = ({
             onChange={onFromChange}
             placeholder="Jakarta (JKTA)"
             onFocus={() => toggleModal("from")}
-            className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0 placeholder-muted"
+            className="border-x-0 border-t-0 rounded-none focus-visible:ring-0 px-0"
             autoComplete="off"
           />
         </div>

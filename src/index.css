@@ -15,7 +15,6 @@ html {
 :root {
   --radius: 10px;
   --muted: 240, 5%, 50%; 
-  /* --accent: 270, 90%, 45%; */
 }
 
 .toast-position {
