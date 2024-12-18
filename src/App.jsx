@@ -1,4 +1,6 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import Cookies from "universal-cookie";
 import Homepage from "./pages/Homepage";
 import Search from "./pages/Search";
 import Checkout from "./pages/Checkout";
@@ -13,72 +15,93 @@ import Psuccess from "./pages/Psuccess";
 import Notification from "./pages/Notification";
 import Account from "./pages/Account";
 import Riwayat from "./pages/Riwayat";
-import Error from "./pages/Error";
+import Topnav from "./components/TopNavbar";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Homepage />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/send-email",
-    element: <Send />,
-  },
-  {
-    path: "/verify-token/:token",
-    element: <VerifyToken />,
-  },
-  {
-    path: "/reset-password/:token",
-    element: <Reset />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/otp",
-    element: <Otp />,
-  },
+function App() {
+  const [isLogin, setIsLogin] = useState(false);
+  const cookies = useMemo(() => new Cookies(), []);
 
-  {
-    path: "/search",
-    element: <Search />,
-  },
-  {
-    path: "/checkout",
-    element: <Checkout />,
-  },
-  {
-    path: "/payment",
-    element: <Payment />,
-  },
-  {
-    path: "/payment-success",
-    element: <Psuccess />,
-  },
-  {
-    path: "/notification",
-    element: <Notification />,
-  },
-  {
-    path: "/account",
-    element: <Account />,
-  },
-  {
-    path: "/riwayat-pesanan",
-    element: <Riwayat />,
-  },
-  {
-    path: "/error",
-    element: <Error />,
-  },
-]);
+  useEffect(() => {
+    const checkToken = cookies.get("token");
+    if (checkToken && checkToken !== "undefined") {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, [cookies]);
 
-export default function App() {
-  return <RouterProvider router={router} />;
+  const authRoutes = ["/login", "/send-email", "/verify-token", "/reset-password", "/register", "/otp"];
+  const hideTopnav = authRoutes.some((path) => location.pathname.startsWith(path));
+
+  return (
+    <Router>
+      {!hideTopnav && <Topnav isLogin={isLogin} isSearch={true} />}
+
+      {/* Non-Login */}
+      <Routes>
+        <Route 
+          path="/" 
+          element={<Homepage />} 
+        />
+        <Route 
+          path="/search" 
+          element={<Search />}
+        />
+
+        {/* Login Required */}
+        <Route
+          path="/checkout"
+          element={isLogin ? <Checkout /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/payment"
+          element={isLogin ? <Payment /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/payment-success"
+          element={isLogin ? <Psuccess /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/notification"
+          element={isLogin ? <Notification /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/account"
+          element={isLogin ? <Account /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/riwayat-pesanan"
+          element={isLogin ? <Riwayat /> : <Navigate to="/login" />}
+        />
+
+        {/* Auth */}
+        <Route
+          path="/login"
+          element={!isLogin ? <Login /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/send-email"
+          element={!isLogin ? <Send /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/verify-token/:token"
+          element={!isLogin ? <VerifyToken /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/reset-password/:token"
+          element={!isLogin ? <Reset /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/register"
+          element={!isLogin ? <Register /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/otp"
+          element={!isLogin ? <Otp /> : <Navigate to="/" />}
+        />
+      </Routes>
+    </Router>
+  );
 }
+
+export default App;
