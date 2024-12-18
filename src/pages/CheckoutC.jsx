@@ -1,17 +1,22 @@
+// pages/checkout.jsx
+import React, { useEffect, useState } from "react";
+
+import { FillData } from "./checkout/FillData";
+import { ReviewData } from "./checkout/ReviewData";
+import { PaymentList } from "./checkout/PaymentList";
+import { Success } from "./checkout/Success";
 import { InformationBar } from "@/components/checkoutC/InformationBar";
 import Navbar from "@/components/Navbar";
-import React, { useEffect, useState } from "react";
 
 export const CheckoutC = () => {
   const [currentStep, setCurrentStep] = useState("Isi Data");
   const [notification, setNotification] = useState({
     type: "Info",
-    message: "Selesaikan dalam",
+    message: "Selesaikan pengisian data dalam 15 menit",
     countdown: true,
   });
-  const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 menit
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
 
-  // Countdown Timer
   useEffect(() => {
     let timer;
     if (notification.countdown) {
@@ -35,7 +40,7 @@ export const CheckoutC = () => {
     setCurrentStep("Bayar Review");
     setNotification({
       type: "Success",
-      message: "Data Anda berhasil tersimpan!",
+      message: "Data berhasil disimpan",
       countdown: false,
     });
   };
@@ -44,15 +49,11 @@ export const CheckoutC = () => {
     setCurrentStep("Bayar List");
     const deadline = new Date();
     deadline.setDate(deadline.getDate() + 1);
-    const formattedDate = deadline.toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    });
-
     setNotification({
       type: "Warning",
-      message: `Selesaikan Pembayaran sampai ${formattedDate}`,
+      message: `Selesaikan pembayaran sebelum tanggal ${deadline.toLocaleDateString(
+        "id-ID"
+      )}`,
       countdown: false,
     });
   };
@@ -61,14 +62,13 @@ export const CheckoutC = () => {
     setCurrentStep("Selesai");
     setNotification({
       type: "Success",
-      message: "Terima kasih, pembayaran Anda telah berhasil!",
+      message: "Pembayaran berhasil!",
       countdown: false,
     });
   };
 
   return (
     <div className="w-full">
-      {/* Navbar */}
       <Navbar />
       {/* Information Bar */}
       <InformationBar
@@ -77,61 +77,19 @@ export const CheckoutC = () => {
         timeLeft={timeLeft}
         formatTime={formatTime}
       />
-      {/* Step Content */}
-      <div className="flex justify-center mt-6">
-        <div className="w-[900px] p-4 border rounded-lg">
-          {currentStep === "Isi Data" && (
-            <div>
-              <h2 className="font-semibold text-xl mb-4">Isi Data Diri</h2>
-              <button
-                onClick={handleSaveData}
-                className="bg-blue-500 text-white py-2 px-4 rounded-lg"
-              >
-                Simpan Data
-              </button>
-            </div>
-          )}
 
-          {currentStep === "Bayar Review" && (
-            <div>
-              <h2 className="font-semibold text-xl mb-4">Review Data</h2>
-              <button
-                onClick={handleProceedToPayment}
-                className="bg-yellow-500 text-white py-2 px-4 rounded-lg"
-              >
-                Lanjut Bayar
-              </button>
-            </div>
-          )}
-
-          {currentStep === "Bayar List" && (
-            <div>
-              <h2 className="font-semibold text-xl mb-4">
-                Pilih Metode Pembayaran
-              </h2>
-              <ul className="list-disc pl-5 mb-4">
-                <li>Transfer Bank</li>
-                <li>e-Wallet</li>
-                <li>Kartu Kredit</li>
-              </ul>
-              <button
-                onClick={handlePaymentComplete}
-                className="bg-green-500 text-white py-2 px-4 rounded-lg"
-              >
-                Bayar Sekarang
-              </button>
-            </div>
-          )}
-
-          {currentStep === "Selesai" && (
-            <div>
-              <h2 className="font-semibold text-xl mb-4">
-                Pembayaran Berhasil
-              </h2>
-              <p>Terima kasih atas pembayaran Anda!</p>
-            </div>
-          )}
-        </div>
+      {/* Conditional Step Rendering */}
+      <div>
+        {currentStep === "Isi Data" && (
+          <FillData handleSaveData={handleSaveData} />
+        )}
+        {currentStep === "Bayar Review" && (
+          <ReviewData handleProceedToPayment={handleProceedToPayment} />
+        )}
+        {currentStep === "Bayar List" && (
+          <PaymentList handlePaymentComplete={handlePaymentComplete} />
+        )}
+        {currentStep === "Selesai" && <Success />}
       </div>
     </div>
   );

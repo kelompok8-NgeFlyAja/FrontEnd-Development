@@ -14,10 +14,10 @@ export const InformationBar = ({
   formatTime,
 }) => {
   return (
-    <>
+    <div className="shadow-md pb-4">
       {/* Breadcrumb */}
       <div className="w-full flex justify-center px-2">
-        <div className="py-5 text-lg mt-4 w-[936px] max-w-[936px]">
+        <div className="py-5 text-lg w-[936px] max-w-[936px]">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -53,7 +53,7 @@ export const InformationBar = ({
       </div>
 
       {/* Notification Bar */}
-      <div className="flex justify-center mt-4 px-3">
+      <div className="flex justify-center px-3">
         <div
           className={`w-[900px] text-white h-12 rounded-lg flex items-center justify-center font-semibold ${
             notification.type === "Success"
@@ -67,6 +67,6 @@ export const InformationBar = ({
           {notification.countdown && ` (${formatTime(timeLeft)})`}
         </div>
       </div>
-    </>
+    </div>
   );
 };
