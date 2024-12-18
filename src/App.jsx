@@ -14,6 +14,7 @@ import Notification from "./pages/Notification";
 import Account from "./pages/Account";
 import Riwayat from "./pages/Riwayat";
 import Error from "./pages/Error";
+import { CheckoutC } from "./pages/CheckoutC";
 
 const router = createBrowserRouter([
   {
@@ -51,7 +52,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/checkout",
-    element: <Checkout />,
+    element: <CheckoutC />,
   },
   {
     path: "/payment",
