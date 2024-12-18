@@ -1,5 +1,3 @@
-import React from "react";
-
 export const FlightDetail = () => {
   return (
     <div className="border rounded-lg p-6 shadow-md">
