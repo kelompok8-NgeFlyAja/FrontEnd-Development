@@ -1,7 +1,7 @@
 import React from "react";
-import { BillingDetail } from "@/components/checkoutC/BillingDetail";
-import SeatSelection from "@/components/checkoutC/SeatSelection";
-import { FlightDetail } from "@/components/checkoutC/FlightDetail";
+import { BillingDetail } from "@/components/checkout/BillingDetail";
+import SeatSelection from "@/components/checkout/SeatSelection";
+import { FlightDetail } from "@/components/checkout/FlightDetail";
 
 export const ReviewData = ({ handleProceedToPayment }) => {
   return (

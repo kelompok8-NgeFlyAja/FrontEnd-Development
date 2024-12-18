@@ -1,20 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Search from "./pages/Search";
-import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
 import VerifyToken from "./pages/VerifyToken";
 import Reset from "./pages/Reset";
 import Register from "./pages/Register";
 import Otp from "./pages/Otp";
 import Send from "./pages/Send";
-import Payment from "./pages/Payment";
-import Psuccess from "./pages/Psuccess";
 import Notification from "./pages/Notification";
 import Account from "./pages/Account";
 import Riwayat from "./pages/Riwayat";
 import Error from "./pages/Error";
-import { CheckoutC } from "./pages/CheckoutC";
+import { Checkout } from "./pages/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -52,15 +49,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/checkout",
-    element: <CheckoutC />,
-  },
-  {
-    path: "/payment",
-    element: <Payment />,
-  },
-  {
-    path: "/payment-success",
-    element: <Psuccess />,
+    element: <Checkout />,
   },
   {
     path: "/notification",
