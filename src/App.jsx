@@ -4,7 +4,6 @@ import Cookies from "universal-cookie";
 import Homepage from "./pages/Homepage";
 import Search from "./pages/Search";
 import { Checkout } from "./pages/Checkout";
-import { Checkout } from "./pages/Checkout";
 import Login from "./pages/Login";
 import VerifyToken from "./pages/VerifyToken";
 import Reset from "./pages/Reset";
