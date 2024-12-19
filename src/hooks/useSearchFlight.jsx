@@ -7,7 +7,6 @@ const useSearchFlight = (params = {}) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  // Define the fetchFlights function to handle fetching
   const fetchFlights = useCallback(async (newParams = params) => {
     setLoading(true);
     setError(null);
@@ -26,9 +25,8 @@ const useSearchFlight = (params = {}) => {
     }
   }, [params]);
 
-  // Provide a refetch function that can be manually triggered
   const refetch = useCallback(() => {
-    fetchFlights(params); // Re-fetch with the current params
+    fetchFlights(params); 
   }, [fetchFlights, params]);
 
   return { data, loading, error, success, refetch };

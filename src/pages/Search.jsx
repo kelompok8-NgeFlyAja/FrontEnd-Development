@@ -46,19 +46,17 @@ const Search = () => {
     "babyPassenger",
   ]);
 
-  // Set selected date only if departureTime is available and selectedDate is not yet set
   useEffect(() => {
     if (departureTime && !selectedDate) {
       setSelectedDate(departureTime);
     }
   }, [departureTime, selectedDate]);
 
-  // Memoize ticketSearch to avoid unnecessary re-renders
   const ticketSearch = useMemo(
     () => ({
       departureAirportCode,
       arrivalAirportCode,
-      departureTime: selectedDate, // Use selectedDate here
+      departureTime: selectedDate,
       seatClasses,
       adultPassenger: parseInt(adultPassenger, 10),
       childPassenger: parseInt(childPassenger, 10),
@@ -75,17 +73,14 @@ const Search = () => {
     ]
   );
 
-  // Use the custom hook for fetching flight data
   const { data: flights, loading, error, refetch } = useSearchFlight(ticketSearch);
 
-  // Trigger refetch when selectedDate or ticketSearch changes
   useEffect(() => {
     if (selectedDate) {
-      refetch();  // Refetch with current ticketSearch params
+      refetch();  
     }
-  }, [selectedDate, refetch]); // Trigger only when selectedDate changes
+  }, [selectedDate, refetch]); 
 
-  // Get day name from date
   const getDayName = (date) => {
     const dayNames = [
       "Minggu",
@@ -99,7 +94,6 @@ const Search = () => {
     return dayNames[new Date(date).getDay()];
   };
 
-  // Generate the list of days to display based on departureTime
   useEffect(() => {
     const generateDays = (departureDate) => {
       const days = [];
@@ -118,7 +112,7 @@ const Search = () => {
     if (departureTime) {
       generateDays(departureTime);
     }
-  }, [departureTime]); // Only run when departureTime changes
+  }, [departureTime]); 
 
   return (
     <div className="w-11/12 md:w-2/3 mx-auto flex flex-col gap-5 overflow-hidden pb-10 mt-10">
