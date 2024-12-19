@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import Homepage from "./pages/Homepage";
 import Search from "./pages/Search";
@@ -19,89 +19,95 @@ import Topnav from "./components/TopNavbar";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-  const cookies = useMemo(() => new Cookies(), []);
 
   useEffect(() => {
+    const cookies = new Cookies();
     const checkToken = cookies.get("token");
-    if (checkToken && checkToken !== "undefined") {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-  }, [cookies]);
+    setIsLogin(!!checkToken && checkToken !== "undefined");
+
+    const unsubscribe = cookies.addChangeListener(({ name, value }) => {
+      if (name === "token") {
+        setIsLogin(!!value && value !== "undefined");
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const authRoutes = ["/login", "/send-email", "/verify-token", "/reset-password", "/register", "/otp"];
-  const hideTopnav = authRoutes.some((path) => location.pathname.startsWith(path));
 
-  return (
-    <Router>
-      {!hideTopnav && <Topnav isLogin={isLogin} isSearch={true} />}
+  function Layout() {
+    const location = useLocation();
+    const hideTopnav = authRoutes.some((path) => location.pathname.startsWith(path));
 
-      {/* Non-Login */}
-      <Routes>
-        <Route 
-          path="/" 
-          element={<Homepage />} 
-        />
-        <Route 
-          path="/search" 
-          element={<Search />}
-        />
+    return (
+      <>
+        {!hideTopnav && <Topnav isLogin={isLogin} isSearch={true} />}
 
-        {/* Login Required */}
-        <Route
-          path="/checkout"
-          element={isLogin ? <Checkout /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/payment"
-          element={isLogin ? <Payment /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/payment-success"
-          element={isLogin ? <Psuccess /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/notification"
-          element={isLogin ? <Notification /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/account"
-          element={isLogin ? <Account /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/riwayat-pesanan"
-          element={isLogin ? <Riwayat /> : <Navigate to="/login" />}
-        />
+        <Routes>
+          {/* Non-Login */}
+          <Route path="/" element={<Homepage />} />
+          <Route path="/search" element={<Search />} />
 
-        {/* Auth */}
-        <Route
-          path="/login"
-          element={!isLogin ? <Login /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/send-email"
-          element={!isLogin ? <Send /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/verify-token/:token"
-          element={!isLogin ? <VerifyToken /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/reset-password/:token"
-          element={!isLogin ? <Reset /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/register"
-          element={!isLogin ? <Register /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/otp"
-          element={!isLogin ? <Otp /> : <Navigate to="/" />}
-        />
-      </Routes>
-    </Router>
-  );
+          {/* Login Required */}
+          <Route
+            path="/checkout"
+            element={isLogin ? <Checkout /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/payment"
+            element={isLogin ? <Payment /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/payment-success"
+            element={isLogin ? <Psuccess /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/notification"
+            element={isLogin ? <Notification /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/account"
+            element={isLogin ? <Account /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/riwayat-pesanan"
+            element={isLogin ? <Riwayat /> : <Navigate to="/login" />}
+          />
+
+          {/* Auth */}
+          <Route
+            path="/login"
+            element={!isLogin ? <Login /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/send-email"
+            element={!isLogin ? <Send /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/verify-token/:token"
+            element={!isLogin ? <VerifyToken /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/reset-password/:token"
+            element={!isLogin ? <Reset /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/register"
+            element={!isLogin ? <Register /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/otp"
+            element={!isLogin ? <Otp /> : <Navigate to="/" />}
+          />
+        </Routes>
+      </>
+    );
+  }
+
+  return <Layout />;
 }
 
 export default App;

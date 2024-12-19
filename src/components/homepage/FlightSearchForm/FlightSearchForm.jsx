@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import LocationInput from "./LocationInput";
@@ -44,9 +44,9 @@ function FlightSearchForm() {
     infants: 0,
   });
 
-  const handlePassengerChange = (counts) => {
+  const handlePassengerChange = useCallback((counts) => {
     setPassengerCounts(counts);
-  };
+  }, []);
 
   const handleSearchClick = () => {
     const searchParams = new URLSearchParams({
@@ -67,7 +67,10 @@ function FlightSearchForm() {
     <div className="content max-w-[1098px] w-full mx-auto -mt-12 relative z-20 pt-6 bg-white rounded-lg shadow-md">
       <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-800 px-8">
         Pilih Jadwal Penerbangan spesial di
-        <span className="text-purple-600 bg-white px-2 py-1 rounded"> Tiketku</span>
+        <span className="text-purple-600 bg-white px-2 py-1 rounded">
+          {" "}
+          Tiketku
+        </span>
       </h2>
       <form className="grid grid-cols-1 gap-8">
         <div className="px-8">
@@ -77,7 +80,7 @@ function FlightSearchForm() {
             onFromChange={setFromCity}
             onToChange={setToCity}
             onFromAirportCodeChange={setFromAirportCode}
-            onToAirportCodeChange={setToAirportCode} 
+            onToAirportCodeChange={setToAirportCode}
             onSwitch={handleSwitchCities}
           />
           <div className="flex items-center gap-8 mt-9">
@@ -89,12 +92,8 @@ function FlightSearchForm() {
               onSelectDate={handleSelectDate}
               onSwitchChange={() => setIsReturnChecked(!isReturnChecked)}
             />
-            <PassengerInput 
-            onPassengerChange={handlePassengerChange}
-            />
-            <SeatClassInput 
-            onClassSelect={handleSeatClassChange} 
-            />
+            <PassengerInput onPassengerChange={handlePassengerChange} />
+            <SeatClassInput onClassSelect={handleSeatClassChange} />
           </div>
         </div>
         <Button
