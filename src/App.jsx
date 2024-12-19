@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import Homepage from "./pages/Homepage";
 import Search from "./pages/Search";
+import { Checkout } from "./pages/Checkout";
 import Login from "./pages/Login";
 import VerifyToken from "./pages/VerifyToken";
 import Reset from "./pages/Reset";
@@ -16,11 +17,13 @@ import Topnav from "./components/TopNavbar";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const cookies = new Cookies();
     const checkToken = cookies.get("token");
     setIsLogin(!!checkToken && checkToken !== "undefined");
+    setLoading(false);
 
     const unsubscribe = cookies.addChangeListener(({ name, value }) => {
       if (name === "token") {
@@ -39,6 +42,10 @@ function App() {
     const location = useLocation();
     const hideTopnav = authRoutes.some((path) => location.pathname.startsWith(path));
 
+    if (loading) {
+      return <div>Loading...</div>; 
+    }
+
     return (
       <>
         {!hideTopnav && <Topnav isLogin={isLogin} isSearch={true} />}
@@ -52,14 +59,6 @@ function App() {
           <Route
             path="/checkout"
             element={isLogin ? <Checkout /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/payment"
-            element={isLogin ? <Payment /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/payment-success"
-            element={isLogin ? <Psuccess /> : <Navigate to="/login" />}
           />
           <Route
             path="/notification"
