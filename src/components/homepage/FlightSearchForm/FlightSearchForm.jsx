@@ -64,7 +64,7 @@ function FlightSearchForm() {
   };
 
   return (
-    <div className="content max-w-[1098px] w-full mx-auto -mt-12 relative z-20 pt-6 bg-white rounded-lg shadow-md">
+    <div className="content max-w-[1098px] mt-6 w-[90%] md:w-full mx-auto md:-mt-12 relative z-20 pt-6 bg-white rounded-lg shadow-md">
       <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-800 px-8">
         Pilih Jadwal Penerbangan spesial di
         <span className="text-purple-600 bg-white px-2 py-1 rounded">
