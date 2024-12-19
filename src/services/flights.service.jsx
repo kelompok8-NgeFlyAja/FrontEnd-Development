@@ -54,7 +54,7 @@ const searchFlights = async ({
     if (response.data) {
       return {
         success: true,
-        data: response.data,
+        data: response.data.flights,
       };
     }
     return {

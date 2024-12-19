@@ -12,8 +12,8 @@ function FlightSearchForm() {
   const [isOpenPopoverDate, setIsOpenPopoverDate] = useState(false);
   const [fromCity, setFromCity] = useState("");
   const [toCity, setToCity] = useState("");
-  const [fromAirportCode, setFromAirportCode] = useState(""); // Added state
-  const [toAirportCode, setToAirportCode] = useState(""); // Added state
+  const [fromAirportCode, setFromAirportCode] = useState("");
+  const [toAirportCode, setToAirportCode] = useState(""); 
   const [isReturnChecked, setIsReturnChecked] = useState(false);
   const [seatClass, setSeatClass] = useState("Economy");
 
@@ -52,14 +52,14 @@ function FlightSearchForm() {
     const searchParams = new URLSearchParams({
       departureAirportCode: fromAirportCode,
       arrivalAirportCode: toAirportCode,
-      departureTime: date.from.toISOString().split("T")[0], // Format as yyyy-mm-dd
+      departureTime: date.from.toISOString().split("T")[0], 
       seatClasses: seatClass,
       adultPassenger: passengerCounts.adults.toString(),
       childPassenger: passengerCounts.childrens.toString(),
       babyPassenger: passengerCounts.infants.toString(),
     });
 
-    // Debugging output
+    navigate(`/search?${searchParams.toString()}`);
     console.log("Search URL:", `/search-flights?${searchParams.toString()}`);
   };
 
