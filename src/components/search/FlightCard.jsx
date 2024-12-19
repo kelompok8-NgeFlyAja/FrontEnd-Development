@@ -14,7 +14,7 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
         <div className="flex items-start">
           <div className="flex flex-col ml-2">
             <span className="text-sm text-gray-500">
-              {flight.plane.planeCode} - {flight.route.seatClass}
+              {flight.flightCode} - {flight.route.seatClass}
             </span>
             <div
               className="grid grid-cols-3 gap-0 text-sm text-gray-500 mt-1"
@@ -88,19 +88,18 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
         <hr className="my-1 border-gray-300" />
         <div className="text-black text-sm mb-2">
           <strong>
-            {flight.airline} - {flight.class}
+            {flight.flightCode} - {flight.route.seatClass}
           </strong>
           <div>
-            <strong>Kode Pesawat: JT03</strong>
+            <strong>Kode Pesawat: {flight.plane.planeCode}</strong>
           </div>
         </div>
         <div className="mb-2 flex items-center">
-          <img src="Image.svg" alt="Logo" className="h-6 mr-2" />
           <div className="flex flex-col ml-2">
             <div className="text-sm text-gray-500 font-semibold">Informasi</div>
-            <div className="text-sm">Baggage: {flight.baggage} kg</div>
-            <div className="text-sm">Cabin Baggage: {flight.cabinBaggage} kg</div>
-            <div className="text-sm">In-Flight Entertainment: {flight.entertainment ? "Yes" : "No"}</div>
+            <div className="text-sm">Baggage: {flight.plane.baggage} kg</div>
+            <div className="text-sm">Cabin Baggage: {flight.plane.cabinBaggage} kg</div>
+            <div className="text-sm">{flight.plane.description}</div>
           </div>
         </div>
         <hr className="my-1 border-gray-300" />
@@ -114,7 +113,7 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
             </div>
           </div>
           <div className="text-sm">{flight.arrivalDate}</div>
-          <div className="text-sm">{flight.destinationAirport}</div>
+          <div className="text-sm">{flight.arrivalAirport}</div>
         </div>
       </div>
     </div>

@@ -22,6 +22,12 @@ const Search = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [days, setDays] = useState([]);
   const navigate = useNavigate();
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggleAccordion = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
 
   const {
     departureAirportCode,
@@ -179,9 +185,8 @@ const Search = () => {
                       key={index}
                       index={index}
                       flight={flight}
-                      isOpen={""}
-                      toggleAccordion={""}
-                      handleSelect={""}
+                      isOpen={openIndex === index}
+                      toggleAccordion={() => toggleAccordion(index)}
                 />
               ))
             ) : (
