@@ -4,10 +4,10 @@ const getAirports = async () => {
   try {
     const response = await axiosInstance.get("/get-airports");
 
-    if (response.data.airports) {
+    if (response.data.data) {
       return {
         success: true,
-        data: response.data.airports,
+        data: response.data.data,
       };
     }
     return {

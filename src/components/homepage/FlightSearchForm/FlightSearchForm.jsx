@@ -12,8 +12,8 @@ function FlightSearchForm() {
   const [isOpenPopoverDate, setIsOpenPopoverDate] = useState(false);
   const [fromCity, setFromCity] = useState("");
   const [toCity, setToCity] = useState("");
-  const [fromAirportCode, setFromAirportCode] = useState(""); // Added state
-  const [toAirportCode, setToAirportCode] = useState(""); // Added state
+  const [fromAirportCode, setFromAirportCode] = useState("");
+  const [toAirportCode, setToAirportCode] = useState(""); 
   const [isReturnChecked, setIsReturnChecked] = useState(false);
   const [seatClass, setSeatClass] = useState("Economy");
 
@@ -52,19 +52,19 @@ function FlightSearchForm() {
     const searchParams = new URLSearchParams({
       departureAirportCode: fromAirportCode,
       arrivalAirportCode: toAirportCode,
-      departureTime: date.from.toISOString().split("T")[0], // Format as yyyy-mm-dd
+      departureTime: date.from.toISOString().split("T")[0], 
       seatClasses: seatClass,
       adultPassenger: passengerCounts.adults.toString(),
       childPassenger: passengerCounts.childrens.toString(),
       babyPassenger: passengerCounts.infants.toString(),
     });
 
-    // Debugging output
+    navigate(`/search?${searchParams.toString()}`);
     console.log("Search URL:", `/search-flights?${searchParams.toString()}`);
   };
 
   return (
-    <div className="content max-w-[1098px] w-full mx-auto -mt-12 relative z-20 pt-6 bg-white rounded-lg shadow-md">
+    <div className="content max-w-[1098px] mt-6 w-[90%] md:w-full mx-auto md:-mt-12 relative z-20 pt-6 bg-white rounded-lg shadow-md">
       <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-800 px-8">
         Pilih Jadwal Penerbangan spesial di
         <span className="text-purple-600 bg-white px-2 py-1 rounded">

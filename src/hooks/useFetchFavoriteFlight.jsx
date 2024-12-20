@@ -6,16 +6,18 @@ const useFavoriteDestinations = (page = 1, limit = 5, filters = {}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     const fetchDestinations = async () => {
       setLoading(true);
-      setError(null); // Reset error state on each fetch
+      setError(null); 
       try {
         const result = await getFavoriteDestinations(page, limit, filters);
         if (result.success) {
           setData(result.data || []);
           setSuccess(true);
+          setTotal(result.total);
         } else {
           setError(result.message || "Failed to fetch destinations");
         }
@@ -29,7 +31,7 @@ const useFavoriteDestinations = (page = 1, limit = 5, filters = {}) => {
     fetchDestinations();
   }, [page, limit, filters]);
 
-  return { data, loading, error, success };
+  return { data, total, loading, error, success };
 };
 
 export { useFavoriteDestinations };

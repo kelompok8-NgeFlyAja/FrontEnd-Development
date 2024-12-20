@@ -14,6 +14,7 @@ const getFavoriteDestinations = async (page = 1, limit = 5, filters = {}) => {
       return {
         success: true,
         data: response.data.data,
+        total: response.data.total,
       };
     }
     return {
@@ -53,7 +54,7 @@ const searchFlights = async ({
     if (response.data) {
       return {
         success: true,
-        data: response.data,
+        data: response.data.flights,
       };
     }
     return {

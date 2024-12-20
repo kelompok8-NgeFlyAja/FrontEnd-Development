@@ -14,5 +14,9 @@ html {
 
 :root {
   --radius: 10px;
-  --muted: #8A8A8A; 
+  --muted: 240, 5%, 50%; 
+}
+
+.toast-position {
+  top: 8rem !important;
 }

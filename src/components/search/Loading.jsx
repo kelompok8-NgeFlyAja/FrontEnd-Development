@@ -31,7 +31,7 @@ const Loading = ({ loading }) => {
         </p>
         <div className="relative w-[236.46px] h-[69.5px] bg-white border border-black rounded-2xl overflow-hidden">
           <img
-            src="/loading_indicator.svg"
+            src="/Loading_indicator.svg"
             alt="Loading indicator"
             className="h-[69.5px] w-[70px] absolute z-10"
             style={{

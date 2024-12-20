@@ -1,6 +1,7 @@
 import SeatSelection from "@/components/checkout/SeatSelection";
 import { FlightDetail } from "@/components/checkout/FlightDetail";
 import { BillingDetail } from "@/components/checkout/BillingDetail";
+import { Passenger } from "@/components/checkout/Passengers";
 
 export const FillData = ({ handleSaveData }) => {
   return (
@@ -9,6 +10,7 @@ export const FillData = ({ handleSaveData }) => {
         {/* Isi Data Pemesan */}
         <div className="flex-[2]">
           <BillingDetail />
+          <Passenger />
           <SeatSelection />
           <button
             onClick={handleSaveData}

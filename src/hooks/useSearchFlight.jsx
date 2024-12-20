@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { searchFlights } from "@/services/flights.service";
 
 const useSearchFlight = (params = {}) => {
@@ -7,31 +7,29 @@ const useSearchFlight = (params = {}) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    const fetchFlights = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const result = await searchFlights(params);
-        if (result.success) {
-          setData(result.data || []);
-          setSuccess(true);
-        } else {
-          setError(result.message || "Failed to fetch flights");
-        }
-      } catch (err) {
-        setError(err.message || "An error occurred");
-      } finally {
-        setLoading(false);
+  const fetchFlights = useCallback(async (newParams = params) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await searchFlights(newParams);
+      if (result.success) {
+        setData(result.data || []);
+        setSuccess(true);
+      } else {
+        setError(result.message || "Failed to fetch flights");
       }
-    };
-
-    if (Object.keys(params).length > 0) {
-      fetchFlights();
+    } catch (err) {
+      setError(err.message || "An error occurred");
+    } finally {
+      setLoading(false);
     }
   }, [params]);
 
-  return { data, loading, error, success };
+  const refetch = useCallback(() => {
+    fetchFlights(params); 
+  }, [fetchFlights, params]);
+
+  return { data, loading, error, success, refetch };
 };
 
 export { useSearchFlight };

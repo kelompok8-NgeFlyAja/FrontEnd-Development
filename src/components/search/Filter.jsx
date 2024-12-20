@@ -6,9 +6,21 @@ import { FiBox, FiDollarSign } from "react-icons/fi";
 const Filter = () => {
   return (
     <>
-      <TypeFilter icons={<FiBox className="text-xl" />} label="Transit" />
-      <TypeFilter icons={<FaRegHeart className="text-xl" />} label="Fasilitas" more />
-      <TypeFilter icons={<FiDollarSign className="text-xl" />} label="Harga" />
+      <TypeFilter 
+      icons={<FiBox 
+      className="text-xl" />} 
+      label={"Transit"}
+      more={true} />
+      <TypeFilter
+        icons={<FaRegHeart className="text-xl" />}
+        label={"Fasilitas"}
+        more={true}
+      />
+      <TypeFilter
+        icons={<FiDollarSign className="text-xl" />}
+        label={"Harga"}
+        more={true}
+      />
     </>
   );
 };
