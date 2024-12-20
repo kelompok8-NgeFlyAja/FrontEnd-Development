@@ -69,7 +69,6 @@ export const Checkout = () => {
 
   return (
     <div className="w-full">
-      <Navbar />
       {/* Information Bar */}
       <InformationBar
         currentStep={currentStep}
