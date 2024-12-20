@@ -16,32 +16,25 @@ import axios from "axios";
 
 const Account = () => {
   const { loading, sendData } = useSend();
-  const [accountId, setAccountId] = useState("1"); // Set default accountId, for example "1"
-  const [isLogin, setIsLogin] = useState(true); // Default to true for logged in state
+  const [accountId, setAccountId] = useState("1");
+  const [isLogin, setIsLogin] = useState(true);
   const [isLoggedOut, setIsLoggedOut] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isVerify, setIsVerify] = useState(null);
   const [activeSection, setActiveSection] = useState("profile");
-  const [profile, setProfile] = useState({
-    // current_image: "",
-    // images: "",
-    name: "John Doe", // Default name
-    telepon: "1234567890", // Default phone number
-    email: "johndoe@example.com", // Default email
-  });
+  const [profile, setProfile] = useState({});
   const navigate = useNavigate();
   const cookies = new Cookies();
 
   useEffect(() => {
     const checkToken = cookies.get("token");
     if (!checkToken) {
-      navigate("/login");
+      navigate("/");
     }
   }, [isLoggedOut]);
 
   useEffect(() => {
-    // Skip token check to allow access without login
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
@@ -50,37 +43,47 @@ const Account = () => {
   }, []);
 
   useEffect(() => {
-    if (accountId) {
-      fetchData();
+    const checkToken = cookies.get("token");
+    if (!checkToken) {
+      navigate("/");
+    } else {
+      fetchUserData();
     }
-  }, [accountId]);
+  }, [isLoggedOut]);
 
-  const fetchData = async () => {
-    try {
-      // Simulate an API response, or use a real API here
-      const response = await sendData(`/api/v1/user/${accountId}`, "GET");
-      setProfile({
-        // current_image:
-        //   response.data.data.user.image_url || "/placeholder-avatar.png",
-        // images: response.data.data.user.image_url || "/placeholder-avatar.png",
-        name: response.data.data.user.name,
-        telepon: response.data.data.user.phone_number,
-        email: response.data.data.user.email,
-      });
-      setIsVerify(response.data.data.user.is_verified);
-    } catch (e) {
-      if (e.statusCode === 500) {
-        navigate("/error");
-      } else {
-        console.log(e);
+  const fetchUserData = async () => {
+    const token = cookies.get("token");
+    if (token) {
+      try {
+        const response = await axios.get("https://ngeflyaja.shop/user", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setProfile({
+          name: response.data.data.name,
+          telepon: response.data.data.phoneNumber,
+          email: response.data.data.email,
+        });
+        setIsVerify(response.data.data.is_verified);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          toast.error("Unauthorized. Please log in again.");
+          cookies.remove("token", { path: "/" });
+          navigate("/login");
+        } else {
+          toast.error("Error fetching user data.");
+        }
       }
     }
   };
-
   const handleLogout = async (event) => {
     setActiveSection("logout");
-    cookies.remove("userEmail", { path: "/" });
+    cookies.remove("token");
     setIsLoggedOut(true);
+    setTimeout(() => {
+      navigate("/");
+    }, 3000);
   };
 
   const handleChange = (e) => {
@@ -95,29 +98,29 @@ const Account = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!profile.name) {
       toast.error("Name cannot be empty");
       return;
     }
-  
+
     if (!profile.telepon) {
       toast.error("Telepon cannot be empty");
       return;
     }
-  
+
     if (!profile.email) {
       toast.error("Email cannot be empty");
       return;
     }
-  
+
     if (!validateEmail(profile.email)) {
       toast.error("Invalid email format");
       return;
     }
-  
+
     setWaiting(true);
-  
+
     try {
       const cookies = new Cookies();
       const token = cookies.get("token");
@@ -126,15 +129,19 @@ const Account = () => {
         phoneNumber: profile.telepon,
         email: profile.email,
       };
-  
+
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
-  
-      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URI}/update-user`, userData, config);
-  
+
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URI}/update-user`,
+        userData,
+        config
+      );
+
       setTimeout(() => {
         setProfile({
           name: response.data.data.name || "Unknown",
@@ -156,14 +163,15 @@ const Account = () => {
       } else if (error.response && error.response.status === 500) {
         toast.error("Server error. Please try again later.");
       } else {
-        toast.error(error.response.data.error || "An unexpected error occurred.");
+        toast.error(
+          error.response.data.error || "An unexpected error occurred."
+        );
       }
     }
   };
 
   return (
     <>
-      <Topnav isLogin={isLogin} isSearch={false} />
       <div className="w-11/12 md:w-2/3 mx-auto mt-28 flex flex-col gap-5 overflow-hidden">
         <motion.h1
           initial={{ opacity: 0, x: -75 }}
