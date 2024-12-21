@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect } from "react";
 import { useFavoriteDestinations } from "@/hooks/useFetchFavoriteFlight";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "../ui/button";
-import Loading from "../search/Loading";
+import Loading from "@/components/search/Loading";
 import ResultNotFound from "../search/ResultNotFound";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
@@ -73,7 +73,7 @@ function FeaturedFlightCard() {
 
       {/* Destination Cards */}
       <div className="content max-w-[1098px] w-full md:mx-auto relative pt-6 bg-none rounded-lg mt-3 mb-10">
-        {loading && <Loading loading={loading} />}
+        {loading && <Loading />}
         {error && (
           <p className="text-gray-500 text-center">Error mengambil data...</p>
         )}
@@ -115,15 +115,14 @@ function FeaturedFlightCard() {
               </div>
 
               {/* Pagination */}
-              <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-2 sm:gap-4 mt-4">
+              <div className="flex flex-row justify-center items-center gap-2 sm:gap-4 mt-4">
                 <Button
                   onClick={goToPreviousPage}
                   disabled={page === 1}
                   variant="outline"
-                  className="flex items-center justify-center px-4 py-2 rounded-md border-violet-700 w-full sm:w-auto text-xs sm:text-sm"
+                  className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 text-xs sm:text-sm"
                 >
-                  <IoIosArrowBack size={16} className="fill-violet-700 mr-2" />
-                  Previous
+                <IoIosArrowBack size={16} className="fill-violet-700" />
                 </Button>
 
                 <span className="text-xs sm:text-sm text-violet-700 text-center">
@@ -134,10 +133,9 @@ function FeaturedFlightCard() {
                   onClick={goToNextPage}
                   disabled={page === totalPages}
                   variant="outline"
-                  className="flex items-center justify-center px-4 py-2 rounded-md border-violet-700 w-full sm:w-auto text-xs sm:text-sm"
+                  className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 sm:w-auto text-xs sm:text-sm"
                 >
-                  Next
-                  <IoIosArrowForward size={16} className="fill-violet-700 ml-2" />
+                  <IoIosArrowForward size={16} className="fill-violet-700" />
                 </Button>
               </div>
             </>

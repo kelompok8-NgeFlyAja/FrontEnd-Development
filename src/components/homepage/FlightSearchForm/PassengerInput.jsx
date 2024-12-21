@@ -37,9 +37,9 @@ function PassengerInput({ onPassengerChange }) {
   }, [adults, childrens, infants, onPassengerChange]);
 
   return (
-    <div className="md:ps-14 relative">
+    <div className="lg:ps-14 relative">
       <div className="flex gap-4 items-center">
-        <div className="hidden md:flex items-center gap-4 text-muted">
+        <div className="hidden lg:flex items-center gap-4 text-muted">
           <img src="/icons/seat.svg" alt="Passengers" />
           <Label htmlFor="to">To</Label>
         </div>

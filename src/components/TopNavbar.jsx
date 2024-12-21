@@ -74,7 +74,11 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
       <div className="flex gap-6 items-center">
         {isSearch && (
           <button className="md:hidden text-4xl" onClick={handleSearchToggle}>
-            <IoMdSearch />
+            <img
+              className="w-6 h-6 text-gray-500"
+              src="/icons/search.svg"
+              alt="search icon"
+            />
           </button>
         )}
 

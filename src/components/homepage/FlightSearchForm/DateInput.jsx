@@ -74,7 +74,7 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
     <div className="relative">
       <div className="flex flex-col gap-4 md:flex-row md:items-center">
         <div className="flex justify-between">
-          <div className="flex flex-row items-center gap-4 text-muted">
+          <div className="flex flex-row items-center gap-4 text-muted md:hidden lg:flex">
             <img src="/icons/date.svg" alt="Departure" />
             <Label>Date</Label>
           </div>
