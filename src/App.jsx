@@ -36,14 +36,23 @@ function App() {
     };
   }, []);
 
-  const authRoutes = ["/login", "/send-email", "/verify-token", "/reset-password", "/register", "/otp"];
+  const authRoutes = [
+    "/login",
+    "/send-email",
+    "/verify-token",
+    "/reset-password",
+    "/register",
+    "/otp",
+  ];
 
   function Layout() {
     const location = useLocation();
-    const hideTopnav = authRoutes.some((path) => location.pathname.startsWith(path));
+    const hideTopnav = authRoutes.some((path) =>
+      location.pathname.startsWith(path)
+    );
 
     if (loading) {
-      return <div>Loading...</div>; 
+      return <div>Loading...</div>;
     }
 
     return (
@@ -64,10 +73,7 @@ function App() {
             path="/notification"
             element={isLogin ? <Notification /> : <Navigate to="/login" />}
           />
-          <Route
-            path="/account"
-            element={isLogin ? <Account /> : <Navigate to="/login" />}
-          />
+          <Route path="/account" element={<Account />} />
           <Route
             path="/riwayat-pesanan"
             element={isLogin ? <Riwayat /> : <Navigate to="/login" />}

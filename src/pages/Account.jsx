@@ -30,25 +30,16 @@ const Account = () => {
   useEffect(() => {
     const checkToken = cookies.get("token");
     if (!checkToken) {
-      navigate("/");
+      return;
+    } else {
+      fetchUserData();
     }
-  }, [isLoggedOut]);
 
-  useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const checkToken = cookies.get("token");
-    if (!checkToken) {
-      navigate("/");
-    } else {
-      fetchUserData();
-    }
   }, [isLoggedOut]);
 
   const fetchUserData = async () => {
@@ -77,13 +68,13 @@ const Account = () => {
       }
     }
   };
+
   const handleLogout = async (event) => {
     setActiveSection("logout");
-    cookies.remove("token");
-    setIsLoggedOut(true);
+    navigate("/");
     setTimeout(() => {
-      navigate("/");
-    }, 3000);
+      cookies.remove("token", { path: "/" });
+    }, 100);
   };
 
   const handleChange = (e) => {
