@@ -36,12 +36,19 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
 
   return (
     <div className="relative">
-      <div className="flex gap-4 items-center">
-        <div className="flex items-center gap-4 text-muted">
-          <img src="/icons/date.svg" alt="Departure" />
-          <Label>Date</Label>
+      <div className="flex flex-col gap-4 md:flex-row md:items-center">
+        <div className="flex justify-between">
+          <div className="flex flex-row items-center gap-4 text-muted">
+            <img src="/icons/date.svg" alt="Departure" />
+            <Label>Date</Label>
+          </div>
+          {/* Switch for phone view */}
+          <div className="flex flex-row items-center gap-4 text-muted md:hidden">
+            <Label>Return?</Label>
+            <Switch checked={isReturnChecked} onCheckedChange={onSwitchChange} />
+          </div>
         </div>
-        <div className="flex flex-col w-[150px]">
+        <div className="flex flex-col w-full md:w-[150px]">
           <label className="text-muted" htmlFor="departure">Departure</label>
           <Input
             id="departure"
@@ -52,7 +59,7 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
             readOnly
           />
         </div>
-        <div className="flex flex-col w-[150px]">
+        <div className="flex flex-col w-full md:w-[150px]">
           <label className="text-muted" htmlFor="return">Return</label>
           <Input
             id="return"
@@ -64,7 +71,9 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
             readOnly
           />
         </div>
-        <Switch checked={isReturnChecked} onCheckedChange={onSwitchChange} />
+        <div className="hidden md:flex md:justify-center md:mt-0">
+          <Switch checked={isReturnChecked} onCheckedChange={onSwitchChange} />
+        </div>
       </div>
 
       {/* Modal */}
@@ -102,8 +111,9 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
       )}
 
       <ToastContainer 
-      className="toast-position"
-      position="top-right"/>
+        className="toast-position"
+        position="top-right"
+      />
     </div>
   );
 };

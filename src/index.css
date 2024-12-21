@@ -20,3 +20,18 @@ html {
 .toast-position {
   top: 8rem !important;
 }
+
+@keyframes slide {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-slide {
+  display: inline-block;
+  animation: slide 5s linear infinite;
+  white-space: nowrap;
+}
