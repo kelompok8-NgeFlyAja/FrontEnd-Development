@@ -24,7 +24,7 @@ function SeatClassInput() {
   return (
     <div className="relative">
       <div className="flex gap-4 items-center">
-        <div className="flex flex-col w-[150px]">
+        <div className="flex flex-col justify-center w-[300px] md:w-[150px]">
           <label className="text-muted" htmlFor="seat-class">Seat Class</label>
           <Input
             id="seat-class"
