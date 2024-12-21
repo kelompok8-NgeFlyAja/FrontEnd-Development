@@ -48,16 +48,16 @@ function FeaturedFlightCard() {
     <>
       {/* Filter Buttons */}
       <div
-        className="content max-w-[1098px] w-full mx-auto relative pt-6 bg-none rounded-lg mt-[36px]"
+        className="content max-w-[1098px] w-full mx-4 md:mx-auto relative pt-2 md:pt-6 bg-none rounded-lg mt-[36px]"
         style={{ zIndex: 1 }}
       >
         <div className="text-base font-bold leading-6 mb-4">Destinasi Favorit</div>
-        <div className="flex gap-4 flex-wrap justify-start">
+        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
           {continents.map((category) => (
             <Button
               key={category}
               variant={selected === category ? "default" : "outline"}
-              className={`flex gap-2 items-center px-6 py-4 rounded-xl ${
+              className={`flex gap-2 items-center px-6 py-4 rounded-xl whitespace-nowrap ${
                 selected === category
                   ? "bg-[#7126B5] text-white"
                   : "bg-[#E2D4F0] text-[#3C3C3C]"
@@ -72,7 +72,7 @@ function FeaturedFlightCard() {
       </div>
 
       {/* Destination Cards */}
-      <div className="content max-w-[1098px] w-full mx-auto relative pt-6 bg-none rounded-lg mt-3 mb-10">
+      <div className="content max-w-[1098px] w-full mx-2 md:mx-auto relative pt-6 bg-none rounded-lg mt-3 mb-10">
         {loading && <Loading loading={loading} />}
         {error && (
           <p className="text-gray-500 text-center">Error mengambil data...</p>
