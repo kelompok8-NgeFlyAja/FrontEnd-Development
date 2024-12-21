@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import LocationInput from "./LocationInput";
 import DateInput from "./DateInput";
@@ -64,7 +65,13 @@ function FlightSearchForm() {
   };
 
   return (
-    <div className="content max-w-[1098px] mt-6 w-[90%] md:w-full mx-auto lg:-mt-12 relative z-20 pt-6 bg-white rounded-lg shadow-2xl md:shadow-md">
+    <motion.div 
+    initial={{ opacity: 0, x: -75 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.75, delay: 0.25 }}
+    viewport={{ once: true }}
+    className="content max-w-[1098px] mt-6 w-[90%] md:w-full mx-auto lg:-mt-12 relative z-20 pt-6 bg-white rounded-lg shadow-2xl md:shadow-md"
+    >
       <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-800 px-8">
         Pilih Jadwal Penerbangan spesial di
         <span className="text-purple-600 bg-white px-2 py-1 rounded">
@@ -104,7 +111,7 @@ function FlightSearchForm() {
           Cari Penerbangan
         </Button>
       </form>
-    </div>
+    </motion.div>
   );
 }
 

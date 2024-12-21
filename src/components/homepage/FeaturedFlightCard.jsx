@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useFavoriteDestinations } from "@/hooks/useFetchFavoriteFlight";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "../ui/button";
@@ -47,7 +48,11 @@ function FeaturedFlightCard() {
   return (
     <>
       {/* Filter Buttons */}
-      <div
+      <motion.div
+        initial={{ opacity: 0, x: -75 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.75, delay: 0.25 }}
+        viewport={{ once: true }}
         className="content md:max-w-[1098px] md:w-full mx-4 md:mx-auto relative pt-2 md:pt-6 bg-none rounded-lg mt-[36px]"
         style={{ zIndex: 1 }}
       >
@@ -69,7 +74,7 @@ function FeaturedFlightCard() {
             </Button>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Destination Cards */}
       <div className="content max-w-[1098px] w-full md:mx-auto relative pt-6 bg-none rounded-lg mt-3 mb-10">
