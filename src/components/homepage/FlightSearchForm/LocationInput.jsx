@@ -61,8 +61,8 @@ const LocationInput = ({
 
   return (
     <div className="relative">
-      <div className="flex items-center gap-8">
-        <div className="flex items-center gap-4 w-[45%] text-muted">
+      <div className="flex flex-col md:flex-row items-center md:gap-8">
+        <div className="flex items-center gap-4 w-full md:w-[45%] text-muted">
           <img src="/icons/plane.svg" alt="From" />
           <Label htmlFor="from">From</Label>
           <Input
@@ -76,10 +76,14 @@ const LocationInput = ({
             autoComplete="off"
           />
         </div>
-        <button type="button" onClick={onSwitch} className="text-gray-600">
+        <button
+          type="button"
+          onClick={onSwitch}
+          className="text-gray-600 md:my-0 my-4"
+        >
           <img src="/icons/return.svg" alt="Switch" className="w-6 h-6" />
         </button>
-        <div className="flex items-center gap-4 w-[45%] text-muted">
+        <div className="flex items-center gap-4 w-full md:w-[45%] text-muted">
           <img src="/icons/plane.svg" alt="To" />
           <Label htmlFor="to">To</Label>
           <Input
