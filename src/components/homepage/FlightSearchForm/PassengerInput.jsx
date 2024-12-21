@@ -65,7 +65,7 @@ function PassengerInput({ onPassengerChange }) {
           ></div>
 
           <div
-            className="absolute bg-white px-4 py-4 shadow-lg rounded-lg w-[70vw] md:w-[400px] max-h-[300px] z-50"
+            className="absolute bg-white px-4 py-4 shadow-lg rounded-lg w-[90vw] sm:w-[70vw] md:w-[400px] max-h-[300px] z-50"
             onClick={handleModalClick}
           >
             <div className="flex justify-end">

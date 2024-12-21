@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
@@ -10,7 +10,41 @@ import "react-toastify/dist/ReactToastify.css";
 const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeField, setActiveField] = useState(null);
+  const [calendarMonths, setCalendarMonths] = useState(2);
   const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setCalendarMonths(1);
+      } else {
+        setCalendarMonths(2);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateModalPosition = () => {
+      if (modalRef.current) {
+        modalRef.current.style.left = "50%";
+        modalRef.current.style.transform = "translateX(-50%)";
+      }
+    };
+
+    if (isModalOpen) {
+      updateModalPosition();
+    }
+
+    window.addEventListener("resize", updateModalPosition);
+    return () => window.removeEventListener("resize", updateModalPosition);
+  }, [isModalOpen]);
 
   const toggleModal = (field) => {
     setActiveField(field);
@@ -19,9 +53,11 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
 
   const getModalStyles = () => {
     if (!modalRef.current) return {};
+    const modalWidth = modalRef.current.offsetWidth;
     return {
       left: "50%",
-      transform: "translateX(-50%)",
+      transform: `translateX(-50%)`,
+      width: modalWidth > window.innerWidth ? "90vw" : "auto",
     };
   };
 
@@ -42,7 +78,6 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
             <img src="/icons/date.svg" alt="Departure" />
             <Label>Date</Label>
           </div>
-          {/* Switch for phone view */}
           <div className="flex flex-row items-center gap-4 text-muted md:hidden">
             <Label>Return?</Label>
             <Switch checked={isReturnChecked} onCheckedChange={onSwitchChange} />
@@ -76,7 +111,6 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
         </div>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <>
           <div
@@ -94,7 +128,7 @@ const DateInput = ({ date, isReturnChecked, onSelectDate, onSwitchChange }) => {
                 initialFocus
                 defaultMonth={date?.from}
                 mode={"single"}
-                numberOfMonths={2}
+                numberOfMonths={calendarMonths}
                 selected={activeField === "from" ? date.from : date.to}
                 onSelect={(selectedDate) => {
                   if (activeField === "to") {

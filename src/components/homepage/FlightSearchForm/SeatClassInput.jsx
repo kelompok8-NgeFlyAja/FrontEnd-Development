@@ -18,7 +18,7 @@ function SeatClassInput() {
 
   const handleClassSelect = (seatClass) => {
     setSelectedClass(seatClass);
-    closeModal(); // Close modal after selection
+    closeModal(); 
   };
 
   return (
@@ -40,13 +40,11 @@ function SeatClassInput() {
       {/* Modal */}
       {isModalOpen && (
         <>
-          {/* Backdrop */}
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={closeModal}
           ></div>
 
-          {/* Modal */}
           <div
             className="absolute bg-white px-4 py-4 shadow-lg rounded-lg w-[70vw] md:w-[400px] max-h-[400px] z-50"
             onClick={handleModalClick}

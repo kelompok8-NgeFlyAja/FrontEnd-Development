@@ -35,3 +35,14 @@ html {
   animation: slide 5s linear infinite;
   white-space: nowrap;
 }
+
+.calendar-responsive {
+  display: grid;
+  grid-template-columns: 1fr; 
+}
+
+@media (min-width: 768px) {
+  .calendar-responsive {
+    grid-template-columns: repeat(2, 1fr); 
+  }
+}
