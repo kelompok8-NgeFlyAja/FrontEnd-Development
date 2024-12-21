@@ -6,19 +6,21 @@ import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 import NotificationItemSkeleton from "@/components/notification/NotificationItemSkeleton";
 import NotificationItem from "@/components/notification/NotificationItem";
+import NoNotification from "@/components/notification/NoNotification";
 import { motion } from "framer-motion";
-import Topnav from "@/components/TopNavbar";
 import useSend from "@/hooks/useSend";
+import { useNotifications } from "@/hooks/useFetchNotification";
 
 const Notification = () => {
-  const { loading, sendData } = useSend();
+  // const { loading, sendData } = useSend();
   const [isLogin, setIsLogin] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [isFilterDropdownVisible, setIsFilterDropdownVisible] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const cookies = new Cookies();
 
@@ -37,33 +39,22 @@ const Notification = () => {
     }
 
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      setLoading(false);
     }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { data, total, loading: isLoading, error: fetchError } = useNotifications();
 
-  const fetchData = async () => {
-    try {
-      const response = await sendData(
-        `/api/v1/notification`,
-        "GET",
-        null,
-        cookies.get("token")
-      );
-      const notifications = response.data.data.notification.filter(
-        (notif) => notif.user_id !== null
-      );
-      console.log(notifications);
-      setNotifications(notifications);
-    } catch (err) {
-      console.log(err);
+  useEffect(() => {
+    setLoading(isLoading);
+    if (fetchError) {
+      setError(fetchError);
+    } else if (data) {
+      setNotifications(data);
     }
-  };
+  }, [data, isLoading, fetchError]);
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
@@ -74,46 +65,33 @@ const Notification = () => {
     setSearch(event.target.value);
   };
 
-  const formatNotificationType = (type) => {
-    return type
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
+  // const formatNotificationType = (type) => {
+  //   return type.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+  // };
+
+  console.log(notifications);
+
+  // const filteredNotifications = notifications.filter((notification) => {
+  //   const matchesFilter = filter === "All" || formatNotificationType(notification.notification_type) === filter;
+  //   const matchesSearch = notification.message.toLowerCase().includes(search.toLowerCase());
+  //   return matchesFilter && matchesSearch;
+  // });
+
+  // const uniqueTypes = [...new Set(notifications.map((notif) => formatNotificationType(notif.notification_type)))];
+
+  // const filterOptions = uniqueTypes.map((type) => ({
+  //   label: type,
+  //   value: type,
+  // }));
+
+  const handleNotificationUpdate = (notificationId) => {
+    setNotifications((prev) => prev.map((notif) => (notif.id === notificationId ? { ...notif, isRead: true } : notif)));
   };
-
-  const filteredNotifications = notifications.filter((notification) => {
-    const matchesFilter =
-      filter === "All" ||
-      formatNotificationType(notification.notification_type) === filter;
-    const matchesSearch = notification.message
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
-
-  const uniqueTypes = [
-    ...new Set(
-      notifications.map((notif) =>
-        formatNotificationType(notif.notification_type)
-      )
-    ),
-  ];
-
-  const filterOptions = uniqueTypes.map((type) => ({
-    label: type,
-    value: type,
-  }));
 
   return (
     <>
-      <Topnav isLogin={isLogin} isSearch={false} />
       <div className="w-11/12 md:w-2/3 mx-auto flex mt-28 flex-col gap-5 overflow-hidden">
-        <motion.h1
-          initial={{ opacity: 0, x: -75 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.75, delay: 0.25 }}
-          viewport={{ once: true }}
-          className="text-xl font-bold"
-        >
+        <motion.h1 initial={{ opacity: 0, x: -75 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.75, delay: 0.25 }} viewport={{ once: true }} className="text-xl font-bold">
           Notifikasi
         </motion.h1>
         <div className="flex justify-between items-center gap-5 mx-4 mb-8 relative">
@@ -129,13 +107,7 @@ const Notification = () => {
             </Link>
             <h3 className="text-base">Beranda</h3>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 75 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.75, delay: 0.75 }}
-            viewport={{ once: true }}
-            className="flex gap-2 items-center"
-          >
+          <motion.div initial={{ opacity: 0, x: 75 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.75, delay: 0.75 }} viewport={{ once: true }} className="flex gap-2 items-center">
             <button
               className="flex items-center text-base gap-2 border border-[#7126B5] p-1 px-2 rounded-full"
               onClick={() => {
@@ -211,20 +183,24 @@ const Notification = () => {
           </motion.div>
         </div>
         <div>
-          {isLoading && !loading
-            ? notifications.map((_, index) => (
-                <NotificationItemSkeleton key={index} />
-              ))
-            : filteredNotifications.map((notification, index) => (
-                <NotificationItem
-                  key={index}
-                  title={formatNotificationType(notification.notification_type)}
-                  date={notification.updatedAt}
-                  message={notification.message}
-                  extraMessage={notification.extraMessage}
-                  is_read={notification.is_read}
-                />
-              ))}
+          {loading && !loading ? (
+            notifications.map((_, index) => <NotificationItemSkeleton key={index} />)
+          ) : notifications.length === 0 ? (
+            <NoNotification />
+          ) : (
+            notifications.map((notification, index) => (
+              <NotificationItem
+                key={index}
+                title={notification.title}
+                date={notification.createdAt}
+                description={notification.description}
+                extraMessage={notification.extraMessage}
+                isRead={notification.isRead}
+                notificationId={notification.id}
+                onNotificationUpdate={handleNotificationUpdate}
+              />
+            ))
+          )}
         </div>
       </div>
     </>
