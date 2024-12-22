@@ -55,6 +55,11 @@ function FeaturedFlightCard({ onFlightSelect }) {
         departure: flight.departure,
         arrival: flight.arrival,
       });
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     }
   };
 
