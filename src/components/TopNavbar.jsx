@@ -1,63 +1,43 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { IoMdSearch, IoMdPerson, IoIosList } from "react-icons/io";
 import { FiBell } from "react-icons/fi";
 import NavbarItems from "./NavbarItems";
-import InputSearch from "./search/InputSearch";
 import useSend from "@/hooks/useSend";
 import Cookies from "universal-cookie";
 
 const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
   const { loading, sendData } = useSend();
   const [searchText, setSearchText] = useState("");
-  const [isOpen, setIsOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isSearchVisible, setIsSearchVisible] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const dialogRef = useRef();
-  const searchRef = useRef();
   const navigate = useNavigate();
+  const location = useLocation();
   const cookies = new Cookies();
 
   const handleResize = () => {
     if (window.innerWidth >= 768) {
-      if (dialogRef.current?.open) {
-        dialogRef.current.close();
-        setIsOpen(true);
-      }
-      setIsSearchVisible(false);
+      setIsModalOpen(false);
       setIsSearchOpen(false);
-    } else {
-      setIsSearchVisible(true);
     }
   };
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-    handleResize();
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  const clickOutsideModal = (e) => {
-    if (e.target.id !== "dialog") {
-      dialogRef.current.close();
-      setIsOpen(true);
-    }
-  };
-
-  const handleHamburger = () => {
-    setIsOpen(!isOpen);
-    if (isOpen) {
-      dialogRef.current.showModal();
-    } else {
-      dialogRef.current.close();
-    }
-  };
-
   const handleSearchToggle = () => {
     setIsSearchOpen(!isSearchOpen);
+  };
+
+  const handleHamburgerToggle = () => {
+    setIsModalOpen(!isModalOpen); 
   };
 
   const handleInputChange = (event) => {
@@ -66,6 +46,7 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
 
   const handleSearch = () => {
     console.log("Search text:", searchText);
+    setIsSearchOpen(false);
   };
 
   return (
@@ -75,9 +56,8 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
           <img src="/logo.svg" alt="navbar logo" className="h-[53px]" />
         </a>
         {isSearch && (
-          <div className="relative w-full max-w-md">
+          <div className="relative w-full max-w-md hidden md:block">
             <input
-              ref={searchRef}
               type="text"
               placeholder="Cari di sini ..."
               value={searchText}
@@ -96,18 +76,11 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
       <div className="flex gap-6 items-center">
         {isSearch && (
           <button className="md:hidden text-4xl" onClick={handleSearchToggle}>
-            {isSearchOpen ? (
-              <button
-                className="text-red-500"
-                onClick={() => {
-                  setSearchText("");
-                }}
-              >
-                X
-              </button>
-            ) : (
-              <IoMdSearch />
-            )}
+            <img
+              className="w-6 h-6 text-gray-500"
+              src="/icons/search.svg"
+              alt="search icon"
+            />
           </button>
         )}
 
@@ -131,22 +104,16 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
                 </NavbarItems>
                 <button
                   className="flex flex-col justify-center items-center md:hidden border border-[#7126B5] p-2 rounded"
-                  onClick={handleHamburger}
+                  onClick={handleHamburgerToggle}
                 >
                   <span
-                    className={`bg-black block transition-all ease-out duration-300 h-0.5 w-6 rounded-sm py-0.5 ${
-                      !isOpen ? "rotate-45 translate-y-2" : "-tranlate-y-1"
-                    }`}
+                    className={`bg-black block h-0.5 w-6 rounded-sm transition-transform ${isModalOpen ? "rotate-45 translate-y-2" : ""}`}
                   ></span>
                   <span
-                    className={`bg-black block transition-all ease-in-out duration-300 h-0.5 w-6 rounded-sm py-0.5 my-1 ${
-                      !isOpen ? "opacity-0 translate-x-8" : "opacity-100"
-                    }`}
+                    className={`bg-black block h-0.5 w-6 rounded-sm my-1 transition-opacity ${isModalOpen ? "opacity-0" : "opacity-100"}`}
                   ></span>
                   <span
-                    className={`bg-black block transition-all ease-out duration-300 h-0.5 w-6 rounded-sm py-0.5 ${
-                      !isOpen ? "-rotate-45 -translate-y-2" : "tranlate-y-1"
-                    }`}
+                    className={`bg-black block h-0.5 w-6 rounded-sm transition-transform ${isModalOpen ? "-rotate-45 -translate-y-2" : ""}`}
                   ></span>
                 </button>
               </>
@@ -167,6 +134,86 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
           </>
         )}
       </div>
+
+      {/* Hamburger Menu for Phone View */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div
+            className="fixed inset-0 bg-gray-800 bg-opacity-75 z-40"
+            ref={dialogRef}
+            onClick={() => setIsModalOpen(false)}
+          >
+            <motion.div 
+              initial={{ opacity: 0, x: 75 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 75 }}
+              transition={{ duration: 0.75, delay: 0.25 }}
+              className="absolute top-0 right-0 w-64 h-full bg-white shadow-lg flex flex-col p-6"
+            >
+              <button
+                className="self-end text-gray-600"
+                onClick={handleHamburgerToggle}
+              >
+                ✖
+              </button>
+              <nav className="mt-6">
+                <ul className="space-y-4">
+                  <li>
+                    <Link
+                      to="/"
+                      className={`text-gray-800 hover:text-violet-900 ${
+                        location.pathname === "/" ? "font-bold text-violet-700" : ""
+                      }`}
+                      onClick={handleHamburgerToggle} 
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/riwayat-pesanan"
+                      className={`text-gray-800 hover:text-violet-900 ${
+                        location.pathname === "/riwayat-pesanan"
+                          ? "font-bold text-violet-700"
+                          : ""
+                      }`}
+                      onClick={handleHamburgerToggle} 
+                    >
+                      Riwayat Pesanan
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/notification"
+                      className={`text-gray-800 hover:text-violet-900 ${
+                        location.pathname === "/notification"
+                          ? "font-bold text-violet-700"
+                          : ""
+                      }`}
+                      onClick={handleHamburgerToggle} 
+                    >
+                      Notifikasi
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/account"
+                      className={`text-gray-800 hover:text-violet-900 ${
+                        location.pathname === "/account"
+                          ? "font-bold text-violet-700"
+                          : ""
+                      }`}
+                      onClick={handleHamburgerToggle} 
+                    >
+                      Akun
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

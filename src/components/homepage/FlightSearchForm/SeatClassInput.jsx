@@ -18,13 +18,13 @@ function SeatClassInput() {
 
   const handleClassSelect = (seatClass) => {
     setSelectedClass(seatClass);
-    closeModal(); // Close modal after selection
+    closeModal(); 
   };
 
   return (
     <div className="relative">
       <div className="flex gap-4 items-center">
-        <div className="flex flex-col w-[150px]">
+        <div className="flex flex-col justify-center w-[300px] md:w-[100px] lg:w-[150px]">
           <label className="text-muted" htmlFor="seat-class">Seat Class</label>
           <Input
             id="seat-class"
@@ -40,13 +40,11 @@ function SeatClassInput() {
       {/* Modal */}
       {isModalOpen && (
         <>
-          {/* Backdrop */}
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={closeModal}
           ></div>
 
-          {/* Modal */}
           <div
             className="absolute bg-white px-4 py-4 shadow-lg rounded-lg w-[70vw] md:w-[400px] max-h-[400px] z-50"
             onClick={handleModalClick}

@@ -61,10 +61,15 @@ const LocationInput = ({
 
   return (
     <div className="relative">
-      <div className="flex items-center gap-8">
-        <div className="flex items-center gap-4 w-[45%] text-muted">
+      <div className="flex flex-col md:flex-row items-center md:gap-8">
+        {/* Label for Phone View */}
+        <div className="mb-4 flex items-center gap-4 w-full md:w-[45%] text-muted md:hidden">
           <img src="/icons/plane.svg" alt="From" />
-          <Label htmlFor="from">From</Label>
+          <Label htmlFor="Location">From / To</Label>
+        </div>
+        <div className="flex items-center gap-4 w-full md:w-[45%] text-muted">
+          <img src="/icons/plane.svg" alt="From" className="hidden md:block" />
+          <Label htmlFor="from" className="hidden md:block">From</Label>
           <Input
             ref={fromInputRef}
             id="from"
@@ -76,12 +81,16 @@ const LocationInput = ({
             autoComplete="off"
           />
         </div>
-        <button type="button" onClick={onSwitch} className="text-gray-600">
+        <button
+          type="button"
+          onClick={onSwitch}
+          className="text-gray-600 md:my-0 my-4"
+        >
           <img src="/icons/return.svg" alt="Switch" className="w-6 h-6" />
         </button>
-        <div className="flex items-center gap-4 w-[45%] text-muted">
-          <img src="/icons/plane.svg" alt="To" />
-          <Label htmlFor="to">To</Label>
+        <div className="flex items-center gap-4 w-full md:w-[45%] text-muted">
+          <img src="/icons/plane.svg" alt="To" className="hidden md:block" />
+          <Label htmlFor="to" className="hidden md:block">To</Label>
           <Input
             id="to"
             value={toValue}

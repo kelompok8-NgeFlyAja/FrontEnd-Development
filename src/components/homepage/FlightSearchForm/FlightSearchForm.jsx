@@ -1,21 +1,35 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import LocationInput from "./LocationInput";
 import DateInput from "./DateInput";
 import PassengerInput from "./PassengerInput";
 import SeatClassInput from "./SeatClassInput";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function FlightSearchForm() {
+function FlightSearchForm({ selectedFlight }) {
   const navigate = useNavigate();
   const [date, setDate] = useState({ from: new Date(), to: new Date() });
   const [isOpenPopoverDate, setIsOpenPopoverDate] = useState(false);
   const [fromCity, setFromCity] = useState("");
   const [toCity, setToCity] = useState("");
   const [fromAirportCode, setFromAirportCode] = useState("");
-  const [toAirportCode, setToAirportCode] = useState(""); 
+  const [toAirportCode, setToAirportCode] = useState("");
   const [isReturnChecked, setIsReturnChecked] = useState(false);
   const [seatClass, setSeatClass] = useState("Economy");
+  
+  useEffect(() => {
+    if (selectedFlight) {
+      setFromCity(selectedFlight.departure);
+      setToCity(selectedFlight.arrival);
+      setFromAirportCode(selectedFlight.departureAirportCode);
+      setToAirportCode(selectedFlight.arrivalAirportCode);
+      setDate({ from: new Date(selectedFlight.departureTime), to: null });
+      setSeatClass(selectedFlight.seatClass);
+    }
+  }, [selectedFlight]);
 
   const handleSwitchCities = () => {
     const tempCity = fromCity;
@@ -49,22 +63,59 @@ function FlightSearchForm() {
   }, []);
 
   const handleSearchClick = () => {
+    if (!fromCity || !toCity) {
+      toast.error("Lokasi keberangkatan dan lokasi tujuan wajib diisi!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+    
+    const formatDate = (date) => {
+      const d = new Date(date);
+      d.setHours(0, 0, 0, 0);
+      
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+  
+    const fromDate = date.from ? formatDate(date.from) : "";
+    const toDate = date.to ? formatDate(date.to) : "";
+  
     const searchParams = new URLSearchParams({
       departureAirportCode: fromAirportCode,
       arrivalAirportCode: toAirportCode,
-      departureTime: date.from.toISOString().split("T")[0], 
+      departureTime: fromDate,
       seatClasses: seatClass,
       adultPassenger: passengerCounts.adults.toString(),
       childPassenger: passengerCounts.childrens.toString(),
       babyPassenger: passengerCounts.infants.toString(),
     });
+  
+    if (isReturnChecked) {
+      searchParams.append("returnTime", toDate);
+    }
 
     navigate(`/search?${searchParams.toString()}`);
-    console.log("Search URL:", `/search-flights?${searchParams.toString()}`);
+    // console.log(date.from);
+    // console.log("Search URL:", `/search-flights?${searchParams.toString()}`);
   };
 
   return (
-    <div className="content max-w-[1098px] mt-6 w-[90%] md:w-full mx-auto md:-mt-12 relative z-20 pt-6 bg-white rounded-lg shadow-md">
+    <motion.div
+      initial={{ opacity: 0, x: -75 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.75, delay: 0.25 }}
+      viewport={{ once: true }}
+      className="content max-w-[1098px] mt-6 w-[90%] md:w-full mx-auto lg:-mt-12 relative z-20 pt-6 bg-white rounded-lg shadow-2xl md:shadow-md"
+    >
+      <ToastContainer />
       <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-800 px-8">
         Pilih Jadwal Penerbangan spesial di
         <span className="text-purple-600 bg-white px-2 py-1 rounded">
@@ -83,7 +134,7 @@ function FlightSearchForm() {
             onToAirportCodeChange={setToAirportCode}
             onSwitch={handleSwitchCities}
           />
-          <div className="flex items-center gap-8 mt-9">
+          <div className="flex flex-col gap-8 mt-9 md:flex-row md:items-center">
             <DateInput
               date={date}
               isOpenPopover={isOpenPopoverDate}
@@ -104,7 +155,7 @@ function FlightSearchForm() {
           Cari Penerbangan
         </Button>
       </form>
-    </div>
+    </motion.div>
   );
 }
 

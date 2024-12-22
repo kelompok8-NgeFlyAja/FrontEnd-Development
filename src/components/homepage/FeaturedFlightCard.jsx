@@ -1,12 +1,13 @@
 import { useMemo, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useFavoriteDestinations } from "@/hooks/useFetchFavoriteFlight";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "../ui/button";
-import Loading from "../search/Loading";
+import Loading from "@/components/search/Loading";
 import ResultNotFound from "../search/ResultNotFound";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-function FeaturedFlightCard() {
+function FeaturedFlightCard({ onFlightSelect }) {
   const continents = ["Semua", "Asia", "Amerika", "Australia", "Eropa", "Afrika"];
   const [selected, setSelected] = useState("Semua");
   const [page, setPage] = useState(1);
@@ -44,20 +45,42 @@ function FeaturedFlightCard() {
     }
   };
 
+  const handleCardClick = (flight) => {
+    if (onFlightSelect) {
+      onFlightSelect({
+        departureAirportCode: flight.departureAirportCode,
+        arrivalAirportCode: flight.arrivalAirportCode,
+        departureTime: flight.departureTime,
+        seatClass: flight.seatClasses,
+        departure: flight.departure,
+        arrival: flight.arrival,
+      });
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <>
       {/* Filter Buttons */}
-      <div
-        className="content max-w-[1098px] w-full mx-auto relative pt-6 bg-none rounded-lg mt-[36px]"
+      <motion.div
+        initial={{ opacity: 0, x: -75 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.75, delay: 0.25 }}
+        viewport={{ once: true }}
+        className="content md:max-w-[1098px] md:w-full mx-4 md:mx-auto relative pt-2 md:pt-6 bg-none rounded-lg mt-[36px]"
         style={{ zIndex: 1 }}
       >
-        <div className="text-base font-bold leading-6 mb-4">Destinasi Favorit</div>
-        <div className="flex gap-4 flex-wrap justify-start">
+        <div className="text-base font-bold max-w-[200px] mb-4">Destinasi Favorit</div>
+        <div className="flex w-full gap-4 overflow-x-auto overflow-y-hidden mx-auto scrollbar-hide">
           {continents.map((category) => (
             <Button
               key={category}
               variant={selected === category ? "default" : "outline"}
-              className={`flex gap-2 items-center px-6 py-4 rounded-xl ${
+              className={`flex gap-2 items-center px-6 py-4 rounded-xl whitespace-nowrap ${
                 selected === category
                   ? "bg-[#7126B5] text-white"
                   : "bg-[#E2D4F0] text-[#3C3C3C]"
@@ -69,11 +92,11 @@ function FeaturedFlightCard() {
             </Button>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Destination Cards */}
-      <div className="content max-w-[1098px] w-full mx-auto relative pt-6 bg-none rounded-lg mt-3 mb-10">
-        {loading && <Loading loading={loading} />}
+      <div className="content max-w-[1098px] w-full md:mx-auto relative pt-6 bg-none rounded-lg mt-3 mb-10">
+        {loading && <Loading />}
         {error && (
           <p className="text-gray-500 text-center">Error mengambil data...</p>
         )}
@@ -88,6 +111,7 @@ function FeaturedFlightCard() {
                 {destinations.map((dest, index) => (
                   <Card
                     key={index}
+                    onClick={() => handleCardClick(dest)}
                     className="max-w-[200px] max-h-[212px] shadow-md rounded-lg relative transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
                   >
                     <span className="absolute top-0 right-0 bg-[#A06ECE] text-white text-[8px] font-bold px-2 py-1 rounded-l-lg rounded-tr-lg z-10">
@@ -115,15 +139,14 @@ function FeaturedFlightCard() {
               </div>
 
               {/* Pagination */}
-              <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-2 sm:gap-4 mt-4">
+              <div className="flex flex-row justify-center items-center gap-2 sm:gap-4 mt-4">
                 <Button
                   onClick={goToPreviousPage}
                   disabled={page === 1}
                   variant="outline"
-                  className="flex items-center justify-center px-4 py-2 rounded-md border-violet-700 w-full sm:w-auto text-xs sm:text-sm"
+                  className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 text-xs sm:text-sm"
                 >
-                  <IoIosArrowBack size={16} className="fill-violet-700 mr-2" />
-                  Previous
+                <IoIosArrowBack size={16} className="fill-violet-700" />
                 </Button>
 
                 <span className="text-xs sm:text-sm text-violet-700 text-center">
@@ -134,10 +157,9 @@ function FeaturedFlightCard() {
                   onClick={goToNextPage}
                   disabled={page === totalPages}
                   variant="outline"
-                  className="flex items-center justify-center px-4 py-2 rounded-md border-violet-700 w-full sm:w-auto text-xs sm:text-sm"
+                  className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 sm:w-auto text-xs sm:text-sm"
                 >
-                  Next
-                  <IoIosArrowForward size={16} className="fill-violet-700 ml-2" />
+                  <IoIosArrowForward size={16} className="fill-violet-700" />
                 </Button>
               </div>
             </>
