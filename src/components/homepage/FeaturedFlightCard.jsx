@@ -7,7 +7,7 @@ import Loading from "@/components/search/Loading";
 import ResultNotFound from "../search/ResultNotFound";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-function FeaturedFlightCard() {
+function FeaturedFlightCard({ onFlightSelect }) {
   const continents = ["Semua", "Asia", "Amerika", "Australia", "Eropa", "Afrika"];
   const [selected, setSelected] = useState("Semua");
   const [page, setPage] = useState(1);
@@ -42,6 +42,19 @@ function FeaturedFlightCard() {
   const goToPreviousPage = () => {
     if (page > 1) {
       setPage(page - 1);
+    }
+  };
+
+  const handleCardClick = (flight) => {
+    if (onFlightSelect) {
+      onFlightSelect({
+        departureAirportCode: flight.departureAirportCode,
+        arrivalAirportCode: flight.arrivalAirportCode,
+        departureTime: flight.departureTime,
+        seatClass: flight.seatClasses,
+        departure: flight.departure,
+        arrival: flight.arrival,
+      });
     }
   };
 
@@ -93,6 +106,7 @@ function FeaturedFlightCard() {
                 {destinations.map((dest, index) => (
                   <Card
                     key={index}
+                    onClick={() => handleCardClick(dest)}
                     className="max-w-[200px] max-h-[212px] shadow-md rounded-lg relative transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
                   >
                     <span className="absolute top-0 right-0 bg-[#A06ECE] text-white text-[8px] font-bold px-2 py-1 rounded-l-lg rounded-tr-lg z-10">

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import SeatClassInput from "./SeatClassInput";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function FlightSearchForm() {
+function FlightSearchForm({ selectedFlight }) {
   const navigate = useNavigate();
   const [date, setDate] = useState({ from: new Date(), to: new Date() });
   const [isOpenPopoverDate, setIsOpenPopoverDate] = useState(false);
@@ -19,6 +19,17 @@ function FlightSearchForm() {
   const [toAirportCode, setToAirportCode] = useState("");
   const [isReturnChecked, setIsReturnChecked] = useState(false);
   const [seatClass, setSeatClass] = useState("Economy");
+  
+  useEffect(() => {
+    if (selectedFlight) {
+      setFromCity(selectedFlight.departure);
+      setToCity(selectedFlight.arrival);
+      setFromAirportCode(selectedFlight.departureAirportCode);
+      setToAirportCode(selectedFlight.arrivalAirportCode);
+      setDate({ from: new Date(selectedFlight.departureTime), to: null });
+      setSeatClass(selectedFlight.seatClass);
+    }
+  }, [selectedFlight]);
 
   const handleSwitchCities = () => {
     const tempCity = fromCity;
@@ -63,19 +74,37 @@ function FlightSearchForm() {
       });
       return;
     }
-
+    
+    const formatDate = (date) => {
+      const d = new Date(date);
+      d.setHours(0, 0, 0, 0);
+      
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+  
+    const fromDate = date.from ? formatDate(date.from) : "";
+    const toDate = date.to ? formatDate(date.to) : "";
+  
     const searchParams = new URLSearchParams({
       departureAirportCode: fromAirportCode,
       arrivalAirportCode: toAirportCode,
-      departureTime: date.from.toISOString().split("T")[0],
+      departureTime: fromDate,
       seatClasses: seatClass,
       adultPassenger: passengerCounts.adults.toString(),
       childPassenger: passengerCounts.childrens.toString(),
       babyPassenger: passengerCounts.infants.toString(),
     });
+  
+    if (isReturnChecked) {
+      searchParams.append("returnTime", toDate);
+    }
 
     navigate(`/search?${searchParams.toString()}`);
-    console.log("Search URL:", `/search-flights?${searchParams.toString()}`);
+    // console.log(date.from);
+    // console.log("Search URL:", `/search-flights?${searchParams.toString()}`);
   };
 
   return (
