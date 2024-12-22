@@ -2,15 +2,40 @@ import React from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
-  console.log(flight);
+
   const handleSelect = () => {
     console.log("Selected ticket:", flight);
   };
 
+  const formatTimeTo24Hour = (time) => {
+    if (!time) return "Invalid time";
+    try {
+      const [timePart, modifier] = time.split(" ");
+      let [hours, minutes, seconds] = timePart.split(":").map(Number);
+  
+      if (modifier === "PM" && hours < 12) hours += 12;
+      if (modifier === "AM" && hours === 12) hours = 0;
+  
+      return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+    } catch (error) {
+      console.error("Time parsing error:", error);
+      return "Invalid time";
+    }
+  };
+
+  const formatPrice = (price) => {
+    if (typeof price !== "number") return "Invalid price";
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
   return (
-    <div className="shadow-md border-2 rounded-3xl bg-white mb-4 transition-all duration-500 w-[95vw] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-[640px] relative">
-      {/* Header Section */}
-      <div className={`px-4 py-3 text-left text-lg font-medium text-gray-900 bg-white flex items-center justify-between ${isOpen ? "rounded-t-lg" : "rounded-lg"}`}>
+    <div className="ring-2 ring-gray-100 hover:ring-violet-300 rounded-lg mb-4 transition-all duration-500 w-[95vw] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-[640px] relative">
+      {/* Detail Section */}
+      <div
+        className={`shadow-md rounded-t-lg px-4 py-3 text-left text-lg font-medium text-gray-900 bg-white flex items-center justify-between ${
+          isOpen ? "rounded-b-none" : "rounded-b-lg"
+        }`}
+      >
         <div className="flex items-start">
           <div className="flex flex-col ml-2">
             <span className="text-sm text-gray-500">
@@ -25,11 +50,15 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
               }}
             >
               <div>
-                <strong className="text-black">{flight.departureTime}</strong>
+                <strong className="text-black">
+                  {formatTimeTo24Hour(flight.departureTime)}
+                </strong>
               </div>
               <div className="text-sm text-center">{flight.duration}</div>
               <div>
-                <strong className="text-black">{flight.arrivalTime}</strong>
+                <strong className="text-black">
+                  {formatTimeTo24Hour(flight.arrivalTime)}
+                </strong>
               </div>
               <div></div>
               <div className="text-center">
@@ -41,14 +70,20 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
               <div className="text-black">{flight.arrivalAirport}</div>
             </div>
           </div>
-        </div>
-        <div>
-          <img className="hidden md:block me-10" src="/icons/baggage.svg" alt="Baggage Icon" />
+          <div>
+            <img
+              className="hidden md:block my-10"
+              src="/icons/baggage.svg"
+              alt="Baggage Icon"
+            />
+          </div>
         </div>
         <div className="flex flex-col items-end">
-          <div className="md:text-[16px] text-sm text-purple-600 mt-4 md:mt-7 mb-1">{flight.price}</div>
+          <div className="md:text-[16px] text-sm font-bold text-[#7126B5] mt-2 md:mt-2 mb-1">
+            IDR {formatPrice(flight.price)}
+          </div>
           <button
-            className="text-sm md:w-[100px] md:h-[32px] w-[70px] h-[20px] mr-2 px-4 py-2 bg-purple-600 text-white rounded mb-1 hover:bg-purple-700"
+            className="text-sm md:w-[100px] md:h-[32px] w-[70px] h-[20px] px-4 py-2 bg-[#7126B5] text-white rounded mb-1 hover:bg-[#4B1979]"
             style={{
               borderRadius: "12px",
               display: "flex",
@@ -64,21 +99,38 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
       </div>
 
       {/* Accordion Toggle */}
-      <button className="focus:outline-none flex items-center justify-center absolute top-2 right-2 w-5 h-5 border border-gray-400 rounded-full bg-transparent" onClick={toggleAccordion}>
-        {isOpen ? <FaChevronUp color="rgba(128, 128, 128, 0.7)" size={16} /> : <FaChevronDown color="rgba(128, 128, 128, 0.7)" size={16} />}
+      <button
+        className="focus:outline-none flex items-center justify-center absolute top-2 right-2 w-5 h-5 border border-gray-400 rounded-full bg-transparent"
+        onClick={toggleAccordion}
+      >
+        {isOpen ? (
+          <FaChevronUp color="rgba(128, 128, 128, 0.7)" size={16} />
+        ) : (
+          <FaChevronDown color="rgba(128, 128, 128, 0.7)" size={16} />
+        )}
       </button>
 
       {/* Accordion Content */}
-      <div className={`${isOpen ? "block" : "hidden"} px-4 py-3 bg-gray-50 transition-all duration-500 rounded-b-lg border-t border-gray-300`}>
+      <div
+        className={`${
+          isOpen ? "block" : "hidden"
+        } shadow-md px-4 py-3 bg-white transition-all duration-500 rounded-b-lg border-t border-gray-300`}
+      >
         <div className="mb-2">
-          <div className="text-sm text-gray-500 font-semibold" style={{ color: "#7126B5" }}>
+          <div
+            className="text-sm text-gray-500 font-semibold"
+            style={{ color: "#7126B5" }}
+          >
             Detail Penerbangan
           </div>
           <div className="text-sm flex justify-between text-black">
             <div>
-              <strong>{flight.departureTime}</strong>
+              <strong>{formatTimeTo24Hour(flight.departureTime)}</strong>
             </div>
-            <div className="font-semibold" style={{ color: "#A06ECE" }}>
+            <div
+              className="font-semibold"
+              style={{ color: "#A06ECE" }}
+            >
               Keberangkatan
             </div>
           </div>
@@ -96,9 +148,15 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
         </div>
         <div className="mb-2 flex items-center">
           <div className="flex flex-col ml-2">
-            <div className="text-sm text-gray-500 font-semibold">Informasi</div>
-            <div className="text-sm">Baggage: {flight.plane.baggage} kg</div>
-            <div className="text-sm">Cabin Baggage: {flight.plane.cabinBaggage} kg</div>
+            <div className="text-sm text-gray-500 font-semibold">
+              Informasi
+            </div>
+            <div className="text-sm">
+              Baggage: {flight.plane.baggage} kg
+            </div>
+            <div className="text-sm">
+              Cabin Baggage: {flight.plane.cabinBaggage} kg
+            </div>
             <div className="text-sm">{flight.plane.description}</div>
           </div>
         </div>
@@ -106,9 +164,12 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
         <div className="mb-2">
           <div className="flex justify-between text-black">
             <div className="text-sm">
-              <strong>{flight.arrivalTime}</strong>
+              <strong>{formatTimeTo24Hour(flight.arrivalTime)}</strong>
             </div>
-            <div className="text-sm font-semibold" style={{ color: "#A06ECE" }}>
+            <div
+              className="text-sm font-semibold"
+              style={{ color: "#A06ECE" }}
+            >
               Kedatangan
             </div>
           </div>
