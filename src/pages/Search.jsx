@@ -115,7 +115,7 @@ const Search = () => {
   }, [departureTime]); 
 
   return (
-    <div className="w-11/12 md:w-2/3 mx-auto flex flex-col gap-5 overflow-hidden pb-10 mt-10">
+    <div className="w-11/12 md:w-2/3 mx-auto flex flex-col gap-5 overflow-hidden pb-10 mt-5 md:mt-10">
       <motion.h1
         initial={{ opacity: 0, x: -75 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -126,7 +126,7 @@ const Search = () => {
         Pilih Penerbangan
       </motion.h1>
 
-      <div className="flex justify-between items-center gap-2 mx-4 relative">
+      <div className="flex flex-col md:flex-row items-center gap-2 relative">
         <ChangeResult
           origin={ticketSearch.departureAirportCode}
           destination={ticketSearch.arrivalAirportCode}
@@ -143,7 +143,7 @@ const Search = () => {
           transition={{ duration: 0.75, delay: 0.75 }}
           viewport={{ once: true }}
           onClick={() => navigate("/")}
-          className="text-white gap-5 p-2 md:p-3 px-5 rounded-lg bg-[#73CA5C]"
+          className="hidden md:block text-white gap-5 p-2 md:p-3 px-5 rounded-lg bg-[#73CA5C]"
         >
           Ubah Pencarian
         </motion.button>

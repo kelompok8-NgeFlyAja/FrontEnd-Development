@@ -29,7 +29,7 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
   };
 
   return (
-    <div className="ring-2 ring-gray-100 hover:ring-violet-300 rounded-lg mb-4 transition-all duration-500 w-[95vw] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-[640px] relative">
+    <div className="ring-2 ring-gray-100 hover:ring-violet-300 rounded-lg mb-4 transition-all duration-500 relative">
       {/* Detail Section */}
       <div
         className={`shadow-md rounded-t-lg px-4 py-3 text-left text-lg font-medium text-gray-900 bg-white flex items-center justify-between ${
