@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { IoMdSearch, IoMdArrowRoundBack } from "react-icons/io";
-import { BiFilterAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { IoMdSearch, IoMdArrowRoundBack } from "react-icons/io";
+import { BiFilterAlt } from "react-icons/bi";
 import useFetchTransactionHistory from "@/hooks/useFetchTransactionHistory";
 import HistoryCard from "@/components/history/historyCard";
+import HistoryEmpty from "@/components/history/HistoryEmpty";
+import HistoryDetail from "@/components/history/HistoryDetail";
 
 const History = () => {
   const { transactionHistory, loading, error } = useFetchTransactionHistory();
+  const [selectedHistory, setSelectedHistory] = useState(null);
 
-  console.log(transactionHistory);
+  const handleSelectHistory = (history) => {
+    setSelectedHistory(history);
+  };
+
   return (
     <div className="w-11/12 md:w-2/3 mx-auto flex flex-col mt-10 gap-5 overflow-hidden">
       <motion.h1
@@ -54,21 +59,28 @@ const History = () => {
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
       {!loading && !error && (
-        <div className="mt-5">
-          {transactionHistory.length > 0 ? (
-            <ul className="list-disc list-inside">
-              {transactionHistory.map((history) => (
-                    <HistoryCard
-                      key={history.bookingId}
-                      history={history}
-                      selected={""}
-                      onClick={""}
-                    />
-                  ))}
-            </ul>
-          ) : (
-            <p>No transaction history found.</p>
-          )}
+        <div className="flex flex-col md:flex-row gap-5 mt-5">
+          <div className="md:w-2/3">
+            {transactionHistory.length > 0 ? (
+              transactionHistory.map((history) => (
+                <HistoryCard
+                  key={history.bookingId}
+                  history={history}
+                  selected={selectedHistory?.bookingId === history.bookingId}
+                  onClick={() => handleSelectHistory(history)}
+                />
+              ))
+            ) : (
+              <HistoryEmpty />
+            )}
+          </div>
+          <div className="md:w-1/3">
+            {selectedHistory ? (
+              <HistoryDetail history={selectedHistory} />
+            ) : (
+              <p className="text-gray-500">Pilih riwayat untuk melihat detail</p>
+            )}
+          </div>
         </div>
       )}
     </div>
