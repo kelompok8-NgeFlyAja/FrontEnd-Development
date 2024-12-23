@@ -25,7 +25,7 @@ const Search = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [selectedBaggageFilter, setSelectedBaggageFilter] = useState(null);
   const [selectedCBaggageFilter, setSelectedCBaggageFilter] = useState(null);
-  const [selectedPriceFilter, setSelectedPriceFilter] = useState(null); // Add state for selected price filter
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState(null); 
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -117,32 +117,41 @@ const Search = () => {
     }
   }, [departureTime]);
 
-  useEffect(() => {
-    console.log("Selected Filters in Search:", {
-      selectedBaggageFilter,
-      selectedCBaggageFilter,
-      selectedPriceFilter,
-    });
-  }, [selectedBaggageFilter, selectedCBaggageFilter, selectedPriceFilter]);
-
-  // Filter flights based on the selected price filter
   const filteredFlights = useMemo(() => {
-    if (!selectedPriceFilter) return flights;
-
     let filtered = [...flights];
 
-    if (selectedPriceFilter === "Di bawah 1 Juta") {
-      filtered = filtered.filter(flight => flight.price < 1000000);
-    } else if (selectedPriceFilter === "1 Juta - 3 Juta") {
-      filtered = filtered.filter(flight => flight.price >= 1000000 && flight.price <= 3000000);
-    } else if (selectedPriceFilter === "3 Juta - 5 Juta") {
-      filtered = filtered.filter(flight => flight.price > 3000000 && flight.price <= 5000000);
-    } else if (selectedPriceFilter === "Di atas 5 Juta") {
-      filtered = filtered.filter(flight => flight.price > 5000000);
+    if (selectedPriceFilter) {
+      if (selectedPriceFilter === "Di bawah 1 Juta") {
+        filtered = filtered.filter(flight => flight.price < 1000000);
+      } else if (selectedPriceFilter === "1 Juta - 3 Juta") {
+        filtered = filtered.filter(flight => flight.price >= 1000000 && flight.price <= 3000000);
+      } else if (selectedPriceFilter === "3 Juta - 5 Juta") {
+        filtered = filtered.filter(flight => flight.price > 3000000 && flight.price <= 5000000);
+      } else if (selectedPriceFilter === "Di atas 5 Juta") {
+        filtered = filtered.filter(flight => flight.price > 5000000);
+      }
+    }
+
+    if (selectedCBaggageFilter) {
+      if (selectedCBaggageFilter === ">1Kg") {
+        filtered = filtered.filter(flight => flight.plane.cabinBaggage >= 1);
+      } else if (selectedCBaggageFilter === ">5Kg") {
+        filtered = filtered.filter(flight => flight.plane.cabinBaggage > 5);
+      }
+    }
+
+    if (selectedBaggageFilter) {
+      if (selectedBaggageFilter === ">1Kg") {
+        filtered = filtered.filter(flight => flight.plane.baggage >= 1);
+      } else if (selectedBaggageFilter === ">5Kg") {
+        filtered = filtered.filter(flight => flight.plane.baggage > 5);
+      } else if (selectedBaggageFilter === ">10Kg") {
+        filtered = filtered.filter(flight => flight.plane.baggage > 10);
+      }
     }
 
     return filtered;
-  }, [flights, selectedPriceFilter]);
+  }, [flights, selectedPriceFilter, selectedCBaggageFilter, selectedBaggageFilter]);
 
   return (
     <div className="w-11/12 md:w-2/3 mx-auto flex flex-col gap-5 overflow-hidden pb-10 mt-5 md:mt-10">
@@ -211,7 +220,7 @@ const Search = () => {
           <Filter
             setSelectedBaggageFilter={setSelectedBaggageFilter}
             setSelectedCBaggageFilter={setSelectedCBaggageFilter}
-            setSelectedPriceFilter={setSelectedPriceFilter} // Pass the state setter to Filter component
+            setSelectedPriceFilter={setSelectedPriceFilter} 
           />
         </motion.div>
         <div className="flex-grow">

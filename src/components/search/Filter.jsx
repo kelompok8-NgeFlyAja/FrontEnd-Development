@@ -74,7 +74,7 @@ const Filter = ({ setSelectedBaggageFilter, setSelectedCBaggageFilter, setSelect
       <FilterAccordionItem
         icon={<FiBox className="text-xl" />}
         label="Baggage"
-        options={["None", "1Kg - 5Kg", ">5kg", ">10Kg"]}
+        options={["None", ">1Kg", ">5Kg", ">10Kg"]}
         selectedOption={selectedBaggageFilter}
         setSelectedOption={setSelectedBaggageFilter}
         setSelectedFilter={setBaggageFilter}
@@ -82,7 +82,7 @@ const Filter = ({ setSelectedBaggageFilter, setSelectedCBaggageFilter, setSelect
       <FilterAccordionItem
         icon={<FaRegHeart className="text-xl" />}
         label="Cabin Baggage"
-        options={["None", "1Kg - 5Kg", ">5kg"]}
+        options={["None", ">1Kg", ">5Kg"]}
         selectedOption={selectedCBaggageFilter}
         setSelectedOption={setSelectedCBaggageFilter}
         setSelectedFilter={setCBaggageFilter}
