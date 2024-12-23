@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useSearchParams } from "react-router-dom";
 
-const SeatSelection = () => {
+const SeatSelection = ({ totalSeats, onSeatSelect }) => {
   const [seats, setSeats] = useState({});
-  const [selectedSeats, setSelectedSeats] = useState([]); // Menyimpan kursi yang dipilih
-  const [currentPassenger, setCurrentPassenger] = useState(0); // Penumpang aktif
-  const totalPassengers = 3; // Total jumlah penumpang
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [currentPassenger, setCurrentPassenger] = useState(0);
+  const totalPassengers = totalSeats;
+
+  const [searchParams] = useSearchParams();
+
+  const flightId = parseInt(searchParams.get("flightId") || "");
 
   // Fetch Data
   useEffect(() => {
-    fetch("https://ngeflyaja.shop/plane-seat/1")
+    fetch(`https://ngeflyaja.shop/plane-seat/${flightId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") setSeats(data.data);
@@ -20,11 +25,16 @@ const SeatSelection = () => {
   const handleSelectSeat = (seatNumber) => {
     setSelectedSeats((prevSeats) => {
       const updatedSeats = [...prevSeats];
-      updatedSeats[currentPassenger] = seatNumber; // Menyimpan kursi untuk penumpang aktif
+      updatedSeats[currentPassenger] = seatNumber;
+
+      // Panggil callback untuk memberikan data ke parent
+      if (onSeatSelect) {
+        onSeatSelect(updatedSeats);
+      }
+
       return updatedSeats;
     });
 
-    // Pindah ke penumpang berikutnya jika belum selesai
     if (currentPassenger < totalPassengers - 1) {
       setCurrentPassenger((prev) => prev + 1);
     }
