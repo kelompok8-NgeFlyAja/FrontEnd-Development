@@ -84,7 +84,13 @@ const Search = () => {
     ]
   );
 
-  const { data: flights, total, loading, error, refetch } = useSearchFlight(ticketSearch);
+  const {
+    data: flights,
+    total,
+    loading,
+    error,
+    refetch,
+  } = useSearchFlight(ticketSearch);
 
   const totalPages = Math.ceil(total / limit);
 
@@ -262,39 +268,42 @@ const Search = () => {
               <ResultNotFound message={error} />
             </div>
           ) : filteredFlights && filteredFlights.length > 0 ? (
-          <>
-          {filteredFlights.map((flight, index) => (
-            <FlightCard
-              key={index}
-              index={index}
-              flight={flight}
-              isOpen={openIndex === index}
-              toggleAccordion={() => toggleAccordion(index)}
-            />
-            ))}
-            <div className="flex flex-row justify-center items-center gap-2 sm:gap-4 mt-4">
-              <Button
-                onClick={goToPreviousPage}
-                disabled={page === 1}
-                variant="outline"
-                className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 text-xs sm:text-sm"
-              >
-                <IoIosArrowBack size={16} className="fill-violet-700" />
-              </Button>
+            <>
+              {filteredFlights.map((flight, index) => (
+                <FlightCard
+                  key={index}
+                  index={index}
+                  flight={flight}
+                  isOpen={openIndex === index}
+                  toggleAccordion={() => toggleAccordion(index)}
+                  adultPassenger={ticketSearch.adultPassenger}
+                  childPassenger={ticketSearch.childPassenger}
+                  babyPassenger={ticketSearch.babyPassenger}
+                />
+              ))}
+              <div className="flex flex-row justify-center items-center gap-2 sm:gap-4 mt-4">
+                <Button
+                  onClick={goToPreviousPage}
+                  disabled={page === 1}
+                  variant="outline"
+                  className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 text-xs sm:text-sm"
+                >
+                  <IoIosArrowBack size={16} className="fill-violet-700" />
+                </Button>
 
-              <span className="text-xs sm:text-sm text-violet-700 text-center">
-                Page {page} of {totalPages}
-              </span>
+                <span className="text-xs sm:text-sm text-violet-700 text-center">
+                  Page {page} of {totalPages}
+                </span>
 
-              <Button
-                onClick={goToNextPage}
-                disabled={page === totalPages}
-                variant="outline"
-                className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 sm:w-auto text-xs sm:text-sm"
-              >
-                <IoIosArrowForward size={16} className="fill-violet-700" />
-              </Button>
-            </div>
+                <Button
+                  onClick={goToNextPage}
+                  disabled={page === totalPages}
+                  variant="outline"
+                  className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 sm:w-auto text-xs sm:text-sm"
+                >
+                  <IoIosArrowForward size={16} className="fill-violet-700" />
+                </Button>
+              </div>
             </>
           ) : (
             <div className="p-10">
