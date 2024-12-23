@@ -84,13 +84,6 @@ const FlightCard = ({
               <div className="text-black">{flight.arrivalAirport}</div>
             </div>
           </div>
-          <div>
-            <img
-              className="hidden md:block my-10"
-              src="/icons/baggage.svg"
-              alt="Baggage Icon"
-            />
-          </div>
         </div>
         <div className="flex flex-col items-end">
           <div className="md:text-[16px] text-sm font-bold text-[#7126B5] mt-2 md:mt-2 mb-1">
