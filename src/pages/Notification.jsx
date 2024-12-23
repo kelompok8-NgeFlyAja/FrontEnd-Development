@@ -90,7 +90,7 @@ const Notification = () => {
 
   return (
     <>
-      <div className="w-11/12 md:w-2/3 mx-auto flex mt-28 flex-col gap-5 overflow-hidden">
+      <div className="w-11/12 md:w-2/3 mx-auto flex mt-10 flex-col gap-5 overflow-hidden">
         <motion.h1 initial={{ opacity: 0, x: -75 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.75, delay: 0.25 }} viewport={{ once: true }} className="text-xl font-bold">
           Notifikasi
         </motion.h1>

@@ -55,6 +55,7 @@ const searchFlights = async ({
       return {
         success: true,
         data: response.data.flights,
+        total: response.data.totalFlights,
       };
     }
     return {

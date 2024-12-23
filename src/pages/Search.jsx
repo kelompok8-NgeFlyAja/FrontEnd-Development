@@ -8,6 +8,8 @@ import { useSearchFlight } from "@/hooks/useSearchFlight";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ChangeResult from "@/components/search/ChangeResult";
 import Filter from "@/components/search/Filter";
+import { Button } from "@/components/ui/button";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const extractParams = (searchParams, keys) => {
   const params = {};
@@ -23,6 +25,11 @@ const Search = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [days, setDays] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
+  const [selectedBaggageFilter, setSelectedBaggageFilter] = useState(null);
+  const [selectedCBaggageFilter, setSelectedCBaggageFilter] = useState(null);
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState(null);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -61,6 +68,8 @@ const Search = () => {
       adultPassenger: parseInt(adultPassenger, 10),
       childPassenger: parseInt(childPassenger, 10),
       babyPassenger: parseInt(babyPassenger, 10),
+      page: page,
+      limit: limit,
     }),
     [
       departureAirportCode,
@@ -70,16 +79,32 @@ const Search = () => {
       adultPassenger,
       childPassenger,
       babyPassenger,
+      page,
+      limit,
     ]
   );
 
-  const { data: flights, loading, error, refetch } = useSearchFlight(ticketSearch);
+  const { data: flights, total, loading, error, refetch } = useSearchFlight(ticketSearch);
+
+  const totalPages = Math.ceil(total / limit);
+
+  const goToNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
 
   useEffect(() => {
     if (selectedDate) {
-      refetch();  
+      refetch();
     }
-  }, [selectedDate, refetch]); 
+  }, [selectedDate, refetch]);
 
   const getDayName = (date) => {
     const dayNames = [
@@ -112,10 +137,55 @@ const Search = () => {
     if (departureTime) {
       generateDays(departureTime);
     }
-  }, [departureTime]); 
+  }, [departureTime]);
+
+  const filteredFlights = useMemo(() => {
+    let filtered = [...flights];
+
+    if (selectedPriceFilter) {
+      if (selectedPriceFilter === "Di bawah 1 Juta") {
+        filtered = filtered.filter((flight) => flight.price < 1000000);
+      } else if (selectedPriceFilter === "1 Juta - 3 Juta") {
+        filtered = filtered.filter(
+          (flight) => flight.price >= 1000000 && flight.price <= 3000000
+        );
+      } else if (selectedPriceFilter === "3 Juta - 5 Juta") {
+        filtered = filtered.filter(
+          (flight) => flight.price > 3000000 && flight.price <= 5000000
+        );
+      } else if (selectedPriceFilter === "Di atas 5 Juta") {
+        filtered = filtered.filter((flight) => flight.price > 5000000);
+      }
+    }
+
+    if (selectedCBaggageFilter) {
+      if (selectedCBaggageFilter === ">1Kg") {
+        filtered = filtered.filter((flight) => flight.plane.cabinBaggage >= 1);
+      } else if (selectedCBaggageFilter === ">5Kg") {
+        filtered = filtered.filter((flight) => flight.plane.cabinBaggage > 5);
+      }
+    }
+
+    if (selectedBaggageFilter) {
+      if (selectedBaggageFilter === ">1Kg") {
+        filtered = filtered.filter((flight) => flight.plane.baggage >= 1);
+      } else if (selectedBaggageFilter === ">5Kg") {
+        filtered = filtered.filter((flight) => flight.plane.baggage > 5);
+      } else if (selectedBaggageFilter === ">10Kg") {
+        filtered = filtered.filter((flight) => flight.plane.baggage > 10);
+      }
+    }
+
+    return filtered;
+  }, [
+    flights,
+    selectedPriceFilter,
+    selectedCBaggageFilter,
+    selectedBaggageFilter,
+  ]);
 
   return (
-    <div className="w-11/12 md:w-2/3 mx-auto flex flex-col gap-5 overflow-hidden pb-10 mt-10">
+    <div className="w-11/12 md:w-2/3 mx-auto flex flex-col gap-5 overflow-hidden pb-10 mt-5 md:mt-10">
       <motion.h1
         initial={{ opacity: 0, x: -75 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -126,7 +196,7 @@ const Search = () => {
         Pilih Penerbangan
       </motion.h1>
 
-      <div className="flex justify-between items-center gap-2 mx-4 relative">
+      <div className="flex flex-col md:flex-row items-center gap-2 relative">
         <ChangeResult
           origin={ticketSearch.departureAirportCode}
           destination={ticketSearch.arrivalAirportCode}
@@ -143,7 +213,7 @@ const Search = () => {
           transition={{ duration: 0.75, delay: 0.75 }}
           viewport={{ once: true }}
           onClick={() => navigate("/")}
-          className="text-white gap-5 p-2 md:p-3 px-5 rounded-lg bg-[#73CA5C]"
+          className="hidden md:block text-white gap-5 p-2 md:p-3 px-5 rounded-lg bg-[#73CA5C]"
         >
           Ubah Pencarian
         </motion.button>
@@ -171,38 +241,68 @@ const Search = () => {
         ))}
       </motion.div>
 
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className="flex flex-col md:flex-row gap-5 mx-4">
-          <motion.div
-            initial={{ opacity: 0, x: -75 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.75, delay: 0.25 }}
-            className="flex-col gap-4 font-medium hidden md:flex text-base md:w-1/4"
-          >
-            <h1 className="font-medium text-base">Filter</h1>
-            <Filter />
-          </motion.div>
-          <div className="flex-grow">
-            {error ? (
+      <div className="flex flex-col md:flex-row gap-5 mx-4">
+        <motion.div
+          initial={{ opacity: 0, x: -75 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.75, delay: 0.25 }}
+          className="flex-col gap-4 font-medium flex text-base md:w-1/4"
+        >
+          <Filter
+            setSelectedBaggageFilter={setSelectedBaggageFilter}
+            setSelectedCBaggageFilter={setSelectedCBaggageFilter}
+            setSelectedPriceFilter={setSelectedPriceFilter}
+          />
+        </motion.div>
+        <div className="flex-grow">
+          {loading ? (
+            <Loading />
+          ) : error ? (
+            <div className="p-10">
               <ResultNotFound message={error} />
-            ) : flights && flights.length > 0 ? (
-              flights.map((flight, index) => (
-                <FlightCard
-                  key={index}
-                  index={index}
-                  flight={flight}
-                  isOpen={openIndex === index}
-                  toggleAccordion={() => toggleAccordion(index)}
-                />
-              ))
-            ) : (
+            </div>
+          ) : filteredFlights && filteredFlights.length > 0 ? (
+          <>
+          {filteredFlights.map((flight, index) => (
+            <FlightCard
+              key={index}
+              index={index}
+              flight={flight}
+              isOpen={openIndex === index}
+              toggleAccordion={() => toggleAccordion(index)}
+            />
+            ))}
+            <div className="flex flex-row justify-center items-center gap-2 sm:gap-4 mt-4">
+              <Button
+                onClick={goToPreviousPage}
+                disabled={page === 1}
+                variant="outline"
+                className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 text-xs sm:text-sm"
+              >
+                <IoIosArrowBack size={16} className="fill-violet-700" />
+              </Button>
+
+              <span className="text-xs sm:text-sm text-violet-700 text-center">
+                Page {page} of {totalPages}
+              </span>
+
+              <Button
+                onClick={goToNextPage}
+                disabled={page === totalPages}
+                variant="outline"
+                className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 sm:w-auto text-xs sm:text-sm"
+              >
+                <IoIosArrowForward size={16} className="fill-violet-700" />
+              </Button>
+            </div>
+            </>
+          ) : (
+            <div className="p-10">
               <ResultNotFound message="No flights found." />
-            )}
-          </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

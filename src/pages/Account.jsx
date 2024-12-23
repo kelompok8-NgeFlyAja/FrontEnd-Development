@@ -163,7 +163,7 @@ const Account = () => {
 
   return (
     <>
-      <div className="w-11/12 md:w-2/3 mx-auto mt-28 flex flex-col gap-5 overflow-hidden">
+      <div className="w-11/12 md:w-2/3 mx-auto mt-10 flex flex-col gap-5 overflow-hidden">
         <motion.h1
           initial={{ opacity: 0, x: -75 }}
           whileInView={{ opacity: 1, x: 0 }}
