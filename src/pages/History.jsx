@@ -5,9 +5,11 @@ import { BiFilterAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import useFetchTransactionHistory from "@/hooks/useFetchTransactionHistory";
+import HistoryCard from "@/components/history/historyCard";
 
 const History = () => {
   const { transactionHistory, loading, error } = useFetchTransactionHistory();
+
   console.log(transactionHistory);
   return (
     <div className="w-11/12 md:w-2/3 mx-auto flex flex-col mt-10 gap-5 overflow-hidden">
@@ -49,21 +51,20 @@ const History = () => {
         </motion.div>
       </div>
 
-      {/* Show loading, error, or transaction history */}
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
       {!loading && !error && (
         <div className="mt-5">
           {transactionHistory.length > 0 ? (
             <ul className="list-disc list-inside">
-              {transactionHistory.map((transaction) => (
-                <li key={transaction.id} className="py-2">
-                  <div className="p-3 bg-gray-100 rounded-lg">
-                    <p><strong>ID:</strong> {transaction.id}</p>
-                    <p><strong>Details:</strong> {transaction.details}</p>
-                  </div>
-                </li>
-              ))}
+              {transactionHistory.map((history) => (
+                    <HistoryCard
+                      key={history.bookingId}
+                      history={history}
+                      selected={""}
+                      onClick={""}
+                    />
+                  ))}
             </ul>
           ) : (
             <p>No transaction history found.</p>
