@@ -215,7 +215,7 @@ const Search = () => {
           initial={{ opacity: 0, x: -75 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.75, delay: 0.25 }}
-          className="flex-col gap-4 font-medium hidden md:flex text-base md:w-1/4"
+          className="flex-col gap-4 font-medium flex text-base md:w-1/4"
         >
           <Filter
             setSelectedBaggageFilter={setSelectedBaggageFilter}
