@@ -23,6 +23,9 @@ const Search = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [days, setDays] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
+  const [selectedBaggageFilter, setSelectedBaggageFilter] = useState(null);
+  const [selectedCBaggageFilter, setSelectedCBaggageFilter] = useState(null);
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState(null); // Add state for selected price filter
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -77,9 +80,9 @@ const Search = () => {
 
   useEffect(() => {
     if (selectedDate) {
-      refetch();  
+      refetch();
     }
-  }, [selectedDate, refetch]); 
+  }, [selectedDate, refetch]);
 
   const getDayName = (date) => {
     const dayNames = [
@@ -112,7 +115,34 @@ const Search = () => {
     if (departureTime) {
       generateDays(departureTime);
     }
-  }, [departureTime]); 
+  }, [departureTime]);
+
+  useEffect(() => {
+    console.log("Selected Filters in Search:", {
+      selectedBaggageFilter,
+      selectedCBaggageFilter,
+      selectedPriceFilter,
+    });
+  }, [selectedBaggageFilter, selectedCBaggageFilter, selectedPriceFilter]);
+
+  // Filter flights based on the selected price filter
+  const filteredFlights = useMemo(() => {
+    if (!selectedPriceFilter) return flights;
+
+    let filtered = [...flights];
+
+    if (selectedPriceFilter === "Di bawah 1 Juta") {
+      filtered = filtered.filter(flight => flight.price < 1000000);
+    } else if (selectedPriceFilter === "1 Juta - 3 Juta") {
+      filtered = filtered.filter(flight => flight.price >= 1000000 && flight.price <= 3000000);
+    } else if (selectedPriceFilter === "3 Juta - 5 Juta") {
+      filtered = filtered.filter(flight => flight.price > 3000000 && flight.price <= 5000000);
+    } else if (selectedPriceFilter === "Di atas 5 Juta") {
+      filtered = filtered.filter(flight => flight.price > 5000000);
+    }
+
+    return filtered;
+  }, [flights, selectedPriceFilter]);
 
   return (
     <div className="w-11/12 md:w-2/3 mx-auto flex flex-col gap-5 overflow-hidden pb-10 mt-5 md:mt-10">
@@ -171,24 +201,29 @@ const Search = () => {
         ))}
       </motion.div>
 
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className="flex flex-col md:flex-row gap-5 mx-4">
-          <motion.div
-            initial={{ opacity: 0, x: -75 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.75, delay: 0.25 }}
-            className="flex-col gap-4 font-medium hidden md:flex text-base md:w-1/4"
-          >
-            <h1 className="font-medium text-base">Filter</h1>
-            <Filter />
-          </motion.div>
-          <div className="flex-grow">
-            {error ? (
-              <ResultNotFound message={error} />
-            ) : flights && flights.length > 0 ? (
-              flights.map((flight, index) => (
+      <div className="flex flex-col md:flex-row gap-5 mx-4">
+        <motion.div
+          initial={{ opacity: 0, x: -75 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.75, delay: 0.25 }}
+          className="flex-col gap-4 font-medium hidden md:flex text-base md:w-1/4"
+        >
+          <Filter
+            setSelectedBaggageFilter={setSelectedBaggageFilter}
+            setSelectedCBaggageFilter={setSelectedCBaggageFilter}
+            setSelectedPriceFilter={setSelectedPriceFilter} // Pass the state setter to Filter component
+          />
+        </motion.div>
+        <div className="flex-grow">
+          {loading ? (
+            <Loading />
+          ) : (
+            error ? (
+              <div className="p-10">
+                <ResultNotFound message={error} />
+              </div>
+            ) : filteredFlights && filteredFlights.length > 0 ? (
+              filteredFlights.map((flight, index) => (
                 <FlightCard
                   key={index}
                   index={index}
@@ -198,11 +233,13 @@ const Search = () => {
                 />
               ))
             ) : (
-              <ResultNotFound message="No flights found." />
-            )}
-          </div>
+              <div className="p-10">
+                <ResultNotFound message="No flights found." />
+              </div>
+            )
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
