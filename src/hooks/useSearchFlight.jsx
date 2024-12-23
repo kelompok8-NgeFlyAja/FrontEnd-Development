@@ -6,6 +6,7 @@ const useSearchFlight = (params = {}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [total, setTotal] = useState(0);
 
   const fetchFlights = useCallback(async (newParams = params) => {
     setLoading(true);
@@ -15,6 +16,7 @@ const useSearchFlight = (params = {}) => {
       if (result.success) {
         setData(result.data || []);
         setSuccess(true);
+        setTotal(result.total);
       } else {
         setError(result.message || "Failed to fetch flights");
       }
@@ -29,7 +31,7 @@ const useSearchFlight = (params = {}) => {
     fetchFlights(params); 
   }, [fetchFlights, params]);
 
-  return { data, loading, error, success, refetch };
+  return { data, total, loading, error, success, refetch };
 };
 
 export { useSearchFlight };
