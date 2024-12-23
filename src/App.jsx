@@ -12,7 +12,7 @@ import Otp from "./pages/Otp";
 import Send from "./pages/Send";
 import Notification from "./pages/Notification";
 import Account from "./pages/Account";
-import Riwayat from "./pages/Riwayat";
+import History from "./pages/History";
 import Topnav from "./components/TopNavbar";
 
 function App() {
@@ -76,7 +76,7 @@ function App() {
           <Route path="/account" element={<Account />} />
           <Route
             path="/riwayat-pesanan"
-            element={isLogin ? <Riwayat /> : <Navigate to="/login" />}
+            element={isLogin ? <History /> : <Navigate to="/login" />}
           />
 
           {/* Auth */}
