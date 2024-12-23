@@ -6,6 +6,7 @@ import { FiBell } from "react-icons/fi";
 import NavbarItems from "./NavbarItems";
 import useSend from "@/hooks/useSend";
 import Cookies from "universal-cookie";
+import { useNotifications } from "@/hooks/useFetchNotification";
 
 const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
   const { loading, sendData } = useSend();
@@ -17,6 +18,10 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const cookies = new Cookies();
+
+  const { data, total, loading: isLoading, error: fetchError } = useNotifications();
+
+  const unreadCount = data?.filter((item) => item.isRead === false).length || null;
 
   const handleResize = () => {
     if (window.innerWidth >= 768) {
@@ -94,9 +99,11 @@ const Topnav = ({ isLogin = false, isSearch, isOTP = false }) => {
                   </Link>
                   <Link to="/notification" className="relative">
                     <FiBell className="text-2xl" />
+                    {unreadCount &&
                     <span className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-3 -end-3 dark:border-gray-900">
-                      {notifications}
+                      {unreadCount}
                     </span>
+                    }
                   </Link>
                   <Link to="/account">
                     <IoMdPerson className="text-2xl" />
