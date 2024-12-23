@@ -24,7 +24,7 @@ export const FillData = ({ handleSaveData }) => {
   const [billingDetails, setBillingDetails] = useState({});
   const [flightDetails, setFlightDetails] = useState(null);
   const [passengerDetails, setPassengerDetails] = useState(
-    Array(totalPassengers).fill({}) // Initialize empty objects for each passenger
+    Array(totalPassengers).fill({})
   );
   const [selectedSeats, setSelectedSeats] = useState([]);
 
@@ -96,6 +96,10 @@ export const FillData = ({ handleSaveData }) => {
         }
       );
 
+      localStorage.setItem(
+        "passengerDetails",
+        JSON.stringify(passengerDetails)
+      );
       localStorage.setItem("bookingId", response.data.bookingId);
       localStorage.setItem("bookingCode", response.data.bookingCode);
 
@@ -125,8 +129,8 @@ export const FillData = ({ handleSaveData }) => {
           <button
             onClick={() => {
               console.log("Button clicked");
-              handleSaveData();
-              // handleCreateOrder();
+              // handleSaveData();
+              handleCreateOrder();
             }}
             className="bg-[#7126B5] text-white py-3 mt-4 px-4 rounded-lg w-full"
           >

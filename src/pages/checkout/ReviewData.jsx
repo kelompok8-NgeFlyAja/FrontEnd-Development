@@ -8,7 +8,7 @@ import { FlightDetail } from "@/components/checkout/FlightDetail";
 import { Passenger } from "@/components/checkout/Passengers";
 import Cookies from "universal-cookie";
 
-export const ReviewData = ({ handleProceedToPayment }) => {
+export const ReviewData = ({ handleProceedToPayment, setBankDetails }) => {
   const [searchParams] = useSearchParams();
   const flightId = searchParams.get("flightId");
   const adultPassenger = parseInt(searchParams.get("adultPassenger"), 10) || 0;
@@ -55,6 +55,28 @@ export const ReviewData = ({ handleProceedToPayment }) => {
     setPassengerDetails(updatedPassengers);
   };
 
+  const bookingId = localStorage.getItem("bookingId");
+
+  const handleCreatePayment = async () => {
+    try {
+      const response = await axios.post(
+        `https://ngeflyaja.shop/payment/${bookingId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setBankDetails(response.data.bankDetails);
+
+      handleProceedToPayment();
+    } catch (error) {
+      console.error("Error creating order:", error);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center w-full py-8">
       <div className="flex flex-col md:flex-row gap-8 max-w-[900px] w-full px-4">
@@ -78,7 +100,7 @@ export const ReviewData = ({ handleProceedToPayment }) => {
         <div className="flex-[1]">
           <FlightDetail bookingDetail={bookingDetail} />
           <button
-            onClick={handleProceedToPayment}
+            onClick={handleCreatePayment}
             className="bg-[#FF0000] text-white py-3 mt-4 px-4 rounded-lg w-full"
           >
             Lanjut Bayar
