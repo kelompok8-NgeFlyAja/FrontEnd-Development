@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import { IoMdSearch, IoMdArrowRoundBack } from "react-icons/io";
 import { BiFilterAlt } from "react-icons/bi";
 import useFetchTransactionHistory from "@/hooks/useFetchTransactionHistory";
-import HistoryCard from "@/components/history/historyCard";
 import HistoryEmpty from "@/components/history/HistoryEmpty";
 import HistoryDetail from "@/components/history/HistoryDetail";
+import HistoryCard from "@/components/history/HistoryCard";
 
 const History = () => {
   const { transactionHistory, loading, error } = useFetchTransactionHistory();
