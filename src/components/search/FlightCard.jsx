@@ -1,10 +1,21 @@
 import React from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
+const FlightCard = ({
+  flight,
+  isOpen,
+  toggleAccordion,
+  adultPassenger,
+  childPassenger,
+  babyPassenger,
+}) => {
+  const navigate = useNavigate();
 
   const handleSelect = () => {
-    console.log("Selected ticket:", flight);
+    // Generate checkout URL with required parameters
+    const checkoutUrl = `/checkout?flightId=${flight.flightId}&adultPassenger=${adultPassenger}&childPassenger=${childPassenger}&babyPassenger=${babyPassenger}`;
+    navigate(checkoutUrl);
   };
 
   const formatTimeTo24Hour = (time) => {
@@ -12,11 +23,14 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
     try {
       const [timePart, modifier] = time.split(" ");
       let [hours, minutes, seconds] = timePart.split(":").map(Number);
-  
+
       if (modifier === "PM" && hours < 12) hours += 12;
       if (modifier === "AM" && hours === 12) hours = 0;
-  
-      return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+
+      return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+        2,
+        "0"
+      )}`;
     } catch (error) {
       console.error("Time parsing error:", error);
       return "Invalid time";
@@ -70,13 +84,6 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
               <div className="text-black">{flight.arrivalAirport}</div>
             </div>
           </div>
-          <div>
-            <img
-              className="hidden md:block my-10"
-              src="/icons/baggage.svg"
-              alt="Baggage Icon"
-            />
-          </div>
         </div>
         <div className="flex flex-col items-end">
           <div className="md:text-[16px] text-sm font-bold text-[#7126B5] mt-2 md:mt-2 mb-1">
@@ -95,86 +102,6 @@ const FlightCard = ({ flight, isOpen, toggleAccordion }) => {
           >
             Pilih
           </button>
-        </div>
-      </div>
-
-      {/* Accordion Toggle */}
-      <button
-        className="focus:outline-none flex items-center justify-center absolute top-2 right-2 w-5 h-5 border border-gray-400 rounded-full bg-transparent"
-        onClick={toggleAccordion}
-      >
-        {isOpen ? (
-          <FaChevronUp color="rgba(128, 128, 128, 0.7)" size={16} />
-        ) : (
-          <FaChevronDown color="rgba(128, 128, 128, 0.7)" size={16} />
-        )}
-      </button>
-
-      {/* Accordion Content */}
-      <div
-        className={`${
-          isOpen ? "block" : "hidden"
-        } shadow-md px-4 py-3 bg-white transition-all duration-500 rounded-b-lg border-t border-gray-300`}
-      >
-        <div className="mb-2">
-          <div
-            className="text-sm text-gray-500 font-semibold"
-            style={{ color: "#7126B5" }}
-          >
-            Detail Penerbangan
-          </div>
-          <div className="text-sm flex justify-between text-black">
-            <div>
-              <strong>{formatTimeTo24Hour(flight.departureTime)}</strong>
-            </div>
-            <div
-              className="font-semibold"
-              style={{ color: "#A06ECE" }}
-            >
-              Keberangkatan
-            </div>
-          </div>
-          <div className="text-sm">{flight.departureDate}</div>
-          <div className="text-sm">{flight.departureAirport}</div>
-        </div>
-        <hr className="my-1 border-gray-300" />
-        <div className="text-black text-sm mb-2">
-          <strong>
-            {flight.flightCode} - {flight.route.seatClass}
-          </strong>
-          <div>
-            <strong>Kode Pesawat: {flight.plane.planeCode}</strong>
-          </div>
-        </div>
-        <div className="mb-2 flex items-center">
-          <div className="flex flex-col ml-2">
-            <div className="text-sm text-gray-500 font-semibold">
-              Informasi
-            </div>
-            <div className="text-sm">
-              Baggage: {flight.plane.baggage} kg
-            </div>
-            <div className="text-sm">
-              Cabin Baggage: {flight.plane.cabinBaggage} kg
-            </div>
-            <div className="text-sm">{flight.plane.description}</div>
-          </div>
-        </div>
-        <hr className="my-1 border-gray-300" />
-        <div className="mb-2">
-          <div className="flex justify-between text-black">
-            <div className="text-sm">
-              <strong>{formatTimeTo24Hour(flight.arrivalTime)}</strong>
-            </div>
-            <div
-              className="text-sm font-semibold"
-              style={{ color: "#A06ECE" }}
-            >
-              Kedatangan
-            </div>
-          </div>
-          <div className="text-sm">{flight.arrivalDate}</div>
-          <div className="text-sm">{flight.arrivalAirport}</div>
         </div>
       </div>
     </div>
