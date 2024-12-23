@@ -66,7 +66,7 @@ const HistoryDetail = ({ history }) => {
           <div className="flex flex-1 flex-col items-start">
             <h5 className="text-gray-900 font-poppins w-33% text-sm font-bold leading-5 md:w-full">
               <span className="text-gray-900">
-                {history.departureTime}
+                {formatTimeTo24Hour(history.departureTime)}
               </span>
               <br />
               <span className="font-poppins text-sm font-medium text-gray-900">
@@ -107,7 +107,7 @@ const HistoryDetail = ({ history }) => {
             <div className="flex flex-1 flex-col items-start gap-0.5">
               <p className="text-gray-900 font-poppins w-41% text-sm font-bold leading-5 md:w-full">
                 <span className="text-gray-900 ">
-                  {history.arrivalTime}
+                  {formatTimeTo24Hour(history.arrivalTime)}
                 </span>
                 <br />
                 <span className="font-poppins text-sm font-medium text-gray-900">
@@ -115,7 +115,7 @@ const HistoryDetail = ({ history }) => {
                 </span>
               </p>
               <p className="text-gray-900 font-poppins text-sm font-medium">
-                {history.arrivalAirportName} (
+                {history.arrivalAirportName}
               </p>
             </div>
             <div className="relative ml-[-24px] flex">
@@ -142,7 +142,7 @@ const HistoryDetail = ({ history }) => {
           </div>
           <div className="flex">
             <p className="text-gray-900 font-poppins text-sm font-normal">
-              IDR {history.priceAdult}
+              IDR {formatPrice(history.priceAdult)}
             </p>
           </div>
         </div>
@@ -153,7 +153,7 @@ const HistoryDetail = ({ history }) => {
             </p>
           </div>
           <p className="text-gray-900 font-poppins text-sm font-normal">
-            IDR {history.priceChild || 0}
+            IDR {formatPrice(history.priceChild) || 0}
           </p>
         </div>
         <div className="flex gap-2">
@@ -163,7 +163,7 @@ const HistoryDetail = ({ history }) => {
             </p>
           </div>
           <p className="text-gray-900 font-poppins text-sm font-normal">
-            IDR {history.priceBaby || 0}
+            IDR {formatPrice(history.priceBaby) || 0}
           </p>
         </div>
         <hr className="border-t-2 border-gray-300" />
@@ -174,7 +174,7 @@ const HistoryDetail = ({ history }) => {
             </h6>
           </div>
           <h6 className="text-[#7126B5] font-poppins text-lg font-bold">
-            IDR {history.totalPrice}
+            IDR {formatPrice(history.totalPrice)}
           </h6>
         </div>
       </div>

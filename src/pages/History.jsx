@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { IoMdSearch, IoMdArrowRoundBack } from "react-icons/io";
@@ -15,6 +15,12 @@ const History = () => {
   const handleSelectHistory = (history) => {
     setSelectedHistory(history);
   };
+
+  useEffect(() => {
+    if (transactionHistory.length > 0) {
+      setSelectedHistory(transactionHistory[0]);
+    }
+  }, [transactionHistory]);
 
   return (
     <div className="w-11/12 md:w-2/3 mx-auto flex flex-col mt-10 gap-5 overflow-hidden">
@@ -59,8 +65,8 @@ const History = () => {
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
       {!loading && !error && (
-        <div className="flex flex-col md:flex-row gap-5 mt-5">
-          <div className="md:w-2/3">
+        <div className="flex flex-col md:flex-row gap-5 mt-1 w-full overflow-hidden p-1">
+          <div className="md:w-2/3 flex flex-col gap-2">
             {transactionHistory.length > 0 ? (
               transactionHistory.map((history) => (
                 <HistoryCard
@@ -74,7 +80,7 @@ const History = () => {
               <HistoryEmpty />
             )}
           </div>
-          <div className="md:w-1/3">
+          <div className="md:w-1/3 flex-shrink-0">
             {selectedHistory ? (
               <HistoryDetail history={selectedHistory} />
             ) : (

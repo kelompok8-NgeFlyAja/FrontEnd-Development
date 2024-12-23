@@ -69,7 +69,7 @@ const HistoryCard = ({ history, selected, onClick }) => {
           <p className="text-gray-700 text-sm">6h</p>
           <img
             src="/icons/Arrow.svg"
-            className="w-[120px] md:w-[200px]"
+            className="w-full max-w-[120px] md:max-w-[200px]"
             alt="Arrow Icon"
           />
         </div>
