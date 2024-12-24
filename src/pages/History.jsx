@@ -135,28 +135,38 @@ const History = () => {
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
       {!loading && !error && (
-        <div className="flex flex-col md:flex-row gap-5 mt-1 w-full overflow-hidden p-1">
-          <div className="md:w-2/3 flex flex-col gap-2">
+        <div className="flex justify-center flex-col md:flex-row gap-5 mt-1 w-full overflow-hidden p-1">
             {filteredHistory.length > 0 ? (
-              filteredHistory.map((history) => (
-                <HistoryCard
-                  key={history.bookingId}
-                  history={history}
-                  selected={selectedHistory?.bookingId === history.bookingId}
-                  onClick={() => handleSelectHistory(history)}
-                />
-              ))
+            <>
+              <div className="md:w-2/3 flex flex-col gap-2">
+                {filteredHistory.map((history) => (
+                  <HistoryCard
+                    key={history.bookingId}
+                    history={history}
+                    selected={selectedHistory?.bookingId === history.bookingId}
+                    onClick={() => handleSelectHistory(history)}
+                  />
+                ))}
+                </div>
+                <div className="md:w-1/3 flex-shrink-0">
+                {selectedHistory ? (
+                  <HistoryDetail history={selectedHistory} />
+                ) : (
+                  <div>
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between gap-5">
+                        <h3 className="text-gray-900 font-poppins text-lg font-bold">
+                          Pilih Riwayat untuk Melihat Detail
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
             ) : (
-              <HistoryEmpty />
+              <HistoryEmpty className="w-full flex items-center" />
             )}
-          </div>
-          <div className="md:w-1/3 flex-shrink-0">
-            {selectedHistory ? (
-              <HistoryDetail history={selectedHistory} />
-            ) : (
-              <p className="text-gray-500">Pilih riwayat untuk melihat detail</p>
-            )}
-          </div>
         </div>
       )}
     </div>
