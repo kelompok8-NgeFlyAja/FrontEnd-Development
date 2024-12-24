@@ -61,8 +61,6 @@ export const Checkout = () => {
   };
 
   const handlePaymentComplete = () => {
-    localStorage.removeItem("bookingId")
-    localStorage.removeItem("bookingCode");
     setCurrentStep("Selesai");
     setNotification({
       type: "Success",
@@ -70,10 +68,6 @@ export const Checkout = () => {
       countdown: false,
     });
   };
-
-  useEffect(() => {
-    console.log("bankDetails", bankDetails);
-  });
 
   return (
     <div className="w-full">
