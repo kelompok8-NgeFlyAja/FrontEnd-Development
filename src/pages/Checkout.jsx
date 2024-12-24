@@ -7,6 +7,7 @@ import { PaymentList } from "./checkout/PaymentList";
 import { Success } from "./checkout/Success";
 import { InformationBar } from "@/components/checkout/InformationBar";
 import Navbar from "@/components/Navbar";
+import { useSearchParams } from "react-router-dom";
 
 export const Checkout = () => {
   const [currentStep, setCurrentStep] = useState("Isi Data");
@@ -15,7 +16,20 @@ export const Checkout = () => {
     message: "Selesaikan pengisian data dalam 15 menit",
     countdown: true,
   });
+
+  const [searchParams] = useSearchParams();
+  const adultPassenger = parseInt(searchParams.get("adultPassenger"), 10) || 0;
+  const childPassenger = parseInt(searchParams.get("childPassenger"), 10) || 0;
+  const babyPassenger = parseInt(searchParams.get("babyPassenger"), 10) || 0;
+  const totalPassengers = adultPassenger + childPassenger + babyPassenger;
+
   const [bankDetails, setBankDetails] = useState([]);
+  const [billingDetails, setBillingDetails] = useState({});
+  const [flightDetails, setFlightDetails] = useState(null);
+  const [passengerDetails, setPassengerDetails] = useState(
+    Array(totalPassengers).fill({})
+  );
+  const [selectedSeats, setSelectedSeats] = useState([]);
 
   const [timeLeft, setTimeLeft] = useState(15 * 60);
 
@@ -82,12 +96,30 @@ export const Checkout = () => {
       {/* Conditional Step Rendering */}
       <div>
         {currentStep === "Isi Data" && (
-          <FillData handleSaveData={handleSaveData} />
+          <FillData
+            handleSaveData={handleSaveData}
+            billingDetails={billingDetails}
+            setBillingDetails={setBillingDetails}
+            flightDetails={flightDetails}
+            setFlightDetails={setFlightDetails}
+            passengerDetails={passengerDetails}
+            setPassengerDetails={setPassengerDetails}
+            selectedSeats={selectedSeats}
+            setSelectedSeats={setSelectedSeats}
+          />
         )}
         {currentStep === "Bayar Review" && (
           <ReviewData
             handleProceedToPayment={handleProceedToPayment}
             setBankDetails={setBankDetails}
+            billingDetails={billingDetails}
+            setBillingDetails={setBillingDetails}
+            flightDetails={flightDetails}
+            setFlightDetails={setFlightDetails}
+            passengerDetails={passengerDetails}
+            setPassengerDetails={setPassengerDetails}
+            selectedSeats={selectedSeats}
+            setSelectedSeats={setSelectedSeats}
           />
         )}
         {currentStep === "Bayar List" && (

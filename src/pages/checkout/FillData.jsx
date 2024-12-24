@@ -8,7 +8,17 @@ import { FlightDetail } from "@/components/checkout/FlightDetail";
 import { Passenger } from "@/components/checkout/Passengers";
 import Cookies from "universal-cookie";
 
-export const FillData = ({ handleSaveData }) => {
+export const FillData = ({
+  handleSaveData,
+  billingDetails,
+  flightDetails,
+  passengerDetails,
+  selectedSeats,
+  setBillingDetails,
+  setFlightDetails,
+  setPassengerDetails,
+  setSelectedSeats,
+}) => {
   const [searchParams] = useSearchParams();
   const flightId = searchParams.get("flightId");
   const adultPassenger = parseInt(searchParams.get("adultPassenger"), 10) || 0;
@@ -20,13 +30,6 @@ export const FillData = ({ handleSaveData }) => {
   const token = cookies.get("token");
 
   const numberFlightId = Number(flightId);
-
-  const [billingDetails, setBillingDetails] = useState({});
-  const [flightDetails, setFlightDetails] = useState(null);
-  const [passengerDetails, setPassengerDetails] = useState(
-    Array(totalPassengers).fill({})
-  );
-  const [selectedSeats, setSelectedSeats] = useState([]);
 
   useEffect(() => {
     const fetchFlightDetails = async () => {
@@ -67,7 +70,7 @@ export const FillData = ({ handleSaveData }) => {
         birthDate: passenger.birthDate || "", // Tanggal lahir dari input
         nationality: passenger.nationality || "", // Kewarganegaraan dari input
         identityNumber: passenger.documentNumber || "", // Nomor identitas dari input
-        identityCountry: passenger.documentIssuer || "", // Negara penerbit identitas
+        identityCountry: passenger.documentIssuer || "Indonesia", // Negara penerbit identitas
         identityExpired: passenger.validUntil || "", // Tanggal berlaku identitas
         seatName: passenger.seatName || "", // Nomor kursi
       }));
@@ -128,7 +131,6 @@ export const FillData = ({ handleSaveData }) => {
           />
           <button
             onClick={() => {
-              console.log("Button clicked");
               // handleSaveData();
               handleCreateOrder();
             }}
