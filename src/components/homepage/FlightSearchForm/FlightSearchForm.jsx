@@ -103,8 +103,6 @@ function FlightSearchForm({ selectedFlight }) {
     }
 
     navigate(`/search?${searchParams.toString()}`);
-    // console.log(date.from);
-    // console.log("Search URL:", `/search-flights?${searchParams.toString()}`);
   };
 
   return (
