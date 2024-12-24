@@ -6,7 +6,6 @@ import { ReviewData } from "./checkout/ReviewData";
 import { PaymentList } from "./checkout/PaymentList";
 import { Success } from "./checkout/Success";
 import { InformationBar } from "@/components/checkout/InformationBar";
-import Navbar from "@/components/Navbar";
 import { useSearchParams } from "react-router-dom";
 
 export const Checkout = () => {
