@@ -1,20 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { Switch } from "@/components/ui/switch";
 
-export const BillingDetail = ({ billingDetails, setBillingDetails }) => {
+export const BillingDetail = ({
+  billingDetails,
+  setBillingDetails,
+  readOnly,
+}) => {
   const handleChange = (field, value) => {
-    setBillingDetails((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const [email, setEmail] = useState("");
-
-  const validateEmail = (email) => {
-    const re =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+    if (!readOnly) {
+      setBillingDetails((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
   };
 
   return (
@@ -33,6 +31,7 @@ export const BillingDetail = ({ billingDetails, setBillingDetails }) => {
             value={billingDetails?.name || ""}
             onChange={(e) => handleChange("name", e.target.value)}
             className="w-full border rounded-md p-2"
+            disabled={readOnly}
           />
         </div>
 
@@ -46,6 +45,7 @@ export const BillingDetail = ({ billingDetails, setBillingDetails }) => {
             onCheckedChange={(checked) =>
               handleChange("hasFamilyName", checked)
             }
+            disabled={readOnly}
           />
         </div>
 
@@ -61,6 +61,7 @@ export const BillingDetail = ({ billingDetails, setBillingDetails }) => {
               value={billingDetails?.familyName || ""}
               onChange={(e) => handleChange("familyName", e.target.value)}
               className="w-full border rounded-md p-2"
+              disabled={readOnly}
             />
           </div>
         )}
@@ -76,28 +77,20 @@ export const BillingDetail = ({ billingDetails, setBillingDetails }) => {
             value={billingDetails?.phone || ""}
             onChange={(e) => handleChange("phone", e.target.value)}
             className="w-full border rounded-md p-2"
+            disabled={readOnly}
           />
         </div>
 
         {/* Email */}
         <div className="mb-4">
-          <div className="flex items-center gap-1">
-            <label className="block font-semibold mb-1 text-sm">Email</label>
-            {email && !validateEmail(email) && (
-              <p className="font-semibold mb-1 text-sm text-red-500">
-                Email is not valid
-              </p>
-            )}
-          </div>
+          <label className="block font-semibold mb-1 text-sm">Email</label>
           <input
             type="email"
             placeholder="Contoh: johndoe@gmail.com"
             value={billingDetails?.email || ""}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              handleChange("email", e.target.value);
-            }}
+            onChange={(e) => handleChange("email", e.target.value)}
             className="w-full border rounded-md p-2"
+            disabled={readOnly}
           />
         </div>
       </div>

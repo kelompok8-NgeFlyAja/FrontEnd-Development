@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useSearchParams } from "react-router-dom";
 
-const SeatSelection = ({ totalSeats, onSeatSelect }) => {
+const SeatSelection = ({ totalSeats, onSeatSelect, readOnly = false }) => {
   const [seats, setSeats] = useState({});
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [currentPassenger, setCurrentPassenger] = useState(0);
@@ -23,6 +23,8 @@ const SeatSelection = ({ totalSeats, onSeatSelect }) => {
   }, []);
 
   const handleSelectSeat = (seatNumber) => {
+    if (readOnly) return; // Tidak ada aksi jika readOnly
+
     setSelectedSeats((prevSeats) => {
       const updatedSeats = [...prevSeats];
       updatedSeats[currentPassenger] = seatNumber;
@@ -85,8 +87,10 @@ const SeatSelection = ({ totalSeats, onSeatSelect }) => {
     return (
       <div
         key={seatNumber}
-        onClick={() => isAvailable && handleSelectSeat(seatNumber)}
-        className={`w-[50px] h-[50px] rounded flex items-center justify-center font-bold cursor-pointer ${bgColor}`}
+        onClick={() => isAvailable && !readOnly && handleSelectSeat(seatNumber)} // Klik hanya jika tidak readOnly
+        className={`w-[50px] h-[50px] rounded flex items-center justify-center font-bold cursor-pointer ${
+          readOnly || !isAvailable ? "cursor-not-allowed" : ""
+        } ${bgColor}`}
       >
         {!isAvailable ? "X" : isSelected ? `P${isSelectedIndex + 1}` : ""}
       </div>

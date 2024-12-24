@@ -6,7 +6,11 @@ import { useForm, Controller } from "react-hook-form";
 const titles = ["Mr.", "Mrs.", "Ms."];
 const countries = ["Indonesia", "United States", "Singapore", "Japan"];
 
-export const Passenger = ({ passengerDetails, setPassengersDetails }) => {
+export const Passenger = ({
+  passengerDetails,
+  setPassengersDetails,
+  readOnly,
+}) => {
   const [searchParams] = useSearchParams();
   const { control, handleSubmit, watch } = useForm();
   const [passengers, setPassengers] = useState([]);
@@ -26,17 +30,20 @@ export const Passenger = ({ passengerDetails, setPassengersDetails }) => {
 
   // Update `setPassengersDetails` whenever `passengers` changes
   useEffect(() => {
-    const subscription = watch((value) => {
-      const updatedPassengers = passengerDetails.map((passenger, index) => ({
-        ...passenger,
-        ...value.passengers[index],
-      }));
+    if (!readOnly) {
+      const subscription = watch((value) => {
+        const updatedPassengers = passengerDetails.map((passenger, index) => ({
+          ...passenger,
+          ...value.passengers[index],
+        }));
 
-      setPassengersDetails(updatedPassengers);
-    });
+        setPassengersDetails(updatedPassengers);
+      });
 
-    return () => subscription.unsubscribe();
-  }, [watch, setPassengersDetails, passengerDetails]);
+      return () => subscription.unsubscribe();
+    }
+    setPassengers(passengerDetails);
+  }, [watch, setPassengersDetails, passengerDetails, readOnly]);
 
   const onSubmit = (data) => {
     console.log(data);
@@ -64,15 +71,26 @@ export const Passenger = ({ passengerDetails, setPassengersDetails }) => {
               name={`passengers.${index}.title`}
               control={control}
               render={({ field }) => (
-                <select {...field} className="w-full p-2 border rounded-md">
-                  <option value="" disabled selected>
-                    Please select
-                  </option>
-                  {titles.map((title, idx) => (
-                    <option key={idx} value={title}>
-                      {title}
+                <select
+                  {...field}
+                  className="w-full p-2 border rounded-md"
+                  disabled={readOnly}
+                >
+                  {readOnly ? (
+                    <option value={passenger.title} disabled selected>
+                      {passenger.title}
                     </option>
-                  ))}
+                  ) : (
+                    <option value="" disabled selected>
+                      Please select
+                    </option>
+                  )}
+                  {!readOnly &&
+                    titles.map((title, idx) => (
+                      <option key={idx} value={title}>
+                        {title}
+                      </option>
+                    ))}
                 </select>
               )}
             />
@@ -92,6 +110,8 @@ export const Passenger = ({ passengerDetails, setPassengersDetails }) => {
                   placeholder="Contoh: Harry"
                   className="w-full p-2 border rounded-md"
                   {...field}
+                  value={readOnly ? passenger.fullName : field.value}
+                  readOnly={readOnly}
                 />
               )}
             />
@@ -148,6 +168,8 @@ export const Passenger = ({ passengerDetails, setPassengersDetails }) => {
                   type="date"
                   className="w-full p-2 border rounded-md"
                   {...field}
+                  value={readOnly ? passenger.birthDate : field.value} // Gunakan nilai dari passenger.birthDate jika readOnly
+                  readOnly={readOnly} // Tambahkan atribut readOnly
                 />
               )}
             />
@@ -167,6 +189,8 @@ export const Passenger = ({ passengerDetails, setPassengersDetails }) => {
                   placeholder="Indonesia"
                   className="w-full p-2 border rounded-md"
                   {...field}
+                  value={readOnly ? passenger.nationality : field.value} // Gunakan nilai dari passenger.nationality jika readOnly
+                  readOnly={readOnly} // Tambahkan atribut readOnly
                 />
               )}
             />
@@ -186,6 +210,8 @@ export const Passenger = ({ passengerDetails, setPassengersDetails }) => {
                   placeholder="Nomor Dokumen"
                   className="w-full p-2 border rounded-md"
                   {...field}
+                  value={readOnly ? passenger.documentNumber : field.value} // Gunakan nilai dari passenger.documentNumber jika readOnly
+                  readOnly={readOnly} // Tambahkan atribut readOnly
                 />
               )}
             />
@@ -203,9 +229,10 @@ export const Passenger = ({ passengerDetails, setPassengersDetails }) => {
                 <select
                   {...field}
                   className="w-full p-2 border rounded-md"
-                  defaultValue=""
+                  defaultValue={readOnly ? passenger.documentIssuer : ""}
+                  disabled={readOnly}
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     Please select
                   </option>
                   {countries.map((country, idx) => (
@@ -231,6 +258,8 @@ export const Passenger = ({ passengerDetails, setPassengersDetails }) => {
                   type="date"
                   className="w-full p-2 border rounded-md"
                   {...field}
+                  value={readOnly ? passenger.validUntil : field.value} // Gunakan nilai dari passenger.validUntil jika readOnly
+                  readOnly={readOnly} // Tambahkan atribut readOnly
                 />
               )}
             />

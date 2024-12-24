@@ -8,23 +8,26 @@ import { FlightDetail } from "@/components/checkout/FlightDetail";
 import { Passenger } from "@/components/checkout/Passengers";
 import Cookies from "universal-cookie";
 
-export const ReviewData = ({ handleProceedToPayment, setBankDetails }) => {
+export const ReviewData = ({
+  handleProceedToPayment,
+  setBankDetails,
+  billingDetails,
+  flightDetails,
+  passengerDetails,
+  selectedSeats,
+  setBillingDetails,
+  setFlightDetails,
+  setPassengerDetails,
+  setSelectedSeats,
+}) => {
   const [searchParams] = useSearchParams();
   const flightId = searchParams.get("flightId");
   const adultPassenger = parseInt(searchParams.get("adultPassenger"), 10) || 0;
   const childPassenger = parseInt(searchParams.get("childPassenger"), 10) || 0;
   const babyPassenger = parseInt(searchParams.get("babyPassenger"), 10) || 0;
-  const totalPassengers = adultPassenger + childPassenger + babyPassenger;
 
   const cookies = new Cookies();
   const token = cookies.get("token");
-
-  const [billingDetails, setBillingDetails] = useState({});
-  const [flightDetails, setFlightDetails] = useState(null);
-  const [passengerDetails, setPassengerDetails] = useState(
-    Array(totalPassengers).fill({}) // Initialize empty objects for each passenger
-  );
-  const [selectedSeats, setSelectedSeats] = useState([]);
 
   const bookingDetail = localStorage.getItem("bookingCode");
   useEffect(() => {
@@ -44,16 +47,6 @@ export const ReviewData = ({ handleProceedToPayment, setBankDetails }) => {
 
     if (flightId) fetchFlightDetails();
   }, [flightId, adultPassenger, childPassenger, babyPassenger]);
-
-  const handleSeatSelection = (seats) => {
-    setSelectedSeats(seats);
-
-    const updatedPassengers = passengerDetails.map((passenger, index) => ({
-      ...passenger,
-      seatName: seats[index] || null,
-    }));
-    setPassengerDetails(updatedPassengers);
-  };
 
   const bookingId = localStorage.getItem("bookingId");
 
@@ -82,12 +75,13 @@ export const ReviewData = ({ handleProceedToPayment, setBankDetails }) => {
       <div className="flex flex-col md:flex-row gap-8 max-w-[900px] w-full px-4">
         {/* Isi Data Pemesan */}
         <div className="flex-[2]">
-          <BillingDetail />
+          <BillingDetail billingDetails={billingDetails} readOnly={true} />
           <Passenger
             passengerDetails={passengerDetails}
             setPassengersDetails={(details) => setPassengerDetails(details)}
+            readOnly={true}
           />
-          <SeatSelection />
+          <SeatSelection readOnly={true} />
           <button
             className="bg-[#D0D0D0] text-white py-3 mt-4 px-4 rounded-lg w-full"
             disabled
