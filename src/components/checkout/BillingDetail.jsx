@@ -1,8 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Switch } from "@/components/ui/switch";
 
-export const BillingDetail = () => {
-  const [hasFamilyName, setHasFamilyName] = useState(false);
+export const BillingDetail = ({
+  billingDetails,
+  setBillingDetails,
+  readOnly,
+}) => {
+  const handleChange = (field, value) => {
+    if (!readOnly) {
+      setBillingDetails((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
+  };
 
   return (
     <div>
@@ -17,7 +28,10 @@ export const BillingDetail = () => {
           <input
             type="text"
             placeholder="Contoh: Harry"
+            value={billingDetails?.name || ""}
+            onChange={(e) => handleChange("name", e.target.value)}
             className="w-full border rounded-md p-2"
+            disabled={readOnly}
           />
         </div>
 
@@ -27,13 +41,16 @@ export const BillingDetail = () => {
             Punya Nama Keluarga?
           </label>
           <Switch
-            checked={hasFamilyName}
-            onCheckedChange={(checked) => setHasFamilyName(checked)}
+            checked={!!billingDetails?.hasFamilyName}
+            onCheckedChange={(checked) =>
+              handleChange("hasFamilyName", checked)
+            }
+            disabled={readOnly}
           />
         </div>
 
         {/* Input Nama Keluarga */}
-        {hasFamilyName && (
+        {billingDetails?.hasFamilyName && (
           <div className="mb-4">
             <label className="block font-semibold mb-1 text-sm">
               Nama Keluarga
@@ -41,7 +58,10 @@ export const BillingDetail = () => {
             <input
               type="text"
               placeholder="Contoh: Potter"
+              value={billingDetails?.familyName || ""}
+              onChange={(e) => handleChange("familyName", e.target.value)}
               className="w-full border rounded-md p-2"
+              disabled={readOnly}
             />
           </div>
         )}
@@ -54,7 +74,10 @@ export const BillingDetail = () => {
           <input
             type="text"
             placeholder="Contoh: 08123456789"
+            value={billingDetails?.phone || ""}
+            onChange={(e) => handleChange("phone", e.target.value)}
             className="w-full border rounded-md p-2"
+            disabled={readOnly}
           />
         </div>
 
@@ -64,7 +87,10 @@ export const BillingDetail = () => {
           <input
             type="email"
             placeholder="Contoh: johndoe@gmail.com"
+            value={billingDetails?.email || ""}
+            onChange={(e) => handleChange("email", e.target.value)}
             className="w-full border rounded-md p-2"
+            disabled={readOnly}
           />
         </div>
       </div>

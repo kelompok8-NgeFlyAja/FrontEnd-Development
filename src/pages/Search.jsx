@@ -86,7 +86,13 @@ const Search = () => {
     ]
   );
 
-  const { data: flights, total, loading, error, refetch } = useSearchFlight(ticketSearch);
+  const {
+    data: flights,
+    total,
+    loading,
+    error,
+    refetch,
+  } = useSearchFlight(ticketSearch);
 
   const totalPages = Math.ceil(total / limit);
 
@@ -309,25 +315,28 @@ const Search = () => {
               <ResultNotFound message={error} />
             </div>
           ) : sortedFlights && sortedFlights.length > 0 ? (
-            <>
-              {sortedFlights.map((flight, index) => (
-                <FlightCard
-                  key={index}
-                  index={index}
-                  flight={flight}
-                  isOpen={openIndex === index}
-                  toggleAccordion={() => toggleAccordion(index)}
+              <>
+                  {sortedFlights.map((flight, index) => (
+                    <FlightCard
+                      key={index}
+                      index={index}
+                      flight={flight}
+                      isOpen={openIndex === index}
+                      toggleAccordion={() => toggleAccordion(index)}
+                      adultPassenger={ticketSearch.adultPassenger}
+                      childPassenger={ticketSearch.childPassenger}
+                      babyPassenger={ticketSearch.babyPassenger}
                 />
-              ))}
-              <div className="flex flex-row justify-center items-center gap-2 sm:gap-4 mt-4">
-                <Button
-                  onClick={goToPreviousPage}
-                  disabled={page === 1}
-                  variant="outline"
-                  className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 text-xs sm:text-sm"
-                >
-                  <IoIosArrowBack size={16} className="fill-violet-700" />
-                </Button>
+                ))}
+                <div className="flex flex-row justify-center items-center gap-2 sm:gap-4 mt-4">
+                  <Button
+                    onClick={goToPreviousPage}
+                    disabled={page === 1}
+                    variant="outline"
+                    className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 text-xs sm:text-sm"
+                  >
+                    <IoIosArrowBack size={16} className="fill-violet-700" />
+                  </Button>
 
                 <span className="text-xs sm:text-sm text-violet-700 text-center">
                   Page {page} of {totalPages}
