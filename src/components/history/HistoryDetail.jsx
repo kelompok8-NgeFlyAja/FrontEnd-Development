@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-// import StatusButton from "./StatusButton";
 import { motion } from "framer-motion";
+import Cookies from "universal-cookie";
+import axios from "axios";
+import { Payment } from "@/pages/Payment";
 
 const HistoryDetail = ({ history }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const cookies = new Cookies();
+
+  const token = cookies.get("token");
 
   const formatTimeTo24Hour = (time) => {
     if (!time) return "Invalid time";
@@ -14,10 +19,57 @@ const HistoryDetail = ({ history }) => {
       if (modifier === "PM" && hours < 12) hours += 12;
       if (modifier === "AM" && hours === 12) hours = 0;
 
-      return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+      return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+        2,
+        "0"
+      )}`;
     } catch (error) {
       console.error("Time parsing error:", error);
       return "Invalid time";
+    }
+  };
+
+  const bookingId = history.bookingId;
+
+  const handleIssueTicket = async () => {
+    try {
+      const response = await axios.get(
+        `https://ngeflyaja.shop/download-pdf/${bookingId}`,
+        {
+          responseType: "blob", // Agar file diunduh sebagai PDF
+          headers: {
+            Authorization: `Bearer ${token}`, // Header Authorization
+          },
+        }
+      );
+
+      // Buat link untuk mengunduh file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Tiket-${bookingId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Gagal mengunduh tiket:", error);
+      alert("Gagal mengunduh tiket. Silakan coba lagi.");
+    }
+  };
+
+  const handleCreatePayment = async () => {
+    try {
+      const response = await axios.post(
+        `https://ngeflyaja.shop/payment/${bookingId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error creating order:", error);
     }
   };
 
@@ -90,8 +142,7 @@ const HistoryDetail = ({ history }) => {
         <div className="flex">
           <div className="text-gray-900 font-poppins w-93% text-xs font-medium leading-18px">
             <span className="text-sm font-bold text-gray-900">
-              {history.planeName} -{" "}
-              {history.seatClassName}
+              {history.planeName} - {history.seatClassName}
               <br />
               {history.flightCode}
               <br />
@@ -159,7 +210,7 @@ const HistoryDetail = ({ history }) => {
         <div className="flex gap-2">
           <div className="flex flex-1">
             <p className="text-gray-900 font-poppins text-sm font-normal">
-                Baby
+              Baby
             </p>
           </div>
           <p className="text-gray-900 font-poppins text-sm font-normal">
@@ -178,6 +229,24 @@ const HistoryDetail = ({ history }) => {
           </h6>
         </div>
       </div>
+
+      {history.status === "SUCCESS" && (
+        <button
+          onClick={handleIssueTicket}
+          className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition"
+        >
+          Cetak Tiket
+        </button>
+      )}
+
+      {history.status === "PENDING" && (
+        <button
+          onClick={handleCreatePayment}
+          className="bg-[#FF0000] text-white py-3 mt-4 px-4 rounded-lg w-full"
+        >
+          Lanjut Bayar
+        </button>
+      )}
       {/* <StatusButton
         status={history.status}
         bookingId={history.booking_id}

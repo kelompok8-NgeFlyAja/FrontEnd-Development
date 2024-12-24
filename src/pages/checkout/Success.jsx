@@ -33,6 +33,7 @@ export const Success = () => {
 
       localStorage.removeItem("bookingId");
       localStorage.removeItem("bookingCode");
+      localStorage.removeItem("passengerDetails");
     } catch (error) {
       console.error("Gagal mengunduh tiket:", error);
       alert("Gagal mengunduh tiket. Silakan coba lagi.");
