@@ -8,6 +8,7 @@ import Cookies from "universal-cookie";
 import useSend from "@/hooks/useSend";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import TopnavWithOnlyLogo from "@/components/TopNavbarWithOnlyLogo";
 
 const Otp = () => {
   const { loading, sendData } = useSend();
@@ -125,7 +126,7 @@ const Otp = () => {
 
   return (
     <>
-      <Navbar isSearch={false} isOTP={true} />
+      <TopnavWithOnlyLogo />
       <div className="w-11/12 md:w-2/3 mx-auto flex flex-col h-[75vh] justify-center overflow-hidden">
         <div>
           <button className="p-3">

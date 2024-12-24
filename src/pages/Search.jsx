@@ -10,6 +10,7 @@ import ChangeResult from "@/components/search/ChangeResult";
 import Filter from "@/components/search/Filter";
 import { Button } from "@/components/ui/button";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Sort from "@/components/search/Sort";
 
 const extractParams = (searchParams, keys) => {
   const params = {};
@@ -28,6 +29,7 @@ const Search = () => {
   const [selectedBaggageFilter, setSelectedBaggageFilter] = useState(null);
   const [selectedCBaggageFilter, setSelectedCBaggageFilter] = useState(null);
   const [selectedPriceFilter, setSelectedPriceFilter] = useState(null);
+  const [selectedSort, setSelectedSort] = useState(null);
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
 
@@ -190,6 +192,49 @@ const Search = () => {
     selectedBaggageFilter,
   ]);
 
+  const sortedFlights = useMemo(() => {
+    if (!selectedSort) return filteredFlights;
+
+    const parseDuration = (duration) => {
+      const match = duration.match(/(\d+)h\s*(\d+)m/);
+      if (match) {
+        return parseInt(match[1], 10) * 60 + parseInt(match[2], 10); 
+      }
+      return 0;
+    };
+
+    switch (selectedSort) {
+      case "Harga - Termurah":
+        return [...filteredFlights].sort((a, b) => a.price - b.price);
+
+      case "Durasi - Terpendek":
+        return [...filteredFlights].sort((a, b) => parseDuration(a.duration) - parseDuration(b.duration));
+
+      case "Keberangkatan - Paling Awal":
+        return [...filteredFlights].sort(
+          (a, b) => new Date(a.departureDate + ' ' + a.departureTime) - new Date(b.departureDate + ' ' + b.departureTime)
+        );
+
+      case "Keberangkatan - Paling Akhir":
+        return [...filteredFlights].sort(
+          (a, b) => new Date(b.departureDate + ' ' + b.departureTime) - new Date(a.departureDate + ' ' + a.departureTime)
+        );
+
+      case "Kedatangan - Paling Awal":
+        return [...filteredFlights].sort(
+          (a, b) => new Date(a.arrivalDate + ' ' + a.arrivalTime) - new Date(b.arrivalDate + ' ' + b.arrivalTime)
+        );
+
+      case "Kedatangan - Paling Akhir":
+        return [...filteredFlights].sort(
+          (a, b) => new Date(b.arrivalDate + ' ' + b.arrivalTime) - new Date(a.arrivalDate + ' ' + a.arrivalTime)
+        );
+
+      default:
+        return filteredFlights;
+    }
+  }, [filteredFlights, selectedSort]);
+
   return (
     <div className="w-11/12 md:w-2/3 mx-auto flex flex-col gap-5 overflow-hidden pb-10 mt-5 md:mt-10">
       <motion.h1
@@ -246,7 +291,9 @@ const Search = () => {
           />
         ))}
       </motion.div>
-
+      <div className="flex justify-end px-4">
+        <Sort setSelectedSort={setSelectedSort} selectedSort={selectedSort} />
+      </div>
       <div className="flex flex-col md:flex-row gap-5 mx-4">
         <motion.div
           initial={{ opacity: 0, x: -75 }}
@@ -267,29 +314,29 @@ const Search = () => {
             <div className="p-10">
               <ResultNotFound message={error} />
             </div>
-          ) : filteredFlights && filteredFlights.length > 0 ? (
-            <>
-              {filteredFlights.map((flight, index) => (
-                <FlightCard
-                  key={index}
-                  index={index}
-                  flight={flight}
-                  isOpen={openIndex === index}
-                  toggleAccordion={() => toggleAccordion(index)}
-                  adultPassenger={ticketSearch.adultPassenger}
-                  childPassenger={ticketSearch.childPassenger}
-                  babyPassenger={ticketSearch.babyPassenger}
+          ) : sortedFlights && sortedFlights.length > 0 ? (
+              <>
+                  {sortedFlights.map((flight, index) => (
+                    <FlightCard
+                      key={index}
+                      index={index}
+                      flight={flight}
+                      isOpen={openIndex === index}
+                      toggleAccordion={() => toggleAccordion(index)}
+                      adultPassenger={ticketSearch.adultPassenger}
+                      childPassenger={ticketSearch.childPassenger}
+                      babyPassenger={ticketSearch.babyPassenger}
                 />
-              ))}
-              <div className="flex flex-row justify-center items-center gap-2 sm:gap-4 mt-4">
-                <Button
-                  onClick={goToPreviousPage}
-                  disabled={page === 1}
-                  variant="outline"
-                  className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 text-xs sm:text-sm"
-                >
-                  <IoIosArrowBack size={16} className="fill-violet-700" />
-                </Button>
+                ))}
+                <div className="flex flex-row justify-center items-center gap-2 sm:gap-4 mt-4">
+                  <Button
+                    onClick={goToPreviousPage}
+                    disabled={page === 1}
+                    variant="outline"
+                    className="flex items-center justify-center px-2 py-2 rounded-md border-violet-700 text-xs sm:text-sm"
+                  >
+                    <IoIosArrowBack size={16} className="fill-violet-700" />
+                  </Button>
 
                 <span className="text-xs sm:text-sm text-violet-700 text-center">
                   Page {page} of {totalPages}
@@ -307,7 +354,7 @@ const Search = () => {
             </>
           ) : (
             <div className="p-10">
-              <ResultNotFound message="No flights found." />
+              <ResultNotFound message="Penerbangan tidak ditemukan" />
             </div>
           )}
         </div>

@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
+import axios from "axios";
 import Homepage from "./pages/Homepage";
 import Search from "./pages/Search";
 import { Checkout } from "./pages/Checkout";
@@ -22,12 +23,20 @@ function App() {
   useEffect(() => {
     const cookies = new Cookies();
     const checkToken = cookies.get("token");
-    setIsLogin(!!checkToken && checkToken !== "undefined");
-    setLoading(false);
+
+    if (checkToken && checkToken !== "undefined") {
+      verifyToken(checkToken);
+    } else {
+      setLoading(false);
+    }
 
     const unsubscribe = cookies.addChangeListener(({ name, value }) => {
       if (name === "token") {
-        setIsLogin(!!value && value !== "undefined");
+        if (value && value !== "undefined") {
+          verifyToken(value);
+        } else {
+          setIsLogin(false);
+        }
       }
     });
 
@@ -35,6 +44,24 @@ function App() {
       unsubscribe();
     };
   }, []);
+
+  const verifyToken = async (token) => {
+    try {
+      const response = await axios.get("https://ngeflyaja.shop/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data) {
+        setIsLogin(true); 
+      } else {
+        setIsLogin(false); 
+      }
+    } catch (error) {
+      setIsLogin(false); 
+    }
+    setLoading(false); 
+  };
 
   const authRoutes = [
     "/login",
@@ -52,7 +79,11 @@ function App() {
     );
 
     if (loading) {
-      return <div>Loading...</div>;
+      return (
+        <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
+          <div className="w-16 h-16 border-4 border-t-4 border-purple-600 border-solid rounded-full animate-spin"></div>
+        </div>
+      );
     }
 
     return (
