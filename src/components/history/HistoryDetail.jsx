@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Cookies from "universal-cookie";
 import axios from "axios";
-import { Payment } from "@/pages/Payment";
 
 const HistoryDetail = ({ history }) => {
   const [isLoading, setIsLoading] = useState(true);
