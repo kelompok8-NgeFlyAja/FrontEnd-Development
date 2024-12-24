@@ -79,7 +79,11 @@ function App() {
     );
 
     if (loading) {
-      return <div>Loading...</div>;
+      return (
+        <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
+          <div className="w-16 h-16 border-4 border-t-4 border-purple-600 border-solid rounded-full animate-spin"></div>
+        </div>
+      );
     }
 
     return (
