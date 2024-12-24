@@ -15,6 +15,8 @@ export const Checkout = () => {
     message: "Selesaikan pengisian data dalam 15 menit",
     countdown: true,
   });
+  const [bankDetails, setBankDetails] = useState([]);
+
   const [timeLeft, setTimeLeft] = useState(15 * 60);
 
   useEffect(() => {
@@ -83,10 +85,16 @@ export const Checkout = () => {
           <FillData handleSaveData={handleSaveData} />
         )}
         {currentStep === "Bayar Review" && (
-          <ReviewData handleProceedToPayment={handleProceedToPayment} />
+          <ReviewData
+            handleProceedToPayment={handleProceedToPayment}
+            setBankDetails={setBankDetails}
+          />
         )}
         {currentStep === "Bayar List" && (
-          <PaymentList handlePaymentComplete={handlePaymentComplete} />
+          <PaymentList
+            handlePaymentComplete={handlePaymentComplete}
+            bankDetails={bankDetails}
+          />
         )}
         {currentStep === "Selesai" && <Success />}
       </div>

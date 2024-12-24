@@ -4,7 +4,7 @@ import { FlightDetail } from "@/components/checkout/FlightDetail";
 import { useSearchParams } from "react-router-dom";
 import { PaymentAccordion } from "@/components/checkout/PaymentAccordion";
 
-export const PaymentList = ({ handlePaymentComplete }) => {
+export const PaymentList = ({ handlePaymentComplete, bankDetails }) => {
   const [searchParams] = useSearchParams();
   const [flightDetails, setFlightDetails] = useState(null);
   const flightId = searchParams.get("flightId");
@@ -34,7 +34,10 @@ export const PaymentList = ({ handlePaymentComplete }) => {
     <div className="mx-auto items-center justify-center py-8 flex flex-col md:flex-row gap-8 max-w-[900px] w-full px-4">
       <div className="flex-[2]">
         {/* Pass handlePaymentComplete to PaymentAccordion */}
-        <PaymentAccordion handlePaymentComplete={handlePaymentComplete} />
+        <PaymentAccordion
+          handlePaymentComplete={handlePaymentComplete}
+          bankDetails={bankDetails}
+        />
       </div>
       <div className="flex-[1]">
         <FlightDetail data={flightDetails} />
