@@ -1,3 +1,4 @@
+// main
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
@@ -53,14 +54,14 @@ function App() {
         },
       });
       if (response.data) {
-        setIsLogin(true); 
+        setIsLogin(true);
       } else {
-        setIsLogin(false); 
+        setIsLogin(false);
       }
     } catch (error) {
-      setIsLogin(false); 
+      setIsLogin(false);
     }
-    setLoading(false); 
+    setLoading(false);
   };
 
   const authRoutes = [
